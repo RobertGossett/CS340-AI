@@ -13,22 +13,28 @@ class Tile {
 public:
     
     // Tile constructor
-    Tile();
+    Tile(); // complete
     
-    // randomier for the tile
-    void rand_Tile();
+    // parameterize constructor
+    Tile(int col, int num); //complete
+    
+    // randomizer for the tile
+    void randomize(); // complete
     
     //get and set the tiles number
-    int get_number() const;
-    void set_number(const int& newNumber);
+    int get_number() const; // complete
+    void set_number(const int& newNumber); // complete
     
     // get and set the tiles color
-    int get_color() const;
-    void set_color(const int& newColor);
+    int get_color() const; // complete
+    void set_color(const int& newColor); // complete
     
-    bool isLocked() const;
-    void lock();
-    void unlock();
+    // returns true if the tile is locked
+    bool isLocked() const; // complete
+    
+    // lock and unlock for the tile
+    void lock(); // complete
+    void unlock(); // complete
     
     
 private:
@@ -43,9 +49,19 @@ Tile::Tile(){
     locked = false;
 }
 
-void Tile::rand_Tile(){
+Tile::Tile(int col, int num){
+    number = num;
+    color = col;
+    locked = false;
+}
+
+void Tile::randomize(){
+    Tile randomTile;
     set_number(rand() % 5); // gives a random number between 1 and 4
     set_color(rand() % 5); // give a random number 1-4 to represent in order, red, yellow, green, blue
+    randomTile.set_number(rand() % 5); // gives a random number between 1 and 4
+    randomTile.set_color(rand() % 5); // give a random number 1-4 to represent in order, red, yellow,
+    return randomTile;
 }
 
 int Tile::get_number() const{

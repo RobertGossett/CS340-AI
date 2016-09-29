@@ -22,29 +22,35 @@ public:
     Board();
     
     // get set for the 2d vector holding the board
-    void set_Board(const vector<vector<Tile> >& newBoard);
-    vector<vector<Tile> > get_Board() const;
+    void set_Board(const vector<vector<Tile> >& newBoard); // complete
+    vector<vector<Tile> > get_Board() const; // complete
     
-    // print board
-    void printBoard();
+    // print board -- will be implemented in the graphics handler
+    void printBoard(); // complete
     
-    // lock and unlock the pieces of the board
-    void lock_Tiles();
-    void unlock_Tiles(); // might not need this
+    // lock and unlock the pieces on the  the board
+    void lock_Tiles(); // complete
+    void unlock_Tiles(); // complete
+    void lock_Tile(const int& tileLocation); // complete
+    void unlock_Tile(const int& tileLocation); // complete
     
-    //adds a piece to the board during the users move
-    //v[0] = color v[1] = number
-    void add_Tile(const int& tileLocation, const Tile& tile);
-    void move_Tile(const int& tileLocation, const int& newLocation, const Tile& tile); // executable on unlocked tiles
+    // adds a piece to the tile coordinates supplied by tile location.
+    // adding tile to tileLocation 21 would add it to the row 2, column 1.
+    bool add_Tile(const Tile& tile, const int& tileLocation); // complete
     
-    // check if the board is full
-    bool isFull() const;
+    // moves the tile from old location to a new location on the board
+    // executable on unlocked tiles
+    bool move_Tile(const int& tileLocation, const int& newLocation); //  complete
+    
+    // returns true if the board is full
+    bool isFull() const; // complete
     
     
     
 private:
     
     vector<vector<Tile> > gameBoard;
+    Tile baseTile;
 // probably in the brain
 //    struct tile {
 //        int number;
@@ -55,8 +61,14 @@ private:
 };
 
 Board::Board() {
-    vector<vector<char> > Board (4, vector<char>(4));
-    
+
+    vector<vector<Tile> > holder(4, vector<Tile>(4));
+    for(int i = 0 ; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+                holder[i][j] = baseTile;
+        };
+    };
+    set_Board(holder);
 }
 
 void Board::set_Board(const vector<vector<Tile> >& newBoard){
@@ -68,8 +80,8 @@ vector<vector<Tile> > Board::get_Board() const{
 }
 
 void Board::lock_Tiles(){
-    for(int i; i < 4; i++){
-        for(int j; j < 4; j++){
+    for(int i = 0 ; i < 4; i++){
+        for(int j = 0; j < 4; j++){
             if(gameBoard[i][j].get_number() != 0 && gameBoard[i][j].get_color() != 0)
                 gameBoard[i][j].lock();
         };
@@ -77,27 +89,49 @@ void Board::lock_Tiles(){
  
 }
 
-void Board::unlock_Tiles(){ // might not need this
-    // unlock the tiles
+void Board::unlock_Tiles(){
+    for(int i = 0 ; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+                gameBoard[i][j].unlock();
+        };
+    };
 
 }
 
-void Board::add_Tile(const int& tileLocation, const Tile& tile){
-    int xPosition = tileLocation / 10;
-    int yPosition = tileLocation % 10;
+void Board::lock_Tile(const int& tileLocation){
+    int xPosition = (tileLocation - 11) / 10;
+    int yPosition = (tileLocation - 11) % 10;
+    gameBoard[xPosition][yPosition].lock();
     
+}
+
+void Board::unlock_Tile(const int& tileLocation){
+    int xPosition = (tileLocation - 11) / 10;
+    int yPosition = (tileLocation - 11) % 10;
+    gameBoard[xPosition][yPosition].unlock();
+}
+
+bool Board::add_Tile(const Tile& tile, const int& tileLocation){
+    int xPosition = (tileLocation - 11) / 10;
+    int yPosition = (tileLocation - 11) % 10;
+    
+    if(!gameBoard[xPosition][yPosition].isLocked()){
     gameBoard[xPosition][yPosition].set_color(tile.get_color());
     gameBoard[xPosition][yPosition].set_number(tile.get_number());
+        return true;
+    }
+    else return false;
 }
 
-void Board::move_Tile(const int& tileLocation, const int& newLocation, const Tile& tile){
-    int xPosition = tileLocation / 10;
-    int yPosition = tileLocation % 10;
-    int newXPosition = newLocation / 10;
-    int newYPosition = newLocation % 10;
+bool Board::move_Tile(const int& tileLocation, const int& newLocation){
+    int xPosition = (tileLocation - 11) / 10;
+    int yPosition = (tileLocation - 11) % 10;
+    int newXPosition = (newLocation - 11) / 10;
+    int newYPosition = (newLocation - 11) % 10;
     
     // conditions
     // if the space isn't taken
+    if(!gameBoard[newXPosition][newYPosition].isLocked()){
     int col = gameBoard[xPosition][yPosition].get_color();
     int num = gameBoard[xPosition][yPosition].get_number();
     
@@ -108,11 +142,16 @@ void Board::move_Tile(const int& tileLocation, const int& newLocation, const Til
     //clear the old tile
     gameBoard[xPosition][yPosition].set_color(0);
     gameBoard[xPosition][yPosition].set_number(0);
+        
+        
+        return true;
+    }
+    else return false;
 }
 
 bool Board::isFull() const{
-    for(int i; i < 4; i++){
-        for(int j; j < 4; j++){
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
             if(gameBoard[i][j].get_number() == 0 && gameBoard[i][j].get_color() == 0)
                 return false;
         };
@@ -123,7 +162,7 @@ bool Board::isFull() const{
 
 // prints the current board
 void Board::printBoard(){
-    cout << "-----------------" << endl;
+    cout << "---------------------" << endl;
     for(int i = 0; i < 4; i++){
         cout << "| ";
         for(int j = 0; j < 4; j++){
@@ -132,7 +171,7 @@ void Board::printBoard(){
         };
         
         cout << endl;
-        cout << "-----------------" << endl;
+        cout << "---------------------" << endl;
     };
     
 }
