@@ -51,12 +51,7 @@ private:
     
     vector<vector<Tile> > gameBoard;
     Tile baseTile;
-// probably in the brain
-//    struct tile {
-//        int number;
-//        int color;
-//    };
-//    vector<tile> tileQeue(4);
+
     
 };
 
