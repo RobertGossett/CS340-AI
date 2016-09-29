@@ -26,15 +26,21 @@ public:
     int get_color() const;
     void set_color(const int& newColor);
     
+    bool isLocked() const;
+    void lock();
+    void unlock();
+    
     
 private:
-        int number;
-        int color;
+    int number;
+    int color;
+    bool locked;
 };
 
 Tile::Tile(){
-    number = NULL;
-    color = NULL;
+    number = 0;
+    color = 0;
+    locked = false;
 }
 
 void Tile::rand_Tile(){
@@ -58,5 +64,16 @@ void Tile::set_color(const int& newColor){
     color = newColor;
 }
 
+bool Tile::isLocked() const{
+    return locked;
+}
+
+void Tile::lock(){
+    locked = true;
+}
+
+void Tile::unlock(){
+    locked = false;
+}
 
 #endif /* DieRandomizer_h */
