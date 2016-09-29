@@ -54,9 +54,7 @@ start_game(){
         playerOne->dealTile()
         playerOne->makeMove();
         scoreBoard();
-
-       
-
+        checkActive();
     }
 
 }
