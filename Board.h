@@ -12,6 +12,7 @@
 using namespace std;
 #include <vector>
 #include "Tile.h"
+#include <iostream>
 
 
 class Board{
@@ -24,14 +25,17 @@ public:
     void set_Board(const vector<vector<Tile> >& newBoard);
     vector<vector<Tile> > get_Board() const;
     
+    // print board
+    void printBoard();
+    
     // lock and unlock the pieces of the board
     bool lock_Tiles();
     bool unlock_Tiles();
     
     //adds a piece to the board during the users move
     //v[0] = color v[1] = number
-    void add_Tile(const vector<int>& tileLocation);
-    void move_Tile(const vector<int>& tileLocation);
+    void add_Tile(const vector<int>& tileLocation, const Tile& tile);
+    void move_Tile(const vector<int>& tileLocation, const vector<int>& newLocation, const Tile& tile);
     
     // check if the board is full
     bool isFull() const;
@@ -74,17 +78,35 @@ bool Board::unlock_Tiles(){
     return false;
 }
 
-void Board::add_Tile(const vector<int>& tile){
+void Board::add_Tile(const vector<int>& tileLocation, const Tile& tile){
     // add the tile
 }
 
-void Board::move_Tile(const vector<int>& tileLocation){
+void Board::move_Tile(const vector<int>& tileLocation, const vector<int>& newLocation, const Tile& tile){
     // move tile
 }
 
-bool isFull(){
+bool Board::isFull() const{
     // if is full return true
+    return false;
 }
+
+// prints the current board
+void Board::printBoard(){
+    cout << "-----------------" << endl;
+    for(int i = 0; i < 4; i++){
+        cout << "| ";
+        for(int j = 0; j < 4; j++){
+            cout << gameBoard[i][j].get_color() << gameBoard[i][j].get_number() << " | ";
+            
+        };
+        
+        cout << endl;
+        cout << "-----------------" << endl;
+    };
+    
+}
+
 
 
 
