@@ -73,6 +73,7 @@ void GameManager::set_up(){
 
 void GameManager::start_game(){
     while(active){
+        Display->start_game();
         vector<Tile> tileHand = generateTileHand();
         playerOne->dealTileHand(const vector<Tile>& tileHand)
         playerOne->makeMove(gameBoard);
@@ -93,7 +94,7 @@ vector<Tile> GameManager::generateTileHand(){
         randomTile.randomize();
         randomTiles.push_back(Tile);
     }
-    return randomTiles
+    return randomTiles;
 }
 
 void GameManager::setBoard(const Board* board){
@@ -113,7 +114,7 @@ Player* GameManager::getPlayer() const{
 }
 
 Board* GameManager::getBoard() const {
-    return gameBoard
+    return gameBoard;
 }
 
 Graphics* GameManager::getDisplay() const{

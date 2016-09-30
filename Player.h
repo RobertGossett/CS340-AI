@@ -17,7 +17,7 @@ class Player{
      void makeMove(Board* gameBoard);
      void dealTileHand(vector<Tile> myHand);
      void roll(); 
-     void checkActive() 
+     void checkActive(); 
    private:
 
    	 Board* gameBoard
