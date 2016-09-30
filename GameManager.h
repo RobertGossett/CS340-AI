@@ -8,7 +8,7 @@ using namespace std;
 #include <vector>
 #include "Graphics.h"
 #include "Player.h"
-
+#include "Text.h"
 
 
 class GameManager{
@@ -62,7 +62,7 @@ class GameManager{
 
 void GameManager::set_up(){
 
-    display = new Graphics;
+    Display = new Text;
     playerOne = new Player;
     playerOne->init();
     gameBoard = new Board;
@@ -75,7 +75,7 @@ void GameManager::start_game(){
     while(active){
         vector<Tile> tileHand = generateTileHand();
         playerOne->dealTileHand(const vector<Tile>& tileHand)
-        playerOne->makeMove();
+        playerOne->makeMove(gameBoard);
         scoreBoard();
         checkActive();
     }
