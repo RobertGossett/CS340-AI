@@ -37,7 +37,7 @@ class GameManager{
 };
 
 
-set_up(){
+void set_up(){
 
     display = new Graphics;
     playerOne = new Player;
@@ -48,7 +48,7 @@ set_up(){
     start_game();
 } 
 
-start_game(){
+void start_game(){
     while(active){
         vector<Tile> generateTile();
         playerOne->dealTile()
