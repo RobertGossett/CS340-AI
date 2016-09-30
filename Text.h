@@ -17,6 +17,7 @@
 
 
 
+
 class Text : public Graphics {
     
 public:
@@ -35,6 +36,9 @@ public:
     //displays the hand of available tiles to the screen
     //tiles are passed in through tile vector h
     void print_Hand(vector <Tile> h);
+    
+    // prints the players current score
+    void print_score(const int& score);
     
     // prints the board
     void print_Board(vector <vector <Tile> > board);
@@ -188,6 +192,10 @@ int Text::get_location() {
     input = (row * 10) + column;
     
     return input;
+}
+
+void Text::print_score(const int& score){
+    cout << "Score: " << score << endl;
 }
 
 

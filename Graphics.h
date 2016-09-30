@@ -47,6 +47,8 @@ public:
     
     // prints the hand
     virtual void print_Hand(vector <Tile> h) = 0;
+    
+    virtual void print_score(const int& score) = 0;
 };
 
 

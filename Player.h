@@ -31,6 +31,24 @@ public:
     
     // checks if the player is active
     void checkActive();
+    
+    // gets and sets for the board
+    // set board
+    void set_board(Board* newBoard);
+    
+    //gets and sets for display
+    // set display
+    void set_display(Graphics* newDisplay);
+    
+    // gets and sets for score
+    // sets the score to a new value
+    void set_score(int const& newScore);
+    
+    // gets the value of the players score
+    int get_score() const;
+    
+    // increments the score by a certain number
+    void increment_score(int const& addend);
 private:
     
     Board* gameBoard; 
@@ -42,12 +60,18 @@ private:
 };
 
 Player::Player(){
+    gameBoard = NULL;
+    display = NULL;
+    score = 0;
+    isActive = false;
     
 }
 
 Player::Player(Graphics* myDisplay, Board* myBoard){
     gameBoard = myBoard;
     display = myDisplay;
+    score = 0;
+    isActive = false;
 
 }
 
@@ -61,6 +85,7 @@ void Player::makeMove(Board* gameBoard){
     while (isActive){
         Tile choice;
         display->print_Board(gameBoard->get_Board());
+        display->print_score(score);
         display->print_Hand(tileHand);
         choice = display->get_tile(tileHand);
         int location;
@@ -89,5 +114,25 @@ void Player::checkActive(){
             roll();
     }
     
+}
+
+void Player::set_board(Board* newBoard){
+    gameBoard = newBoard;
+}
+
+void Player::set_display(Graphics* newDisplay){
+    display = newDisplay;
+}
+
+void Player::set_score(const int& newScore){
+    score = newScore;
+}
+
+int Player::get_score() const{
+    return score;
+}
+
+void Player::increment_score(const int& addend){
+    score += addend;
 }
 #endif
