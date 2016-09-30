@@ -64,10 +64,10 @@ class GameManager{
     
  private:   
     
-    Player* playerOne;
-    Board*  gameBoard;
-    Graphics* Display;
-    bool active;
+    Player* playerOne; // pointer to the playey -- will become the AI
+    Board*  gameBoard; // pointer to the board on which the player plays
+    Graphics* Display; // pointer to the display
+    bool active; // bool representing the status of the game manager. Active or inactive?
 
 };
 

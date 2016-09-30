@@ -6,6 +6,8 @@
 //  Copyright © 2016 Robert Gossett. All rights reserved.
 //
 
+// saves our butts for anytime we accidentally forget to declare something.
+
 #ifndef Game_h
 #define Game_h
 

@@ -13,21 +13,38 @@ class Player{
     
 public:
     
-    Player(Graphics* myDisplay, Board* myBoard );
+    // constructor we still need to fill out. going to require sets and gets
+    Player();
     
-    void makeMove(Board* gameBoard);
+    // parameterized constructor
+    Player(Graphics* myDisplay, Board* myBoard ); // complete
+    
+    // prints the prompt, gets the move choice, and makes the move on the board
+    // based off of that given input.
+    void makeMove(Board* gameBoard); // complete
+    
+    // deals the tile hand for the player
     void dealTileHand(vector<Tile> myHand);
+    
+    // roll will be used to end the players turn once we build out the scoring and play options
     void roll();
+    
+    // checks if the player is active
     void checkActive();
 private:
     
-    Board* gameBoard;
+    Board* gameBoard; 
     vector<Tile> tileHand;
     int score;
     Graphics* display;
     bool isActive;
     
 };
+
+Player::Player(){
+    
+}
+
 Player::Player(Graphics* myDisplay, Board* myBoard){
     gameBoard = myBoard;
     display = myDisplay;
