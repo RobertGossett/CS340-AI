@@ -1,13 +1,15 @@
 #ifndef GAMEMANAGER_H
-#define GAMAEMANAGER_H
+#define GAMEMANAGER_H
 
 using namespace std;
 
 #include "Tile.h"
 #include "Board.h"
-#include <vector>
-#include "Graphics.h"
+#include "Text.h"
 #include "Player.h"
+#include <vector>
+#include "Game.h"
+
 
 
 
@@ -33,22 +35,33 @@ class GameManager{
     // Getters & Setters
     
     // points the Board pointer to a Board* param
-    void setBoard(const Board* board); // complete
+    void setBoard(Board* board); // complete
     
     // points the Display pointer to a Graphics* param
-    void setDisplay(const Graphics* display); // complete
+    void setDisplay(Graphics* display); // complete
     
     // set's the player
-    void setPlayer(const Player* player); // complete
+    void setPlayer(Player* player); // complete
     
     // returns a pointer to the player
     Player* getPlayer() const; // complete
     
     // returns a pointer to the gameBoard
-    Board* getBoard() const;
+    Board* getBoard() const; // complete
     
     // returns a pointer to the display
-    Graphics* getDisplay() const;
+    Graphics* getDisplay() const; // complete
+    
+    // returns true if the GameManager is active
+    bool isActive() const; // complete
+    
+    // sets the game manager to active state
+    void activate(); // complete
+    
+    // sets the game manager to inactive state
+    void deactivate(); // complete
+    
+    
  private:   
     
     Player* playerOne;
@@ -58,28 +71,31 @@ class GameManager{
 
 };
 
+GameManager::GameManager(){
+    
+}
 
 
 void GameManager::set_up(){
-
-    display = new Graphics;
-    playerOne = new Player;
-    playerOne->init();
+    
+    Display = new Text;
+    playerOne = new Player(Display, gameBoard);
     gameBoard = new Board;
     active = true;
- 
+    
     start_game();
-} 
+}
 
 void GameManager::start_game(){
     while(active){
+        Display->start_Game();
         vector<Tile> tileHand = generateTileHand();
-        playerOne->dealTileHand(const vector<Tile>& tileHand)
-        playerOne->makeMove();
+        playerOne->dealTileHand(tileHand);
+        playerOne->makeMove(gameBoard);
         scoreBoard();
-        checkActive();
+        isActive();
     }
-
+    
 }
 
 void GameManager::scoreBoard(){
@@ -89,23 +105,23 @@ void GameManager::scoreBoard(){
 vector<Tile> GameManager::generateTileHand(){
     vector<Tile> randomTiles;
     Tile randomTile;
-    for(int i = 0; i < 3; i++){
+    for(int i = 0; i < 4; i++){
         randomTile.randomize();
-        randomTiles.push_back(Tile);
+        randomTiles.push_back(randomTile);
     }
-    return randomTiles
+    return randomTiles;
 }
 
-void GameManager::setBoard(const Board* board){
+void GameManager::setBoard(Board* board){
     gameBoard = board;
 }
 
-void GameManager::setDisplay(const Graphics* display){
+void GameManager::setDisplay(Graphics* display){
     Display = display;
 }
 
-void GameManager::setPlayer(const Player* player){
-    Player = player;
+void GameManager::setPlayer(Player* player){
+    playerOne = player;
 }
 
 Player* GameManager::getPlayer() const{
@@ -113,9 +129,23 @@ Player* GameManager::getPlayer() const{
 }
 
 Board* GameManager::getBoard() const {
-    return gameBoard
+    return gameBoard;
 }
 
 Graphics* GameManager::getDisplay() const{
     return Display;
 }
+
+bool GameManager::isActive() const{
+    return active;
+}
+
+void GameManager::activate(){
+    active = true;
+}
+
+void GameManager::deactivate(){
+    active = false;
+}
+
+#endif
