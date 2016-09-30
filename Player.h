@@ -15,6 +15,7 @@ public:
     
     Player(Graphics* myDisplay, Board* myBoard );
     
+    // issue with hand is in makeMove and maybe check active
     void makeMove(Board* gameBoard);
     void dealTileHand(vector<Tile> myHand);
     void roll();

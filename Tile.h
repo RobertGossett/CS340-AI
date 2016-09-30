@@ -57,11 +57,9 @@ Tile::Tile(int col, int num){
 }
 
 void Tile::randomize(){
-    Tile randomTile;
-    set_number(rand() % 5); // gives a random number between 1 and 4
-    set_color(rand() % 5); // give a random number 1-4 to represent in order, red, yellow, green, blue
-    randomTile.set_number(rand() % 5); // gives a random number between 1 and 4
-    randomTile.set_color(rand() % 5); // give a random number 1-4 to represent in order, red, yellow,
+    set_number((rand() % 4) + 1); // gives a random number between 1 and 4
+    set_color((rand() % 4) + 1); // give a random number 1-4 to represent in order, red, yellow, green, blue
+
 }
 
 int Tile::get_number() const{
