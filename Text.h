@@ -38,10 +38,10 @@ public:
     
 private:
     void print_Single_Tile(Tile t);
-    int RED_COLOR;
-    int YELLOW_COLOR;
-    int GREEN_COLOR;
-    int BLUE_COLOR;
+//    int RED_COLOR;
+//    int YELLOW_COLOR;
+//    int GREEN_COLOR;
+//    int BLUE_COLOR;
     
     //helper functions
     
@@ -56,10 +56,10 @@ private:
 
 
 Text::Text(){
-    RED_COLOR = 1;
-    YELLOW_COLOR = 2;
-    GREEN_COLOR = 3;
-    BLUE_COLOR = 4;
+//    RED_COLOR = 1;
+//    YELLOW_COLOR = 2;
+//    GREEN_COLOR = 3;
+//    BLUE_COLOR = 4;
     
 }
 
@@ -177,7 +177,7 @@ int Text::get_location() {
     int row, column, input;
     cout << "Please enter the row you wish the place your tile:" << endl;
     cin >> row;
-    cout << "Well done, now please enter the column on row " << row << " you want to place your tile: " << endl;
+    cout << "Please enter the column on row " << row << " you want to place your tile: " << endl;
     cin >> column;
     
     input = (row * 10) + column;
