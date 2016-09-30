@@ -12,7 +12,7 @@ class Player{
 
    public:
 
-   	 Player(Graphics* myDisplay, Board* myDisplay );
+   	 Player(Graphics* myBoard, Board* myDisplay );
       
      void makeMove(Board* gameBoard);
      void dealTileHand(vector<Tile> myHand);
@@ -26,6 +26,10 @@ class Player{
    	 Graphics* display;
 
 };
+Player(Graphics* mYBoard, Board* myDisplay){
+ gameBoard= myBoard;
+ display = myDisplay;
+}
 
 void dealTileHand(vector<Tile> myHand){
   
@@ -35,14 +39,14 @@ void dealTileHand(vector<Tile> myHand){
 void makeMove(Board* gameBoard){
    while (isActive){
    	  Tile choice = new Tile;
-      choice = display->GetTile();
+      choice = display->get_tile();
       int location;
       location = display->get_location();
-      gameBoard->add_Tile(choice, location);
+      gameBoard->add_tile(choice, location);
       for(int i = 0; i<hand.size(); i++) {
-       if(hand[i]->getNumber() == choice->get_Number() && hand[i]->get_Color() == choice->get_Color()){
-       	 hand[i]->setNumber(0);
-       	 hand[i]->setColor(0);
+       if(hand[i]->get_number() == choice->get_number() && hand[i]->get_color() == choice->get_color()){
+       	 hand[i]->get_number(0);
+       	 hand[i]->set_color(0);
          }
        }
 
@@ -58,7 +62,7 @@ void makeMove(Board* gameBoard){
 void checkActive(){
 	
 	 for(int i = 0; i<hand.size(); i++){
-	 	if(hand[i]->get_Number() != 0 || hand[i]->get_Color() != 0 )
+	 	if(hand[i]->get_number() != 0 || hand[i]->get_color() != 0 )
 	 	 roll();
 	 }
 

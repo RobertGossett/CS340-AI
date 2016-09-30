@@ -63,7 +63,7 @@ class GameManager{
 void GameManager::set_up(){
 
     Display = new Text;
-    playerOne = new Player;
+    playerOne = new Player(gameBoard, Display);
     playerOne->init();
     gameBoard = new Board;
     active = true;
