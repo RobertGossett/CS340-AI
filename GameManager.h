@@ -59,6 +59,7 @@ class GameManager{
 };
 
 
+
 void GameManager::set_up(){
 
     display = new Graphics;
