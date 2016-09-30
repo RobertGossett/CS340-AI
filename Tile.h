@@ -8,6 +8,7 @@
 
 #ifndef Tile_h
 #define Tile_h
+#include "Game.h"
 
 class Tile {
 public:

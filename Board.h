@@ -13,7 +13,7 @@ using namespace std;
 #include <vector>
 #include "Tile.h"
 #include <iostream>
-
+#include "Game.h"
 
 class Board{
 public:
@@ -28,9 +28,11 @@ public:
     // print board -- will be implemented in the graphics handler
     void printBoard(); // complete
     
-    // lock and unlock the pieces on the  the board
+    // lock and unlock the entire board
     void lock_Tiles(); // complete
     void unlock_Tiles(); // complete
+    
+    // lock and unlock a single piece
     void lock_Tile(const int& tileLocation); // complete
     void unlock_Tile(const int& tileLocation); // complete
     

@@ -13,6 +13,7 @@
 #include "Graphics.h"
 #include "Tile.h"
 #include "Board.h"
+#include "Game.h"
 
 
 
@@ -37,6 +38,10 @@ public:
     
 private:
     void print_Single_Tile(Tile t);
+    int RED_COLOR;
+    int YELLOW_COLOR;
+    int GREEN_COLOR;
+    int BLUE_COLOR;
     
     //helper functions
     
@@ -51,7 +56,10 @@ private:
 
 
 Text::Text(){
-    
+    RED_COLOR = 1;
+    YELLOW_COLOR = 2;
+    GREEN_COLOR = 3;
+    BLUE_COLOR = 4;
     
 }
 
@@ -61,7 +69,7 @@ void Text::start_Game(){
     cout << "The goal of this game is to score as many points as possible." << endl;
     cout << "To score points, you must place your tiles on the board to form unique combinations that will yield points. " << endl;
     cout << endl;
-
+    
     cout << "Below is a sample board displaying how the game will recognize locations on the board. Each location on the board has a coordinate value. This value is of the format (row, columnn). So as shown below, a coordinate (1,4) corrisponds to row 1, column 4, or \"the top right position on the board\"." << endl;
     
     cout << endl << "Board:" << endl;
@@ -100,8 +108,8 @@ void Text::start_Game(){
     
 }
 
-    //displays the hand of available tiles to the screen
-    //tiles are passed in through tile vector h
+//displays the hand of available tiles to the screen
+//tiles are passed in through tile vector h
 void Text::print_Hand(vector <Tile> h){
     cout << "Hand:" << endl;
     for (int i = 0; i < h.size(); i ++){
@@ -112,16 +120,19 @@ void Text::print_Hand(vector <Tile> h){
 
 string Text::get_String_Value_Of_Color(int val) {
     switch (val) {
-        case RED_COLOR:
+        case 0:
+            return " ";
+            break;
+        case 1:
             return "R";
             break;
-        case YELLOW_COLOR:
+        case 2:
             return "Y";
             break;
-        case GREEN_COLOR:
+        case 3:
             return "G";
             break;
-        case BLUE_COLOR:
+        case 4:
             return "B";
             break;
         default:
@@ -131,8 +142,8 @@ string Text::get_String_Value_Of_Color(int val) {
 }
 
 
-    //tiles in hand are passes in through h
-    //returns the tile that the user selected to be added to the board
+//tiles in hand are passes in through h
+//returns the tile that the user selected to be added to the board
 Tile Text::get_tile(vector <Tile> h) {
     Tile temp(5, 5); //used in input error from user
     
@@ -188,7 +199,10 @@ void Text::print_Board(vector <vector <Tile> > board){
     for(int i = 0; i < 4; i++){
         cout << "| ";
         for(int j = 0; j < 4; j++){
+            if(board[i][j].get_number() !=0)
             cout << get_String_Value_Of_Color(board[i][j].get_color()) << board[i][j].get_number() << " | ";
+            else
+                cout << get_String_Value_Of_Color(board[i][j].get_color()) << " " << " | ";
             
         };
         
@@ -197,4 +211,3 @@ void Text::print_Board(vector <vector <Tile> > board){
     };
     
 }
-

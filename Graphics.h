@@ -12,6 +12,7 @@
 #include <string>
 #include "Tile.h"
 #include "Board.h"
+#include "Game.h"
 
 /*
  ALL CONST INT
