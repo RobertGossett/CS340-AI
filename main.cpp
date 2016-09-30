@@ -7,9 +7,6 @@
 //
 
 #include <iostream>
-//#include "Board.h"
-//#include "Player.h"
-//#include "Tile.h"
 #include "GameManager.h"
 #include <vector>
 #include "Game.h"

@@ -51,8 +51,8 @@ public:
     
 private:
     
-    vector<vector<Tile> > gameBoard;
-    Tile baseTile;
+    vector<vector<Tile> > gameBoard; // the gameBoard
+    Tile baseTile; // the tile used for tile work within the board class
 
     
 };

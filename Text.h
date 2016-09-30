@@ -23,20 +23,25 @@ public:
     
     Text();
     
-    
+    // starts the game
     void start_Game();
     
+    // returns a tile created by the user
     Tile get_tile(vector <Tile> h);
     
+    // returns an int representing the move location given by the user
     int get_location();
     
     //displays the hand of available tiles to the screen
     //tiles are passed in through tile vector h
     void print_Hand(vector <Tile> h);
     
+    // prints the board
     void print_Board(vector <vector <Tile> > board);
     
 private:
+    
+    // prints a single tile
     void print_Single_Tile(Tile t);
 //    int RED_COLOR;
 //    int YELLOW_COLOR;
