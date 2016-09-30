@@ -68,11 +68,23 @@ class GameManager{
     Board*  gameBoard; // pointer to the board on which the player plays
     Graphics* Display; // pointer to the display
     bool active; // bool representing the status of the game manager. Active or inactive?
+<<<<<<< HEAD
+=======
+    struct scoreValues{
+        int pairNumbers;
+        int pairColors;
+    } scoreGuide;
+>>>>>>> RobertsBranch
 
 };
 
 GameManager::GameManager(){
+<<<<<<< HEAD
     
+=======
+    scoreGuide.pairNumbers = 5;
+    scoreGuide.pairColors = 5;
+>>>>>>> RobertsBranch
 }
 
 
@@ -99,7 +111,56 @@ void GameManager::start_game(){
 }
 
 void GameManager::scoreBoard(){
+<<<<<<< HEAD
     // code here...
+=======
+    vector<vector<Tile> > scoreBoard;
+    scoreBoard = gameBoard->get_Board();
+    Tile currentTile;
+    
+    // lets score the S*@t out of this board baybay
+    for(int i = 0; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+            currentTile = scoreBoard[i][j];
+            if(currentTile.get_number() != 0){// first look for pairs of numbers
+                int currentNumber = currentTile.get_number();
+                if(j != 0 && currentNumber == scoreBoard[i][j - 1].get_number()){ // if we find pair left
+                    playerOne->increment_score(scoreGuide.pairNumbers);
+                }
+                else if(j != 3 && currentNumber == scoreBoard[i][j + 1].get_number()){ // if we find pair right
+                    playerOne->increment_score(scoreGuide.pairNumbers);
+                }
+                else if(i != 0 && currentNumber == scoreBoard[i - 1][j].get_number()){ // if we find pair up
+                    playerOne->increment_score(scoreGuide.pairNumbers);
+                }
+                else if(i != 3 && currentNumber == scoreBoard[i + 1][j].get_number()){ // if we find pair down
+                    playerOne->increment_score(scoreGuide.pairNumbers);
+                }
+                
+            }
+            
+            if(currentTile.get_color() != 0){// now lets look a pairs of colors
+                int currentColor = currentTile.get_color();
+                if(j != 0 && currentColor == scoreBoard[i][j - 1].get_color()){ // if we find pair left
+                    playerOne->increment_score(scoreGuide.pairNumbers);
+                }
+                else if(j != 3 && currentColor == scoreBoard[i][j + 1].get_color()){ // if we find pair right
+                    playerOne->increment_score(scoreGuide.pairNumbers);
+                }
+                else if(i != 0 && currentColor == scoreBoard[i - 1][j].get_color()){ // if we find pair up
+                    playerOne->increment_score(scoreGuide.pairNumbers);
+                }
+                else if(i != 3 && currentColor == scoreBoard[i + 1][j].get_color()){ // if we find pair down
+                    playerOne->increment_score(scoreGuide.pairNumbers);
+                }
+                
+            }
+
+            
+        }
+    }
+    
+>>>>>>> RobertsBranch
 }
 
 vector<Tile> GameManager::generateTileHand(){
