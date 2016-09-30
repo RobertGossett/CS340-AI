@@ -17,24 +17,29 @@
 
 
 class Text : Graphics {
+class Text : public Graphics {
     
 public:
     
     Text();
+    
     
     void start_Game();
     
     Tile get_tile(vector <Tile> h);
     
     string get_location();
+    int get_location();
     
     //displays the hand of available tiles to the screen
     //tiles are passed in through tile vector h
     void print_Hand(vector <Tile> h);
     
     void print_Single_Tile(Tile t);
+    void print_Board(vector <vector <Tile> > board);
     
 private:
+    void print_Single_Tile(Tile t);
     
     //helper functions
     
@@ -55,11 +60,54 @@ Text::Text(){
 
 void Text::start_Game(){
    
+    cout << "Hello welcome to the Tile Game (Name Pending)!" << endl;
+    cout << endl;
+    cout << "The goal of this game is to score as many points as possible." << endl;
+    cout << "To score points, you must place your tiles on the board to form unique combinations that will yield points. " << endl;
+    cout << endl;
+
+    cout << "Below is a sample board displaying how the game will recognize locations on the board. Each location on the board has a coordinate value. This value is of the format (row, columnn). So as shown below, a coordinate (1,4) corrisponds to row 1, column 4, or \"the top right position on the board\"." << endl;
+    
+    cout << endl << "Board:" << endl;
+    cout << "  ---------------------" << endl;
+    for(int i = 1; i <= 4; i++){
+        
+        cout << "| ";
+        for(int j = 1; j <= 4; j++){
+            cout << i << "," <<  j << " | ";
+        }
+        cout << endl;
+    }
+    cout << "  ---------------------" << endl;
+    cout << endl;
+    
+    
+    //sample hand to send print_Hand for the tutorial
+    vector <Tile> sampleHand;
+    Board tileBoard;
+    Tile foo(1, 2);
+    sampleHand.push_back(foo);
+    Tile faa(2, 3);
+    sampleHand.push_back(faa);
+    Tile moo(3, 2);
+    sampleHand.push_back(moo);
+    Tile daa(4, 1);
+    sampleHand.push_back(daa);
+    
+    print_Hand(sampleHand);
+    
+    cout << endl << "Above, you will see your 'Hand'. These are your available tiles to place on the board. They are randomly generated after all four tiles have been played. Observe that all Tiles follow the format 'Letter-Number', the letter corrisponds to a color. R = Red, Y = Yellow, G = Green and B = Blue. The number is the value of the tile. " << endl;
+    cout << endl;
+    cout << "During the game, you will be asked to select a tile from the hand. In order to do this, simply enter the number value adjacent to the Tile. For example, you should see that on the first row of your 'Hand', it says,\" '1': R2 \". Entering a '1' will tell the game that this is the tile you would like to play. After you select your tile, you will be asked to enter in the location to play your tile. This follows the format given above where rows and columns range from 1-4. " << endl;
+    
+    
+    
 }
 
     //displays the hand of available tiles to the screen
     //tiles are passed in through tile vector h
 void Text::print_Hand(vector <Tile> h){
+    cout << "Hand:" << endl;
     for (int i = 0; i < h.size(); i ++){
         //prints ->   '1': R3
         cout << "'" << i+1 << "': " << get_String_Value_Of_Color(h[i].get_color()) << h[i].get_number() << endl;
@@ -119,11 +167,40 @@ Tile Text::get_tile(vector <Tile> h) {
 }
 
 string Text::get_location() {
+int Text::get_location() {
+    int row, column, input;
+    cout << "Please enter the row you wish the place your tile:" << endl;
+    cin >> row;
+    cout << "Well done, now please enter the column on row " << row << " you want to place your tile: " << endl;
+    cin >> column;
+    
+    input = (row * 10) + column;
     
     return "";
+    return input;
 }
+
 
 void Text::print_Single_Tile(Tile t){
     
     cout << "Tile: " << get_String_Value_Of_Color(t.get_color()) << t.get_number() << endl;
+}}
+
+
+
+// prints the current board
+void Text::print_Board(vector <vector <Tile> > board){
+    cout << "---------------------" << endl;
+    for(int i = 0; i < 4; i++){
+        cout << "| ";
+        for(int j = 0; j < 4; j++){
+            cout << get_String_Value_Of_Color(board[i][j].get_color()) << board[i][j].get_number() << " | ";
+            
+        };
+        
+        cout << endl;
+        cout << "---------------------" << endl;
+    };
+    
 }
+

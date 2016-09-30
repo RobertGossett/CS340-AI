@@ -34,6 +34,11 @@ public:
     
     virtual string get_location() = 0;
         
+    virtual int get_location() = 0;
+    
+    virtual void print_Board(vector <vector <Tile> > board) = 0;
+    
+    virtual void print_Hand(vector <Tile> h) = 0;
 };
 
 
