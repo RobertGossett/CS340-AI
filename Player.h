@@ -12,7 +12,7 @@ class Player{
 
    public:
 
-   	 Player(Graphics* myBoard, Board* myDisplay );
+   	 Player(Graphics* myDisplay, Board* myBoard );
       
      void makeMove(Board* gameBoard);
      void dealTileHand(vector<Tile> myHand);
@@ -26,7 +26,7 @@ class Player{
    	 Graphics* display;
 
 };
-Player(Graphics* mYBoard, Board* myDisplay){
+Player(Graphics* myDisplay, Board* myBoard){
  gameBoard= myBoard;
  display = myDisplay;
 }
