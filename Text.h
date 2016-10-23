@@ -17,7 +17,10 @@
 
 
 
+<<<<<<< HEAD
+=======
 
+>>>>>>> RobertsBranch
 class Text : public Graphics {
     
 public:
@@ -37,9 +40,12 @@ public:
     //tiles are passed in through tile vector h
     void print_Hand(vector <Tile> h);
     
+<<<<<<< HEAD
+=======
     // prints the players current score
     void print_score(const int& score);
     
+>>>>>>> RobertsBranch
     // prints the board
     void print_Board(vector <vector <Tile> > board);
     
@@ -194,10 +200,13 @@ int Text::get_location() {
     return input;
 }
 
+<<<<<<< HEAD
+=======
 void Text::print_score(const int& score){
     cout << "Score: " << score << endl;
 }
 
+>>>>>>> RobertsBranch
 
 void Text::print_Single_Tile(Tile t){
     

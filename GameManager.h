@@ -68,16 +68,23 @@ class GameManager{
     Board*  gameBoard; // pointer to the board on which the player plays
     Graphics* Display; // pointer to the display
     bool active; // bool representing the status of the game manager. Active or inactive?
+<<<<<<< HEAD
+=======
     struct scoreValues{
         int pairNumbers;
         int pairColors;
     } scoreGuide;
+>>>>>>> RobertsBranch
 
 };
 
 GameManager::GameManager(){
+<<<<<<< HEAD
+    
+=======
     scoreGuide.pairNumbers = 5;
     scoreGuide.pairColors = 5;
+>>>>>>> RobertsBranch
 }
 
 
@@ -104,6 +111,9 @@ void GameManager::start_game(){
 }
 
 void GameManager::scoreBoard(){
+<<<<<<< HEAD
+    // code here...
+=======
     vector<vector<Tile> > scoreBoard;
     scoreBoard = gameBoard->get_Board();
     Tile currentTile;
@@ -150,6 +160,7 @@ void GameManager::scoreBoard(){
         }
     }
     
+>>>>>>> RobertsBranch
 }
 
 vector<Tile> GameManager::generateTileHand(){

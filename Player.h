@@ -31,6 +31,8 @@ public:
     
     // checks if the player is active
     void checkActive();
+<<<<<<< HEAD
+=======
     
     // gets and sets for the board
     // set board
@@ -49,6 +51,7 @@ public:
     
     // increments the score by a certain number
     void increment_score(int const& addend);
+>>>>>>> RobertsBranch
 private:
     
     Board* gameBoard; 
@@ -60,18 +63,24 @@ private:
 };
 
 Player::Player(){
+<<<<<<< HEAD
+=======
     gameBoard = NULL;
     display = NULL;
     score = 0;
     isActive = false;
+>>>>>>> RobertsBranch
     
 }
 
 Player::Player(Graphics* myDisplay, Board* myBoard){
     gameBoard = myBoard;
     display = myDisplay;
+<<<<<<< HEAD
+=======
     score = 0;
     isActive = false;
+>>>>>>> RobertsBranch
 
 }
 
@@ -85,7 +94,10 @@ void Player::makeMove(Board* gameBoard){
     while (isActive){
         Tile choice;
         display->print_Board(gameBoard->get_Board());
+<<<<<<< HEAD
+=======
         display->print_score(score);
+>>>>>>> RobertsBranch
         display->print_Hand(tileHand);
         choice = display->get_tile(tileHand);
         int location;
@@ -115,6 +127,8 @@ void Player::checkActive(){
     }
     
 }
+<<<<<<< HEAD
+=======
 
 void Player::set_board(Board* newBoard){
     gameBoard = newBoard;
@@ -135,4 +149,5 @@ int Player::get_score() const{
 void Player::increment_score(const int& addend){
     score += addend;
 }
+>>>>>>> RobertsBranch
 #endif
