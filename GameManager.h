@@ -56,6 +56,7 @@ class GameManager{
     Graphics* Display;
     bool active;
 
+
 };
 
 
@@ -64,7 +65,6 @@ void GameManager::set_up(){
 
     Display = new Text;
     playerOne = new Player(gameBoard, Display);
-    playerOne->init();
     gameBoard = new Board;
     active = true;
  
