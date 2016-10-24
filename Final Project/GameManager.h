@@ -31,12 +31,16 @@ class GameManager{
     // generates the playable tile hand of 4 tiles.
     vector<Tile> generateTileHand(); //complete
     
+    // generates the neighborhoods
     void generateNeighborhoods();
-
+    
+    // generates the row neighborhoods
     void generateRowNeighborhoods();
     
+    // generates the column neighborhoods
     void generateColumnNeighborhoods();
     
+    // generates the 2 x 2 neighborhoods
     void generateBoxNeighborhoods();
 
     // Getters & Setters
@@ -211,15 +215,16 @@ void GameManager::scoreBoard(){
     if(!neighborhoods[i].isLocked()){
     currentScore = score_neighborhood(neighborhoods[i]);
         if (currentScore >= 100){
-            //clear neighborhood
-            //u unlock the neighborhood
+            neighborhoods[i].clear_Neighborhood_Tiles();
+            neighborhoods[i].unlock();
             totalScore += currentScore;
             // clear the neighborhood on the board
         }
-        else
+        else{
             totalScore += currentScore;
-     neighborhoods[i].lock();
-    } 
+            neighborhoods[i].lock();
+        }
+    }
     
    }
 

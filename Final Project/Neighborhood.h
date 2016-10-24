@@ -28,18 +28,33 @@ public:
     vector<Tile> get_Neighborhood_Tiles() const; // complete
     void set_Neighborhood_Tiles(const vector<Tile>& newNeighborhood); // complete
     
+    // clears the neighborhood
+    void clear_Neighborhood_Tiles();
+    
     // is locked returns a bool with the neighborhoods lock status
     bool isLocked() const; // complete
+    
+    // is full returns true if the neighborhood is full
+    bool isFull() const;
+    
+
     
     // locks and unlucks the neighborhood. full neighborhoods become locked to deal with double counting.
     void lock(); // complete
     void unlock(); // complete
     
+    // sets scored to true if scored
+
+    
     // get and set for the type of the neighborhood
     string get_type() const; // complete
     void set_type(const string& newType); // complete
     
-    // add, push, and remove tiles from the neighborhood.
+    
+    int get_index() const;
+    void set_index(const int& newIndex);
+    
+    // add and remove tiles from the neighborhood.
     bool add_Tile(const Tile& tile, const int& tileLocation); // complete
     bool remove_Tile(const int& tileLocation); // complete
     
@@ -50,8 +65,8 @@ private:
     Tile baseTile; // the tile used for tile work within the board class
     string type;
     bool locked;
-    
-    
+    int index;
+
 };
 
 Neighborhood::Neighborhood() {
@@ -67,10 +82,24 @@ void Neighborhood::set_Neighborhood_Tiles(const vector<Tile>& newNeighborhood) {
     neighborhood = newNeighborhood;
 }
 
+void Neighborhood::clear_Neighborhood_Tiles() {
+    for(int i = 0; i < neighborhood.size(); i++){
+        neighborhood[i].set_number(0);
+        neighborhood[i].set_color(0);
+    }
+        
+}
+
 bool Neighborhood::isLocked() const {
     return locked;
 }
 
+bool Neighborhood::isFull() const {
+    for(int i = 0; i < neighborhood.size(); i++)
+        if(neighborhood[i].get_number() == 0)
+            return false;
+    return true;
+}
 void Neighborhood::lock() {
     locked = true;
 }
