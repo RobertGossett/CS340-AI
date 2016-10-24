@@ -13,7 +13,7 @@ using namespace std;
 #include <vector>
 #include "Tile.h"
 #include <iostream>
-
+#include "Game.h"
 
 class Board{
 public:
@@ -28,9 +28,11 @@ public:
     // print board -- will be implemented in the graphics handler
     void printBoard(); // complete
     
-    // lock and unlock the pieces on the  the board
+    // lock and unlock the entire board
     void lock_Tiles(); // complete
     void unlock_Tiles(); // complete
+    
+    // lock and unlock a single piece
     void lock_Tile(const int& tileLocation); // complete
     void unlock_Tile(const int& tileLocation); // complete
     
@@ -45,12 +47,12 @@ public:
     // returns true if the board is full
     bool isFull() const; // complete
     
-    
+    Tile get_Tile(const int& tileLocation);
     
 private:
     
-    vector<vector<Tile> > gameBoard;
-    Tile baseTile;
+    vector<vector<Tile> > gameBoard; // the gameBoard
+    Tile baseTile; // the tile used for tile work within the board class
 
     
 };
@@ -93,6 +95,7 @@ void Board::unlock_Tiles(){
 
 }
 
+
 void Board::lock_Tile(const int& tileLocation){
     int xPosition = (tileLocation - 11) / 10;
     int yPosition = (tileLocation - 11) % 10;
@@ -116,6 +119,12 @@ bool Board::add_Tile(const Tile& tile, const int& tileLocation){
         return true;
     }
     else return false;
+}
+Tile Board::get_Tile(const int& tileLocation){
+    int xPosition = (tileLocation - 11) / 10;
+    int yPosition = (tileLocation - 11) % 10;
+
+      return gameBoard[xPosition][yPosition];
 }
 
 bool Board::move_Tile(const int& tileLocation, const int& newLocation){
