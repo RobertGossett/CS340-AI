@@ -9,7 +9,7 @@ using namespace std;
 #include "Text.h"
 #include <vector>
 #include "Game.h"
-#include "Neightborhood.h"
+#include "Neighborhood.h"
 
 
 
@@ -61,7 +61,15 @@ class GameManager{
     // sets the game manager to inactive state
     void deactivate(); // complete
     
-    
+    void generateNeighborhoods();
+    void updateNeighborhoods();
+    void generateRowNeighborhoods();
+    void generateColumnNeighborhoods();
+    void generateBoxNeighborhoods();
+
+    void updateNeighborhoods();
+
+
  private:   
     
     Player* playerOne; // pointer to the playey -- will become the AI
@@ -168,6 +176,9 @@ void GameManager::generateBoxNeighborhoods(){
     }
 
 }
+}
+void GameManager::updateNeighborhoods(){
+  
 }
 
 
