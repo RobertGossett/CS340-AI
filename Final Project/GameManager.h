@@ -205,10 +205,19 @@ void GameManager::generateBoxNeighborhoods(){
 
 
 void GameManager::scoreBoard(){
-    bool totalScore;
+    int totalScore;
+    int currentScore;
     for(int i=0; i<=neighborhoods.size(); i++){
     if(!neighborhoods[i].isLocked()){
-     totalScore += score_neighborhood(neighborhoods[i]);
+    currentScore = score_neighborhood(neighborhoods[i]);
+        if (currentScore >= 100){
+            //clear neighborhood
+            //u unlock the neighborhood
+            totalScore += currentScore;
+            // clear the neighborhood on the board
+        }
+        else
+            totalScore += currentScore;
      neighborhoods[i].lock();
     } 
     
