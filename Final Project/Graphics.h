@@ -12,7 +12,6 @@
 #include <string>
 #include "Tile.h"
 #include "Board.h"
-
 #include "Game.h"
 
 /*
@@ -29,11 +28,11 @@ using namespace std;
 //
 // Base class to allow for various display options in the future
 //
+
 class Graphics {
     
 public:
     
-
     // function for starting the game
     virtual void start_Game() = 0;
     

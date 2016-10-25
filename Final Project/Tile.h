@@ -1,5 +1,5 @@
 //
-//  DieRandomizer.h
+//  Tile.h
 //  Final Project
 //
 //  Created by Robert Gossett on 9/28/16.
@@ -38,6 +38,8 @@ public:
     void lock(); // complete
     void unlock(); // complete
     
+    // equals operator for tiles
+    Tile & operator=(const Tile& other);
     
 private:
     int number; // number on the face of the tile
@@ -58,8 +60,8 @@ Tile::Tile(int col, int num){
 }
 
 void Tile::randomize(){
-   srand (time(NULL));
-   set_number((rand() % 4) + 1); // gives a random number between 1 and 4
+    srand(time(NULL));
+    set_number((rand() % 4) + 1); // gives a random number between 1 and 4
     set_color((rand() % 4) + 1); // give a random number 1-4 to represent in order, red, yellow, green, blue
 
 }
@@ -92,4 +94,10 @@ void Tile::unlock(){
     locked = false;
 }
 
-#endif /* DieRandomizer_h */
+Tile& Tile::operator=(const Tile& other){
+    number = other.get_number();
+    color = other.get_color();
+    locked = other.isLocked();
+    return *this;
+}
+#endif /* TILE_h */

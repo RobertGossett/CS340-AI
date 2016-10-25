@@ -13,7 +13,6 @@
 #include "Graphics.h"
 #include "Tile.h"
 #include "Board.h"
-
 #include "Game.h"
 
 
@@ -25,7 +24,6 @@ public:
     
     Text();
     
-
     // starts the game
     void start_Game();
     
@@ -39,7 +37,6 @@ public:
     //tiles are passed in through tile vector h
     void print_Hand(vector <Tile> h);
     
-
     // prints the players current score
     void print_score(const int& score);
     
@@ -54,7 +51,6 @@ private:
 //    int YELLOW_COLOR;
 //    int GREEN_COLOR;
 //    int BLUE_COLOR;
-
     
     //helper functions
     
@@ -69,14 +65,10 @@ private:
 
 
 Text::Text(){
-<<<<<<< HEAD
-    
-=======
 //    RED_COLOR = 1;
 //    YELLOW_COLOR = 2;
 //    GREEN_COLOR = 3;
 //    BLUE_COLOR = 4;
->>>>>>> 515a85e09975e776d1639e49ca1c3d456a56b052
     
 }
 
@@ -86,11 +78,7 @@ void Text::start_Game(){
     cout << "The goal of this game is to score as many points as possible." << endl;
     cout << "To score points, you must place your tiles on the board to form unique combinations that will yield points. " << endl;
     cout << endl;
-<<<<<<< HEAD
-
-=======
     
->>>>>>> 515a85e09975e776d1639e49ca1c3d456a56b052
     cout << "Below is a sample board displaying how the game will recognize locations on the board. Each location on the board has a coordinate value. This value is of the format (row, columnn). So as shown below, a coordinate (1,4) corrisponds to row 1, column 4, or \"the top right position on the board\"." << endl;
     
     cout << endl << "Board:" << endl;
@@ -129,13 +117,8 @@ void Text::start_Game(){
     
 }
 
-<<<<<<< HEAD
-    //displays the hand of available tiles to the screen
-    //tiles are passed in through tile vector h
-=======
 //displays the hand of available tiles to the screen
 //tiles are passed in through tile vector h
->>>>>>> 515a85e09975e776d1639e49ca1c3d456a56b052
 void Text::print_Hand(vector <Tile> h){
     cout << "Hand:" << endl;
     for (int i = 0; i < h.size(); i ++){
@@ -146,18 +129,6 @@ void Text::print_Hand(vector <Tile> h){
 
 string Text::get_String_Value_Of_Color(int val) {
     switch (val) {
-<<<<<<< HEAD
-        case RED_COLOR:
-            return "R";
-            break;
-        case YELLOW_COLOR:
-            return "Y";
-            break;
-        case GREEN_COLOR:
-            return "G";
-            break;
-        case BLUE_COLOR:
-=======
         case 0:
             return " ";
             break;
@@ -171,7 +142,6 @@ string Text::get_String_Value_Of_Color(int val) {
             return "G";
             break;
         case 4:
->>>>>>> 515a85e09975e776d1639e49ca1c3d456a56b052
             return "B";
             break;
         default:
@@ -181,13 +151,8 @@ string Text::get_String_Value_Of_Color(int val) {
 }
 
 
-<<<<<<< HEAD
-    //tiles in hand are passes in through h
-    //returns the tile that the user selected to be added to the board
-=======
 //tiles in hand are passes in through h
 //returns the tile that the user selected to be added to the board
->>>>>>> 515a85e09975e776d1639e49ca1c3d456a56b052
 Tile Text::get_tile(vector <Tile> h) {
     Tile temp(5, 5); //used in input error from user
     
@@ -221,11 +186,7 @@ int Text::get_location() {
     int row, column, input;
     cout << "Please enter the row you wish the place your tile:" << endl;
     cin >> row;
-<<<<<<< HEAD
-    cout << "Well done, now please enter the column on row " << row << " you want to place your tile: " << endl;
-=======
     cout << "Please enter the column on row " << row << " you want to place your tile: " << endl;
->>>>>>> 515a85e09975e776d1639e49ca1c3d456a56b052
     cin >> column;
     
     input = (row * 10) + column;
@@ -233,13 +194,10 @@ int Text::get_location() {
     return input;
 }
 
-<<<<<<< HEAD
-=======
 void Text::print_score(const int& score){
     cout << "Score: " << score << endl;
 }
 
->>>>>>> 515a85e09975e776d1639e49ca1c3d456a56b052
 
 void Text::print_Single_Tile(Tile t){
     
@@ -254,14 +212,10 @@ void Text::print_Board(vector <vector <Tile> > board){
     for(int i = 0; i < 4; i++){
         cout << "| ";
         for(int j = 0; j < 4; j++){
-<<<<<<< HEAD
-            cout << get_String_Value_Of_Color(board[i][j].get_color()) << board[i][j].get_number() << " | ";
-=======
             if(board[i][j].get_number() !=0)
             cout << get_String_Value_Of_Color(board[i][j].get_color()) << board[i][j].get_number() << " | ";
             else
                 cout << get_String_Value_Of_Color(board[i][j].get_color()) << " " << " | ";
->>>>>>> 515a85e09975e776d1639e49ca1c3d456a56b052
             
         };
         
@@ -270,7 +224,3 @@ void Text::print_Board(vector <vector <Tile> > board){
     };
     
 }
-<<<<<<< HEAD
-
-=======
->>>>>>> 515a85e09975e776d1639e49ca1c3d456a56b052

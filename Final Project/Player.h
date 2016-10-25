@@ -67,30 +67,14 @@ Player::Player(){
     
 }
 
-<<<<<<< HEAD
-   	 Player(Graphics* myDisplay, Board* myBoard );
-      
-     void makeMove(Board* gameBoard);
-     void dealTileHand(vector<Tile> myHand);
-     void roll(); 
-     void checkActive(); 
-   private:
-=======
 Player::Player(Graphics* myDisplay, Board* myBoard){
     gameBoard = myBoard;
     display = myDisplay;
     score = 0;
     isActive = false;
->>>>>>> 515a85e09975e776d1639e49ca1c3d456a56b052
 
 }
 
-<<<<<<< HEAD
-};
-Player(Graphics* myDisplay, Board* myBoard){
- gameBoard= myBoard;
- display = myDisplay;
-=======
 void Player::dealTileHand(vector<Tile> myHand){
     
     tileHand = myHand;
@@ -117,28 +101,12 @@ void Player::makeMove(Board* gameBoard){
         checkActive();
         
     }
->>>>>>> 515a85e09975e776d1639e49ca1c3d456a56b052
 }
 
 void Player::roll(){
     isActive = false;
 }
 
-<<<<<<< HEAD
-void makeMove(Board* gameBoard){
-   while (isActive){
-   	  Tile choice = new Tile;
-      choice = display->get_tile();
-      int location;
-      location = display->get_location();
-      gameBoard->add_tile(choice, location);
-      for(int i = 0; i<hand.size(); i++) {
-       if(hand[i]->get_number() == choice->get_number() && hand[i]->get_color() == choice->get_color()){
-       	 hand[i]->get_number(0);
-       	 hand[i]->set_color(0);
-         }
-       }
-=======
 void Player::checkActive(){
     
     for(int i = 0; i<tileHand.size(); i++){
@@ -147,7 +115,6 @@ void Player::checkActive(){
     }
     
 }
->>>>>>> 515a85e09975e776d1639e49ca1c3d456a56b052
 
 void Player::set_board(Board* newBoard){
     gameBoard = newBoard;
@@ -161,18 +128,9 @@ void Player::set_score(const int& newScore){
     score = newScore;
 }
 
-<<<<<<< HEAD
-void checkActive(){
-	
-	 for(int i = 0; i<hand.size(); i++){
-	 	if(hand[i]->get_number() != 0 || hand[i]->get_color() != 0 )
-	 	 roll();
-	 }
-=======
 int Player::get_score() const{
     return score;
 }
->>>>>>> 515a85e09975e776d1639e49ca1c3d456a56b052
 
 void Player::increment_score(const int& addend){
     score += addend;
