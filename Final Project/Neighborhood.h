@@ -39,14 +39,14 @@ public:
     // is full returns true if the neighborhood is full
     bool isFull() const;
     
-
+    
     
     // locks and unlucks the neighborhood. full neighborhoods become locked to deal with double counting.
     void lock(); // complete
     void unlock(); // complete
     
     // sets scored to true if scored
-
+    
     
     // get and set for the type of the neighborhood
     string get_type() const; // complete
@@ -68,7 +68,7 @@ private:
     string type;
     bool locked;
     int index;
-
+    
 };
 
 Neighborhood::Neighborhood() {
@@ -96,7 +96,7 @@ void Neighborhood::clear_Neighborhood_Tiles() {
         neighborhood[i].set_number(0);
         neighborhood[i].set_color(0);
     }
-        
+    
 }
 
 bool Neighborhood::isLocked() const {
@@ -127,8 +127,8 @@ void  Neighborhood::set_type(const string& newType) {
 
 bool Neighborhood::add_Tile(const Tile& tile, const int& tileLocation){
     if(!neighborhood[tileLocation].isLocked()){
-    neighborhood[tileLocation].set_color(tile.get_color());
-    neighborhood[tileLocation].set_number(tile.get_number());
+        neighborhood[tileLocation].set_color(tile.get_color());
+        neighborhood[tileLocation].set_number(tile.get_number());
         return true;
     }
     else return false;

@@ -53,16 +53,16 @@ private:
     
     vector<vector<Tile> > gameBoard; // the gameBoard
     Tile baseTile; // the tile used for tile work within the board class
-
+    
     
 };
 
 Board::Board() {
-
+    
     vector<vector<Tile> > holder(4, vector<Tile>(4));
     for(int i = 0 ; i < 4; i++){
         for(int j = 0; j < 4; j++){
-                holder[i][j] = baseTile;
+            holder[i][j] = baseTile;
         };
     };
     set_Board(holder);
@@ -83,16 +83,16 @@ void Board::lock_Tiles(){
                 gameBoard[i][j].lock();
         };
     };
- 
+    
 }
 
 void Board::unlock_Tiles(){
     for(int i = 0 ; i < 4; i++){
         for(int j = 0; j < 4; j++){
-                gameBoard[i][j].unlock();
+            gameBoard[i][j].unlock();
         };
     };
-
+    
 }
 
 
@@ -114,8 +114,8 @@ bool Board::add_Tile(const Tile& tile, const int& tileLocation){
     int yPosition = (tileLocation - 11) % 10;
     
     if(!gameBoard[xPosition][yPosition].isLocked()){
-    gameBoard[xPosition][yPosition].set_color(tile.get_color());
-    gameBoard[xPosition][yPosition].set_number(tile.get_number());
+        gameBoard[xPosition][yPosition].set_color(tile.get_color());
+        gameBoard[xPosition][yPosition].set_number(tile.get_number());
         return true;
     }
     else return false;
@@ -123,8 +123,8 @@ bool Board::add_Tile(const Tile& tile, const int& tileLocation){
 Tile Board::get_Tile(const int& tileLocation){
     int xPosition = (tileLocation - 11) / 10;
     int yPosition = (tileLocation - 11) % 10;
-
-      return gameBoard[xPosition][yPosition];
+    
+    return gameBoard[xPosition][yPosition];
 }
 
 bool Board::move_Tile(const int& tileLocation, const int& newLocation){
@@ -136,16 +136,16 @@ bool Board::move_Tile(const int& tileLocation, const int& newLocation){
     // conditions
     // if the space isn't taken
     if(!gameBoard[newXPosition][newYPosition].isLocked()){
-    int col = gameBoard[xPosition][yPosition].get_color();
-    int num = gameBoard[xPosition][yPosition].get_number();
-    
-    // set the new tile
-    gameBoard[newXPosition][newYPosition].set_color(col);
-    gameBoard[newXPosition][newYPosition].set_number(num);
-    
-    //clear the old tile
-    gameBoard[xPosition][yPosition].set_color(0);
-    gameBoard[xPosition][yPosition].set_number(0);
+        int col = gameBoard[xPosition][yPosition].get_color();
+        int num = gameBoard[xPosition][yPosition].get_number();
+        
+        // set the new tile
+        gameBoard[newXPosition][newYPosition].set_color(col);
+        gameBoard[newXPosition][newYPosition].set_number(num);
+        
+        //clear the old tile
+        gameBoard[xPosition][yPosition].set_color(0);
+        gameBoard[xPosition][yPosition].set_number(0);
         
         
         return true;

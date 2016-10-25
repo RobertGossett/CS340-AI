@@ -14,9 +14,9 @@ using namespace std;
 
 
 class GameManager{
- public:
-
- 	GameManager();
+public:
+    
+    GameManager();
     
     // set up the game
     void set_up(); // complete
@@ -42,7 +42,14 @@ class GameManager{
     
     // generates the 2 x 2 neighborhoods
     void generateBoxNeighborhoods();
-
+    
+    
+    void clearNeighborhood(Neighborhood myNeighborhood);
+    
+    void clearRow(Neighborhood myNeighborhood);
+    void clearColumn(Neighborhood myNeighborhood);
+    void clearBox(Neighborhood myNeighborhood);
+    
     // Getters & Setters
     
     // points the Board pointer to a Board* param
@@ -99,7 +106,7 @@ class GameManager{
     //returns true if there exists a pair of numbers
     bool hasPairNumber(const Neighborhood& myHood);
     
- private:   
+private:
     
     Player* playerOne; // pointer to the playey -- will become the AI
     Board*  gameBoard; // pointer to the board on which the player plays
@@ -110,8 +117,8 @@ class GameManager{
         int pairColors;
     } scoreGuide;
     vector<Neighborhood> neighborhoods;
-
-
+    
+    
 };
 
 GameManager::GameManager(){
@@ -122,11 +129,11 @@ GameManager::GameManager(){
 
 
 void GameManager::set_up(){
-
+    
     
     Display = new Text;
     playerOne = new Player(Display, gameBoard);
-
+    
     gameBoard = new Board;
     active = true;
     
@@ -135,76 +142,76 @@ void GameManager::set_up(){
 
 void GameManager::start_game(){
     while(active){
-
+        
         Display->start_Game();
         vector<Tile> tileHand = generateTileHand();
         generateNeighborhoods();
         playerOne->dealTileHand(tileHand);
-
+        
         playerOne->makeMove(gameBoard);
         
         scoreBoard();
-
+        
         isActive();
     }
     
 }
 void GameManager::generateNeighborhoods(){
-      
-        generateRowNeighborhoods();
-        generateColumnNeighborhoods();
-        generateBoxNeighborhoods();
-
-        Neighborhood myNeighborhood;
-        myNeighborhood.add_Tile(gameBoard->get_Tile(11), 0);
-        myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10 + gameBoard->get_Board().size()), 1);
-        myNeighborhood.add_Tile(gameBoard->get_Tile(10 + gameBoard->get_Board().size()), 2);
-        myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10), 3);
-        myNeighborhood.set_type("Corner");
-
-        neighborhoods.push_back(myNeighborhood);
-
+    
+    generateRowNeighborhoods();
+    generateColumnNeighborhoods();
+    generateBoxNeighborhoods();
+    
+    Neighborhood myNeighborhood;
+    myNeighborhood.add_Tile(gameBoard->get_Tile(11), 0);
+    myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10 + gameBoard->get_Board().size()), 1);
+    myNeighborhood.add_Tile(gameBoard->get_Tile(10 + gameBoard->get_Board().size()), 2);
+    myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10), 3);
+    myNeighborhood.set_type("Corner");
+    
+    neighborhoods.push_back(myNeighborhood);
+    
 }
 
 void GameManager::generateRowNeighborhoods(){
-      for(int i=1; i <= gameBoard->get_Board().size(); i++){
+    for(int i=1; i <= gameBoard->get_Board().size(); i++){
         Neighborhood  myNeighborhood;
-          for(int j=1; j<=gameBoard->get_Board().size(); j++){
+        for(int j=1; j<=gameBoard->get_Board().size(); j++){
             Tile  myTile= gameBoard->get_Tile((i*10+j));
-             myNeighborhood.add_Tile(myTile, j);
-          }
-          myNeighborhood.set_type("Row");
-          neighborhoods.push_back(myNeighborhood);
-      }
+            myNeighborhood.add_Tile(myTile, j);
+        }
+        myNeighborhood.set_type("Row");
+        neighborhoods.push_back(myNeighborhood);
+    }
 }
 void GameManager::generateColumnNeighborhoods(){
-      for(int i=1; i<=gameBoard->get_Board().size(); i++){
+    for(int i=1; i<=gameBoard->get_Board().size(); i++){
         Neighborhood  myNeighborhood;
-          for(int j=1; j <= gameBoard->get_Board().size(); j++){
+        for(int j=1; j <= gameBoard->get_Board().size(); j++){
             Tile  myTile= gameBoard->get_Tile((j*10+i));
-             myNeighborhood.add_Tile(myTile, j);
-          }
-          myNeighborhood.set_type("Column");
-          neighborhoods.push_back(myNeighborhood);
-      }
+            myNeighborhood.add_Tile(myTile, j);
+        }
+        myNeighborhood.set_type("Column");
+        neighborhoods.push_back(myNeighborhood);
+    }
 }
 void GameManager::generateBoxNeighborhoods(){
-     for(int i=1; i < gameBoard->get_Board().size()-1; i++){
-      for(int j=1; j < gameBoard->get_Board().size()-1; j++){
-        Neighborhood  myNeighborhood;
-          
-          
-         myNeighborhood.add_Tile(gameBoard->get_Tile((i*10+j)), 0);
+    for(int i=1; i < gameBoard->get_Board().size()-1; i++){
+        for(int j=1; j < gameBoard->get_Board().size()-1; j++){
+            Neighborhood  myNeighborhood;
+            
+            
+            myNeighborhood.add_Tile(gameBoard->get_Tile((i*10+j)), 0);
             myNeighborhood.add_Tile(gameBoard->get_Tile((i*10+(j+1))), 1);
-             myNeighborhood.add_Tile(gameBoard->get_Tile(((i+1)*10+j)), 2);
-              myNeighborhood.add_Tile(gameBoard->get_Tile(((i+1)*10+(j+1))), 3);
-
-          
-          myNeighborhood.set_type("Box");
-          neighborhoods.push_back(myNeighborhood);
-      }
+            myNeighborhood.add_Tile(gameBoard->get_Tile(((i+1)*10+j)), 2);
+            myNeighborhood.add_Tile(gameBoard->get_Tile(((i+1)*10+(j+1))), 3);
+            
+            
+            myNeighborhood.set_type("Box");
+            neighborhoods.push_back(myNeighborhood);
+        }
     }
-
+    
 }
 
 
@@ -213,24 +220,24 @@ void GameManager::scoreBoard(){
     int totalScore = 0;
     int currentScore = 0;
     for(int i=0; i < neighborhoods.size(); i++){
-    if(!neighborhoods[i].isLocked()){
+        if(!neighborhoods[i].isLocked()){
+            
+            currentScore = score_neighborhood(neighborhoods[i]);
+            if (currentScore >= 100){
+                neighborhoods[i].clear_Neighborhood_Tiles();
+                neighborhoods[i].unlock();
+                totalScore += currentScore;
+                // clear the neighborhood on the board
+            }
+            else{
+                totalScore += currentScore;
+                neighborhoods[i].lock();
+            }
+        }
         
-    currentScore = score_neighborhood(neighborhoods[i]);
-        if (currentScore >= 100){
-            neighborhoods[i].clear_Neighborhood_Tiles();
-            neighborhoods[i].unlock();
-            totalScore += currentScore;
-            // clear the neighborhood on the board
-        }
-        else{
-            totalScore += currentScore;
-            neighborhoods[i].lock();
-        }
     }
     
-   }
-
-  playerOne->set_score(totalScore + playerOne->get_score());
+    playerOne->set_score(totalScore + playerOne->get_score());
     
 }
 
