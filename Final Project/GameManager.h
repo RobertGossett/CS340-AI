@@ -73,31 +73,31 @@ class GameManager{
     void deactivate(); // complete
     
     //returns the score of the neighborhood myTiles
-    int score_neighborhood(Neighborhood myHood);
+    int score_neighborhood(const Neighborhood& myHood);
     
     //returns true if all tiles are the same number
-    bool hasSameNumber(Neighborhood myHood);
+    bool hasSameNumber(const Neighborhood& myHood);
     
     //returns true if all tiles are the same color
-    bool hasSameColor(Neighborhood myHood);
+    bool hasSameColor(const Neighborhood& myHood);
     
     //returns true if every tile has a different color
-    bool hasEveryColor(Neighborhood myHood);
+    bool hasEveryColor(const Neighborhood& myHood);
     
     //returns true if every tile has a different number
-    bool hasEveryNumber(Neighborhood myHood);
+    bool hasEveryNumber(const Neighborhood& myHood);
     
     //returns true if there is are two pairs, having the same numbers and colors
-    bool hasTwoPair(Neighborhood myHood);
+    bool hasTwoPair(const Neighborhood& myHood);
     
     //returns true if there exists a pair of colors and of numbers
-    bool hasPairColorNumber(Neighborhood myHood);
+    bool hasPairColorNumber(const Neighborhood& myHood);
     
     //returns true if there exists a pair of colors
-    bool hasPairColor(Neighborhood myHood);
+    bool hasPairColor(const Neighborhood& myHood);
     
     //returns true if there exists a pair of numbers
-    bool hasPairNumber(Neighborhood myHood);
+    bool hasPairNumber(const Neighborhood& myHood);
     
  private:   
     
@@ -117,6 +117,7 @@ class GameManager{
 GameManager::GameManager(){
     scoreGuide.pairNumbers = 5;
     scoreGuide.pairColors = 5;
+    srand(time(NULL));
 }
 
 
@@ -209,10 +210,11 @@ void GameManager::generateBoxNeighborhoods(){
 
 
 void GameManager::scoreBoard(){
-    int totalScore;
-    int currentScore;
-    for(int i=0; i<=neighborhoods.size(); i++){
+    int totalScore = 0;
+    int currentScore = 0;
+    for(int i=0; i < neighborhoods.size(); i++){
     if(!neighborhoods[i].isLocked()){
+        
     currentScore = score_neighborhood(neighborhoods[i]);
         if (currentScore >= 100){
             neighborhoods[i].clear_Neighborhood_Tiles();
@@ -228,13 +230,14 @@ void GameManager::scoreBoard(){
     
    }
 
-  playerOne->set_score(totalScore);
+  playerOne->set_score(totalScore + playerOne->get_score());
     
 }
 
 vector<Tile> GameManager::generateTileHand(){
     vector<Tile> randomTiles;
     Tile randomTile;
+    randomTile.randomize();
     for(int i = 0; i < 4; i++){
         randomTile.randomize();
         randomTiles.push_back(randomTile);
@@ -279,7 +282,7 @@ void GameManager::deactivate(){
 }
 
 //returns the score of the neighborhood myTiles
-int GameManager::score_neighborhood(Neighborhood myHood) {
+int GameManager::score_neighborhood(const Neighborhood& myHood) {
     
     //***ORDER MATTERS FOR THESE IF STATEMENTS
     
@@ -311,27 +314,29 @@ int GameManager::score_neighborhood(Neighborhood myHood) {
 }
 
 //returns true if all tiles are the same number
-bool GameManager::hasSameNumber(Neighborhood myHood){
+bool GameManager::hasSameNumber(const Neighborhood& myHood){
     vector<Tile> tempTiles = myHood.get_Neighborhood_Tiles();
     if (tempTiles[0].get_number() == tempTiles[1].get_number() ==
-        tempTiles[2].get_number() == tempTiles[3].get_number() )
+        tempTiles[2].get_number() == tempTiles[3].get_number())
         return true;
     else
         return false;
 }
 
 //returns true if all tiles are the same color
-bool GameManager::hasSameColor(Neighborhood myHood){
-    vector<Tile> tempTiles = myHood.get_Neighborhood_Tiles();
+bool GameManager::hasSameColor(const Neighborhood& myHood){
+    vector<Tile> tempTiles;
+    tempTiles.resize(4);
+    tempTiles = myHood.get_Neighborhood_Tiles();
     if (tempTiles[0].get_color() == tempTiles[1].get_number() ==
-        tempTiles[2].get_color() == tempTiles[3].get_number() )
+        tempTiles[2].get_color() == tempTiles[3].get_number())
         return true;
     else
         return false;
 }
 
 //returns true if every tile has a different color
-bool GameManager::hasEveryColor(Neighborhood myHood){
+bool GameManager::hasEveryColor(const Neighborhood& myHood){
     bool hasRed = false;
     bool hasYellow = false;
     bool hasGreen = false;
@@ -369,7 +374,7 @@ bool GameManager::hasEveryColor(Neighborhood myHood){
 }
 
 //returns true if every tile has a different number
-bool GameManager::hasEveryNumber(Neighborhood myHood){
+bool GameManager::hasEveryNumber(const Neighborhood& myHood){
     bool has1 = false;
     bool has2 = false;
     bool has3 = false;
@@ -409,7 +414,7 @@ bool GameManager::hasEveryNumber(Neighborhood myHood){
 }
 
 //returns true if there are two pairs, having the same numbers and colors
-bool GameManager::hasTwoPair(Neighborhood myHood){
+bool GameManager::hasTwoPair(const Neighborhood& myHood){
     vector<int> hashTiles;
     //hash tiles holds tile count for the hood
     //index of tile G3 = [ (color - 1) * 4 ] + number - 1
@@ -420,12 +425,14 @@ bool GameManager::hasTwoPair(Neighborhood myHood){
     
     //counts how many of each tile are in the neighborhood
     for (int i = 0; i < tempTiles.size(); i++) {
+        
         int tempColor = tempTiles[i].get_color();
         int tempNumber = tempTiles[i].get_number();
         
         //index of tile G3 = [ (color - 1) * 4 ] + number - 1
         int index = (tempColor - 1) * 4 + tempNumber - 1;
         hashTiles[index] += 1;
+        
     }
     
     //now, we know how many of each tile we have, look in hashTiles and see
@@ -446,7 +453,7 @@ bool GameManager::hasTwoPair(Neighborhood myHood){
 }
 
 //returns true if there exists a pair of colors and of numbers
-bool GameManager::hasPairColorNumber(Neighborhood myHood){
+bool GameManager::hasPairColorNumber(const Neighborhood& myHood){
     if (hasPairColor(myHood) && hasPairNumber(myHood)){
         return true;
     }
@@ -456,7 +463,7 @@ bool GameManager::hasPairColorNumber(Neighborhood myHood){
 }
 
 //returns true if there exists a pair of colors
-bool GameManager::hasPairColor(Neighborhood myHood){
+bool GameManager::hasPairColor(const Neighborhood& myHood){
     bool hasPair1 = false;
     bool hasPair2 = false;
     //numOfTiles1/2 is a variable to indicate how many of the tiles
@@ -504,7 +511,7 @@ bool GameManager::hasPairColor(Neighborhood myHood){
 }
 
 //returns true if there exists a pair of numbers
-bool GameManager::hasPairNumber(Neighborhood myHood){
+bool GameManager::hasPairNumber(const Neighborhood& myHood){
     
     bool hasPair1 = false;
     bool hasPair2 = false;

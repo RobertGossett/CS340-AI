@@ -24,6 +24,8 @@ public:
     // constructor for the board
     Neighborhood(); // complete
     
+    Neighborhood(const Neighborhood& other);
+    
     // get and set for the neighborhood vector of tiles
     vector<Tile> get_Neighborhood_Tiles() const; // complete
     void set_Neighborhood_Tiles(const vector<Tile>& newNeighborhood); // complete
@@ -74,7 +76,14 @@ Neighborhood::Neighborhood() {
     locked = false;
 }
 
-vector<Tile> Neighborhood::get_Neighborhood_Tiles() const {
+Neighborhood::Neighborhood(const Neighborhood& other){
+    neighborhood.resize(4);
+    neighborhood = other.get_Neighborhood_Tiles();
+    locked = other.isLocked();
+    
+}
+
+vector<Tile> Neighborhood::get_Neighborhood_Tiles() const{
     return neighborhood;
 }
 

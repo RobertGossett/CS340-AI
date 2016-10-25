@@ -159,10 +159,15 @@ Tile Text::get_tile(vector <Tile> h) {
     int input;
     cout << "Please select which tile you would like to add to the board: " << endl;
     cin >> input;
+    while(input < 1 || input > 4){
+        cout << "Please select which tile you would like to add to the board: " << endl;
+        cin >> input;
+    }
     
     //currently is set up so it will accept any int
     //end result will only allow user to select options presented in
     //print_hand(vector <Tile> h)
+    
     switch (input) {
         case 1:
             return h[0];
@@ -183,15 +188,16 @@ Tile Text::get_tile(vector <Tile> h) {
 }
 
 int Text::get_location() {
-    int row, column, input;
-    cout << "Please enter the row you wish the place your tile:" << endl;
-    cin >> row;
-    cout << "Please enter the column on row " << row << " you want to place your tile: " << endl;
-    cin >> column;
-    
-    input = (row * 10) + column;
-    
-    return input;
+    int input;
+    cout << "Please enter the location at which to place your tile:" << endl;
+    cin >> input;
+//    cout << "Please enter the column on row " << row << " you want to place your tile: " << endl;
+//    cin >> column;
+    if(input >= 11 || input <= 55)
+        return input;
+//    input = (row * 10) + column;
+    else
+    return 00;
 }
 
 void Text::print_score(const int& score){

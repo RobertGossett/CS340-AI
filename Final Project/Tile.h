@@ -60,7 +60,7 @@ Tile::Tile(int col, int num){
 }
 
 void Tile::randomize(){
-    srand(time(NULL));
+    
     set_number((rand() % 4) + 1); // gives a random number between 1 and 4
     set_color((rand() % 4) + 1); // give a random number 1-4 to represent in order, red, yellow, green, blue
 
