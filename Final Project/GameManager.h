@@ -117,6 +117,7 @@ private:
         int pairColors;
     } scoreGuide;
     vector<Neighborhood> neighborhoods;
+    Tile randomTile;
     
     
 };
@@ -138,6 +139,7 @@ void GameManager::set_up(){
     active = true;
     
     start_game();
+    randomTile.randomize();
 }
 
 void GameManager::start_game(){
@@ -174,13 +176,14 @@ void GameManager::generateNeighborhoods(){
 }
 
 void GameManager::generateRowNeighborhoods(){
-    for(int i=1; i <= gameBoard->get_Board().size(); i++){
+    for(int i=0; i < gameBoard->get_Board().size(); i++){
         Neighborhood  myNeighborhood;
         for(int j=1; j<=gameBoard->get_Board().size(); j++){
-            Tile  myTile= gameBoard->get_Tile((i*10+j));
+            Tile  myTile= gameBoard->get_Tile(((i+1)*10+j));
             myNeighborhood.add_Tile(myTile, j);
         }
         myNeighborhood.set_type("Row");
+        myNeighborhood.set_index(i+1);
         neighborhoods.push_back(myNeighborhood);
     }
 }
@@ -192,6 +195,7 @@ void GameManager::generateColumnNeighborhoods(){
             myNeighborhood.add_Tile(myTile, j);
         }
         myNeighborhood.set_type("Column");
+        myNeighborhood.set_index(i);
         neighborhoods.push_back(myNeighborhood);
     }
 }
@@ -208,6 +212,7 @@ void GameManager::generateBoxNeighborhoods(){
             
             
             myNeighborhood.set_type("Box");
+            myNeighborhood.set_index(i*10 + j);
             neighborhoods.push_back(myNeighborhood);
         }
     }
@@ -227,7 +232,7 @@ void GameManager::scoreBoard(){
                 neighborhoods[i].clear_Neighborhood_Tiles();
                 neighborhoods[i].unlock();
                 totalScore += currentScore;
-                // clear the neighborhood on the board
+                clearNeighborhood(neighborhoods[i]);
             }
             else{
                 totalScore += currentScore;
@@ -241,14 +246,73 @@ void GameManager::scoreBoard(){
     
 }
 
+void GameManager::clearNeighborhood(Neighborhood myNeighborhood){
+    if(myNeighborhood.get_type() == "Corner"){
+        
+        
+        gameBoard->get_Tile(11).set_color(0);
+        gameBoard->get_Tile(11).set_number(0);
+        gameBoard->get_Tile(gameBoard->get_Board().size()*10 + gameBoard->get_Board().size()).set_color(0);
+        gameBoard->get_Tile(gameBoard->get_Board().size()*10 + gameBoard->get_Board().size()).set_number(0);
+        
+        gameBoard->get_Tile(10 + gameBoard->get_Board().size()).set_color(0);
+        gameBoard->get_Tile(10 + gameBoard->get_Board().size()).set_number(0);
+        
+        gameBoard->get_Tile(gameBoard->get_Board().size()*10).set_color(0);
+        gameBoard->get_Tile(gameBoard->get_Board().size()*10).set_number(0);
+    }
+    else if(myNeighborhood.get_type()=="Row")
+        clearRow(myNeighborhood);
+    else if(myNeighborhood.get_type()=="Column")
+        clearColumn( myNeighborhood);
+    else
+        clearBox(myNeighborhood);
+    
+    
+}
+void GameManager::clearColumn( Neighborhood myNeighborhood){
+    for(int i= 1; i<=gameBoard->get_Board().size(); i++ ){
+        gameBoard->get_Tile(((myNeighborhood.get_index()*10)+i)).set_color(0);
+        gameBoard->get_Tile(((myNeighborhood.get_index()*10)+i)).set_number(0);
+        
+    }
+    
+}
+void GameManager::clearRow(Neighborhood myNeighborhood){
+    for(int i= 1; i<=gameBoard->get_Board().size(); i++ ){
+        gameBoard->get_Tile((myNeighborhood.get_index()+(i*10))).set_color(0);
+        gameBoard->get_Tile((myNeighborhood.get_index()+(i*10))).set_number(0);
+        
+    }
+    
+}
+
+void GameManager::clearBox(Neighborhood myNeighborhood){
+    int i = myNeighborhood.get_index()/10;
+    int j = myNeighborhood.get_index()%10;
+    
+    gameBoard->get_Tile(((i*10)+j)).set_color(0);
+    gameBoard->get_Tile(((i*10)+j)).set_number(0);
+    
+    gameBoard->get_Tile(((i*10)+(j+1))).set_color(0);
+    gameBoard->get_Tile(((i*10)+(j+1))).set_number(0);
+    
+    gameBoard->get_Tile(((i+1)*10+j)).set_color(0);
+    gameBoard->get_Tile(((i+1)*10+j)).set_number(0);
+    
+    gameBoard->get_Tile((((i+1)*10)+(j+1))).set_color(0);
+    gameBoard->get_Tile((((i+1))*10)+(j+1)).set_number(0);
+}
+
 vector<Tile> GameManager::generateTileHand(){
     vector<Tile> randomTiles;
-    Tile randomTile;
-    randomTile.randomize();
+    
     for(int i = 0; i < 4; i++){
+        
         randomTile.randomize();
         randomTiles.push_back(randomTile);
     }
+
     return randomTiles;
 }
 

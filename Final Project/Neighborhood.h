@@ -80,6 +80,8 @@ Neighborhood::Neighborhood(const Neighborhood& other){
     neighborhood.resize(4);
     neighborhood = other.get_Neighborhood_Tiles();
     locked = other.isLocked();
+    set_type(other.get_type());
+    set_index(other.get_index());
     
 }
 
@@ -123,6 +125,14 @@ string Neighborhood::get_type() const {
 
 void  Neighborhood::set_type(const string& newType) {
     type = newType;
+}
+
+int Neighborhood::get_index() const {
+    return index;
+}
+
+void  Neighborhood::set_index(const int& newIndex) {
+    index = newIndex;
 }
 
 bool Neighborhood::add_Tile(const Tile& tile, const int& tileLocation){

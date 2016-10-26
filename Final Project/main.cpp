@@ -14,7 +14,7 @@
 using namespace std;
 
 int main() {
-    
+
     GameManager tileGameManager;
     
     tileGameManager.set_up();

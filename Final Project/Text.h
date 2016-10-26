@@ -123,6 +123,10 @@ void Text::print_Hand(vector <Tile> h){
     cout << "Hand:" << endl;
     for (int i = 0; i < h.size(); i ++){
         //prints ->   '1': R3
+        if(h[i].get_number() == 0)
+            cout << "'" << i+1 << "': " << get_String_Value_Of_Color(h[i].get_color()) << "" << endl;
+        
+        else
         cout << "'" << i+1 << "': " << get_String_Value_Of_Color(h[i].get_color()) << h[i].get_number() << endl;
     }
 }
