@@ -6,41 +6,43 @@
 //  Copyright © 2016 Robert Gossett. All rights reserved.
 //
 
-#ifndef Tile_h
-#define Tile_h
-#include "Game.h"
-#include <ctime>
+#ifndef TILE_H_INCLUDED_
+#define TILE_H_INCLUDED_
+//#include "Game.h"
+#include <cstdlib>
+//#include "Player.h"
+//#include<cmath>
 
 class Tile {
 public:
-    
+
     // Tile constructor
     Tile(); // complete
-    
+
     // parameterize constructor
     Tile(int col, int num); //complete
-    
+
     // randomizer for the tile
     void randomize(); // complete
-    
+
     //get and set the tiles number
     int get_number() const; // complete
     void set_number(const int& newNumber); // complete
-    
+
     // get and set the tiles color
     int get_color() const; // complete
     void set_color(const int& newColor); // complete
-    
+
     // returns true if the tile is locked
     bool isLocked() const; // complete
-    
+
     // lock and unlock for the tile
     void lock(); // complete
     void unlock(); // complete
-    
+
     // equals operator for tiles
     Tile & operator=(const Tile& other);
-    
+
 private:
     int number; // number on the face of the tile
     int color; // integer representation of the colors of the tile
@@ -60,7 +62,7 @@ Tile::Tile(int col, int num){
 }
 
 void Tile::randomize(){
-    srand(time(NULL));
+
     set_number((rand() % 4) + 1); // gives a random number between 1 and 4
     set_color((rand() % 4) + 1); // give a random number 1-4 to represent in order, red, yellow, green, blue
 

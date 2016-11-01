@@ -6,8 +6,8 @@
 //  Copyright © 2016 Robert Gossett. All rights reserved.
 //
 
-#ifndef NEIGHBORHOOD_h
-#define NEIGHBORHOOD_h
+#ifndef NEIGHBORHOOD_H_INCLUDED_
+#define NEIGHBORHOOD_H_INCLUDED_
 
 
 using namespace std;
@@ -24,6 +24,8 @@ public:
     // constructor for the board
     Neighborhood(); // complete
     
+    Neighborhood(const Neighborhood& other);
+    
     // get and set for the neighborhood vector of tiles
     vector<Tile> get_Neighborhood_Tiles() const; // complete
     void set_Neighborhood_Tiles(const vector<Tile>& newNeighborhood); // complete
@@ -37,14 +39,14 @@ public:
     // is full returns true if the neighborhood is full
     bool isFull() const;
     
-
+    
     
     // locks and unlucks the neighborhood. full neighborhoods become locked to deal with double counting.
     void lock(); // complete
     void unlock(); // complete
     
     // sets scored to true if scored
-
+    
     
     // get and set for the type of the neighborhood
     string get_type() const; // complete
@@ -66,7 +68,7 @@ private:
     string type;
     bool locked;
     int index;
-
+    
 };
 
 Neighborhood::Neighborhood() {
@@ -74,7 +76,16 @@ Neighborhood::Neighborhood() {
     locked = false;
 }
 
-vector<Tile> Neighborhood::get_Neighborhood_Tiles() const {
+Neighborhood::Neighborhood(const Neighborhood& other){
+    neighborhood.resize(4);
+    neighborhood = other.get_Neighborhood_Tiles();
+    locked = other.isLocked();
+    set_type(other.get_type());
+    set_index(other.get_index());
+    
+}
+
+vector<Tile> Neighborhood::get_Neighborhood_Tiles() const{
     return neighborhood;
 }
 
@@ -87,7 +98,7 @@ void Neighborhood::clear_Neighborhood_Tiles() {
         neighborhood[i].set_number(0);
         neighborhood[i].set_color(0);
     }
-        
+    
 }
 
 bool Neighborhood::isLocked() const {
@@ -116,10 +127,18 @@ void  Neighborhood::set_type(const string& newType) {
     type = newType;
 }
 
+int Neighborhood::get_index() const {
+    return index;
+}
+
+void  Neighborhood::set_index(const int& newIndex) {
+    index = newIndex;
+}
+
 bool Neighborhood::add_Tile(const Tile& tile, const int& tileLocation){
     if(!neighborhood[tileLocation].isLocked()){
-    neighborhood[tileLocation].set_color(tile.get_color());
-    neighborhood[tileLocation].set_number(tile.get_number());
+        neighborhood[tileLocation].set_color(tile.get_color());
+        neighborhood[tileLocation].set_number(tile.get_number());
         return true;
     }
     else return false;

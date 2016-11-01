@@ -6,13 +6,14 @@
 //  Copyright © 2016 Richard Poutier. All rights reserved.
 //
 
-#ifndef Graphics_h
-#define Graphics_h
+#ifndef GRAPHICS_H_INCLUDED_
+#define GRAPHICS_H_INCLUDED_
 
 #include <string>
-#include "Tile.h"
-#include "Board.h"
+//#include "Tile.h"
+//#include "Board.h"
 #include "Game.h"
+#include <vector>
 
 /*
  ALL CONST INT
