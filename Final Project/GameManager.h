@@ -44,12 +44,15 @@ public:
     // generates the 2 x 2 neighborhoods
     void generateBoxNeighborhoods();
 
+    void generateDiagonalNeighborhoods();
+
 
     void clearNeighborhood(Neighborhood& myNeighborhood);
 
     void clearRow(Neighborhood& myNeighborhood);
     void clearColumn(Neighborhood& myNeighborhood);
     void clearBox(Neighborhood& myNeighborhood);
+    void clearDiagonal(Neighborhood& myNeighborhood));
 
 
     // Getters & Setters
@@ -165,8 +168,10 @@ void GameManager::start_game(){
        generateNeighborhoods();
         scoreBoard();
         resetNeighborhoods();
-        isActive();
+        if(!isActive())
+           deactivate();
     }
+       Display->end_game();
 
 }
 void GameManager::resetNeighborhoods(){
@@ -231,6 +236,34 @@ void GameManager::generateBoxNeighborhoods(){
         }
     }
 
+}
+void GameManager::generateDiagonalNeighborhoods(){
+    Neighborhood diagonalOne;
+    Neighborhood diagonalTwo;
+    for(int i=1; i<=gameBoard->get_Board().size(); i++){
+        for(int j=1; j <= gameBoard->get_Board().size(); j++){
+         if(i==j){
+            Tile  myTile= gameBoard->get_Tile((i*10+j));
+            diagonalOne.add_Tile(myTile, j);
+         }
+         
+         if(i+j+1==gameBoard->get_Board.size()){
+            Tile  myTile= gameBoard->get_Tile((i*10+j));
+            diagonalTwo.add_Tile(myTile, j);
+         }
+         
+
+        }
+        diagonalOne.set_type("Diagonal");
+        diagonalOne.set_index(1);
+        diagonalTwo.set_type("Diagonal");
+        diagonalTwo.set_type(2);
+
+        neighborhoods.push_back(diagonalOne);
+
+        neighborhoods.push_back(diagonalTwo);
+
+    }
 }
 
 
@@ -356,7 +389,15 @@ Graphics* GameManager::getDisplay() const{
 }
 
 bool GameManager::isActive() const{
-    return active;
+     for(int i=1; i < gameBoard->get_Board().size()-1; i++){
+        for(int j=1; j < gameBoard->get_Board().size()-1; j++){
+       if ( (gameBoard->get_Tile(i*10+ j).get_color()==0) &&
+             (gameBoard->get_Tile(i*10+ j).get_number()==0))
+             return true;
+
+
+    }}
+    return false;
 }
 
 void GameManager::activate(){
