@@ -179,10 +179,10 @@ void GameManager::generateNeighborhoods(){
     generateBoxNeighborhoods();
 
     Neighborhood myNeighborhood;
-    myNeighborhood.add_Tile(gameBoard->get_Tile(11), 0);
-    myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10 + gameBoard->get_Board().size()), 1);
-    myNeighborhood.add_Tile(gameBoard->get_Tile(10 + gameBoard->get_Board().size()), 2);
-    myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10), 3);
+    myNeighborhood.add_Tile(gameBoard->get_Tile(11), 1);
+    myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10 + gameBoard->get_Board().size()), 2);
+    myNeighborhood.add_Tile(gameBoard->get_Tile(10 + gameBoard->get_Board().size()), 3);
+    myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10), 4);
     myNeighborhood.set_type("Corner");
 
     neighborhoods.push_back(myNeighborhood);
@@ -219,10 +219,10 @@ void GameManager::generateBoxNeighborhoods(){
             Neighborhood  myNeighborhood;
 
 
-            myNeighborhood.add_Tile(gameBoard->get_Tile((i*10+j)), 0);
-            myNeighborhood.add_Tile(gameBoard->get_Tile((i*10+(j+1))), 1);
-            myNeighborhood.add_Tile(gameBoard->get_Tile(((i+1)*10+j)), 2);
-            myNeighborhood.add_Tile(gameBoard->get_Tile(((i+1)*10+(j+1))), 3);
+            myNeighborhood.add_Tile(gameBoard->get_Tile((i*10+j)), 1);
+            myNeighborhood.add_Tile(gameBoard->get_Tile((i*10+(j+1))), 2);
+            myNeighborhood.add_Tile(gameBoard->get_Tile(((i+1)*10+j)), 3);
+            myNeighborhood.add_Tile(gameBoard->get_Tile(((i+1)*10+(j+1))), 4);
 
 
             myNeighborhood.set_type("Box");
