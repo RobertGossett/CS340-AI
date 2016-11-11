@@ -80,6 +80,8 @@ void Player::dealTileHand(vector<Tile> myHand){
     for(int i = 0; i < 4; i++){ // check because internally, first element kept getting set to zero. idk why
         while(myHand[i].get_number() == 0)
             myHand[i].randomize();
+        myHand[i].set_color(1);
+        myHand[i].set_number(1);
     }
 
     tileHand = myHand;

@@ -267,17 +267,13 @@ void GameManager::clearNeighborhood(Neighborhood&  myNeighborhood){
     if(myNeighborhood.get_type() == "Corner"){
 
 
-        gameBoard->get_Tile(11).set_color(0);
-        gameBoard->get_Tile(11).set_number(0);
-        gameBoard->get_Tile(gameBoard->get_Board().size()*10 + gameBoard->get_Board().size()).set_color(0);
-        gameBoard->get_Tile(gameBoard->get_Board().size()*10 + gameBoard->get_Board().size()).set_number(0);
+        gameBoard->set_Tile(11, 0, 0);
+        gameBoard->set_Tile(gameBoard->get_Board().size()*10 + gameBoard->get_Board().size(), 0, 0);
 
 
-        gameBoard->get_Tile(10 + gameBoard->get_Board().size()).set_color(0);
-        gameBoard->get_Tile(10 + gameBoard->get_Board().size()).set_number(0);
+        gameBoard->set_Tile(10 + gameBoard->get_Board().size(), 0, 0);
 
-        gameBoard->get_Tile(gameBoard->get_Board().size()*10).set_color(0);
-        gameBoard->get_Tile(gameBoard->get_Board().size()*10).set_number(0);
+        gameBoard->set_Tile(gameBoard->get_Board().size()*10, 0, 0);
     }
     else if(myNeighborhood.get_type()=="Row")
         clearRow(myNeighborhood);
@@ -290,16 +286,14 @@ void GameManager::clearNeighborhood(Neighborhood&  myNeighborhood){
 }
 void GameManager::clearColumn( Neighborhood& myNeighborhood){
     for(int i= 1; i<=gameBoard->get_Board().size(); i++ ){
-        gameBoard->get_Tile(((myNeighborhood.get_index()*10)+i)).set_color(0);
-        gameBoard->get_Tile(((myNeighborhood.get_index()*10)+i)).set_number(0);
+        gameBoard->set_Tile(((10*i) + myNeighborhood.get_index()), 0, 0);
 
     }
 
 }
 void GameManager::clearRow(Neighborhood& myNeighborhood){
     for(int i= 1; i<=gameBoard->get_Board().size(); i++ ){
-        gameBoard->get_Tile((myNeighborhood.get_index()+(i*10))).set_color(0);
-        gameBoard->get_Tile((myNeighborhood.get_index()+(i*10))).set_number(0);
+        gameBoard->set_Tile((myNeighborhood.get_index()+i), 0, 0);
 
     }
 
@@ -309,17 +303,13 @@ void GameManager::clearBox(Neighborhood& myNeighborhood){
     int i = myNeighborhood.get_index()/10;
     int j = myNeighborhood.get_index()%10;
 
-    gameBoard->get_Tile(((i*10)+j)).set_color(0);
-    gameBoard->get_Tile(((i*10)+j)).set_number(0);
+    gameBoard->set_Tile(((i*10)+j), 0, 0);
 
-    gameBoard->get_Tile(((i*10)+(j+1))).set_color(0);
-    gameBoard->get_Tile(((i*10)+(j+1))).set_number(0);
+    gameBoard->set_Tile(((i*10)+(j+1)), 0, 0);
 
-    gameBoard->get_Tile(((i+1)*10+j)).set_color(0);
-    gameBoard->get_Tile(((i+1)*10+j)).set_number(0);
+    gameBoard->set_Tile(((i+1)*10+j), 0, 0);
 
-    gameBoard->get_Tile((((i+1)*10)+(j+1))).set_color(0);
-    gameBoard->get_Tile((((i+1))*10)+(j+1)).set_number(0);
+    gameBoard->set_Tile((((i+1)*10)+(j+1)), 0, 0);
 }
 
 vector<Tile> GameManager::generateTileHand(){
