@@ -6,14 +6,14 @@
 //  Copyright © 2016 Robert Gossett. All rights reserved.
 //
 
-#ifndef Board_h
-#define Board_h
+#ifndef BOARD_H_INCLUDED_
+#define BOARD_H_INCLUDED_
 
 using namespace std;
 #include <vector>
-#include "Tile.h"
 #include <iostream>
-#include "Game.h"
+//#include "Game.h"
+#include "Tile.h"
 
 class Board{
 public:
@@ -51,7 +51,7 @@ public:
     
 private:
     
-    vector<vector<Tile> > gameBoard; // the gameBoard
+    vector< vector<Tile> > gameBoard; // the gameBoard
     Tile baseTile; // the tile used for tile work within the board class
     
     

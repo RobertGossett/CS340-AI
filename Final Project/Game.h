@@ -8,8 +8,8 @@
 
 // saves our butts for anytime we accidentally forget to declare something.
 
-#ifndef Game_h
-#define Game_h
+#ifndef GAME_H_INCLUDED_
+#define GAME_H_INCLUDED_
 
 class GameManager;
 class Board;

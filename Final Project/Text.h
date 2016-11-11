@@ -6,8 +6,8 @@
 //  Copyright © 2016 Richard Poutier. All rights reserved.
 //
 
-#ifndef Text_h
-#define Text_h
+#ifndef TEXT_H_INCLUDED_
+#define TEXT_H_INCLUDED_
 
 #include <iostream>
 #include "Graphics.h"
