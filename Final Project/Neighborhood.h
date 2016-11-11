@@ -24,7 +24,9 @@ public:
     // constructor for the board
     Neighborhood(); // complete
 
+    
     Neighborhood(const Neighborhood& other);
+    
 
     // get and set for the neighborhood vector of tiles
     vector<Tile> get_Neighborhood_Tiles() const; // complete
@@ -39,14 +41,11 @@ public:
     // is full returns true if the neighborhood is full
     bool isFull() const;
 
-
-
     // locks and unlucks the neighborhood. full neighborhoods become locked to deal with double counting.
     void lock(); // complete
     void unlock(); // complete
 
     // sets scored to true if scored
-
 
     // get and set for the type of the neighborhood
     string get_type() const; // complete
@@ -68,7 +67,7 @@ private:
     string type;
     bool locked;
     int index;
-
+    
 };
 
 Neighborhood::Neighborhood() {
@@ -136,9 +135,11 @@ void  Neighborhood::set_index(const int& newIndex) {
 }
 
 bool Neighborhood::add_Tile(const Tile& tile, const int& tileLocation){
+
     if(!neighborhood[tileLocation-1].isLocked()){
         neighborhood[tileLocation-1].set_color(tile.get_color());
         neighborhood[tileLocation-1].set_number(tile.get_number());
+
         return true;
     }
     else return false;

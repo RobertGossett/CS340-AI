@@ -48,6 +48,7 @@ public:
     bool isFull() const; // complete
     
     Tile get_Tile(const int& tileLocation);
+    void set_Tile(const int& location, const int& color, const int& number);
     
 private:
     
@@ -125,6 +126,14 @@ Tile Board::get_Tile(const int& tileLocation){
     int yPosition = (tileLocation - 11) % 10;
     
     return gameBoard[xPosition][yPosition];
+}
+
+void Board::set_Tile(const int& location, const int& color, const int& number){
+    int xPosition = (location - 11) / 10;
+    int yPosition = (location - 11) % 10;
+    
+    gameBoard[xPosition][yPosition].set_number(number);
+    gameBoard[xPosition][yPosition].set_color(color);
 }
 
 bool Board::move_Tile(const int& tileLocation, const int& newLocation){
