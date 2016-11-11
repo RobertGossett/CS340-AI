@@ -38,10 +38,11 @@ public:
     virtual void start_Game() = 0;
     
     // returns a tile created by the user
-    virtual Tile get_tile(vector <Tile> h) = 0;
+    virtual Tile get_tile(vector <Tile> h, const bool& error) = 0;
     
     // returns an int representing the move location given by the user
-    virtual int get_location() = 0;
+    
+    virtual int get_location(bool const& error) = 0;
     
     // prints the board
     virtual void print_Board(vector <vector <Tile> > board) = 0;

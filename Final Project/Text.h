@@ -28,10 +28,11 @@ public:
     void start_Game();
     
     // returns a tile created by the user
-    Tile get_tile(vector <Tile> h);
+    Tile get_tile(vector <Tile> h, const bool& error);
     
     // returns an int representing the move location given by the user
-    int get_location();
+    int get_location(const bool& error);
+    
     
     //displays the hand of available tiles to the screen
     //tiles are passed in through tile vector h
@@ -157,8 +158,11 @@ string Text::get_String_Value_Of_Color(int val) {
 
 //tiles in hand are passes in through h
 //returns the tile that the user selected to be added to the board
-Tile Text::get_tile(vector <Tile> h) {
+Tile Text::get_tile(vector <Tile> h, const bool& error) {
     Tile temp(5, 5); //used in input error from user
+    if(!error){
+        cerr << "ERROR! COOSE VALID TILE" << endl;
+    }
     
     int input;
     cout << "Please select which tile you would like to add to the board: " << endl;
@@ -191,7 +195,11 @@ Tile Text::get_tile(vector <Tile> h) {
     }
 }
 
-int Text::get_location() {
+int Text::get_location(const bool& error) {
+    if(!error){
+        cerr << "ERROR! ENTER VALID LOCATION" << endl;
+    }
+    
     int input;
     cout << "Please enter the location at which to place your tile:" << endl;
     cin >> input;

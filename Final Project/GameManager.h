@@ -20,15 +20,10 @@ using namespace std;
 
 class GameManager{
 public:
-<<<<<<< HEAD
-    
-    GameManager();
-    
-=======
+
 
     GameManager();
 
->>>>>>> KhayyamBranch
     // set up the game
     void set_up(); // complete
 
@@ -49,16 +44,7 @@ public:
 
     // generates the 2 x 2 neighborhoods
     void generateBoxNeighborhoods();
-<<<<<<< HEAD
-    
-    
-    void clearNeighborhood(Neighborhood myNeighborhood);
-    
-    void clearRow(Neighborhood myNeighborhood);
-    void clearColumn(Neighborhood myNeighborhood);
-    void clearBox(Neighborhood myNeighborhood);
-    
-=======
+
 
 
     void clearNeighborhood(Neighborhood& myNeighborhood);
@@ -68,7 +54,6 @@ public:
     void clearBox(Neighborhood& myNeighborhood);
 
 
->>>>>>> KhayyamBranch
     // Getters & Setters
 
     // points the Board pointer to a Board* param
@@ -100,35 +85,7 @@ public:
 
     //returns the score of the neighborhood myTiles
     int score_neighborhood(const Neighborhood& myHood);
-<<<<<<< HEAD
-    
-    //returns true if all tiles are the same number
-    bool hasSameNumber(const Neighborhood& myHood);
-    
-    //returns true if all tiles are the same color
-    bool hasSameColor(const Neighborhood& myHood);
-    
-    //returns true if every tile has a different color
-    bool hasEveryColor(const Neighborhood& myHood);
-    
-    //returns true if every tile has a different number
-    bool hasEveryNumber(const Neighborhood& myHood);
-    
-    //returns true if there is are two pairs, having the same numbers and colors
-    bool hasTwoPair(const Neighborhood& myHood);
-    
-    //returns true if there exists a pair of colors and of numbers
-    bool hasPairColorNumber(const Neighborhood& myHood);
-    
-    //returns true if there exists a pair of colors
-    bool hasPairColor(const Neighborhood& myHood);
-    
-    //returns true if there exists a pair of numbers
-    bool hasPairNumber(const Neighborhood& myHood);
-    
-private:
-    
-=======
+
 
     // calculates the score of the gameBoard
 void scoreBoard(); // INCOMPLETE - will be changing dynamically
@@ -165,7 +122,6 @@ bool hasZeros(const Neighborhood& myHood) ;
 
 private:
 
->>>>>>> KhayyamBranch
     Player* playerOne; // pointer to the playey -- will become the AI
     Board*  gameBoard; // pointer to the board on which the player plays
     Graphics* Display; // pointer to the display
@@ -176,13 +132,7 @@ private:
     } scoreGuide;
     vector<Neighborhood> neighborhoods;
     Tile randomTile;
-<<<<<<< HEAD
-    
-    
-=======
 
-
->>>>>>> KhayyamBranch
 };
 
 GameManager::GameManager(){
@@ -193,13 +143,7 @@ GameManager::GameManager(){
 
 
 void GameManager::set_up(){
-<<<<<<< HEAD
-    
-    
-=======
 
-
->>>>>>> KhayyamBranch
     Display = new Text;
     playerOne = new Player(Display, gameBoard);
     
@@ -221,11 +165,7 @@ void GameManager::start_game(){
         playerOne->makeMove(gameBoard);
        generateNeighborhoods();
         scoreBoard();
-<<<<<<< HEAD
-        
-=======
         resetNeighborhoods();
->>>>>>> KhayyamBranch
         isActive();
     }
 
@@ -234,22 +174,6 @@ void GameManager::resetNeighborhoods(){
     neighborhoods.clear();
 }
 void GameManager::generateNeighborhoods(){
-<<<<<<< HEAD
-    
-    generateRowNeighborhoods();
-    generateColumnNeighborhoods();
-    generateBoxNeighborhoods();
-    
-    Neighborhood myNeighborhood;
-    myNeighborhood.add_Tile(gameBoard->get_Tile(11), 0);
-    myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10 + gameBoard->get_Board().size()), 1);
-    myNeighborhood.add_Tile(gameBoard->get_Tile(10 + gameBoard->get_Board().size()), 2);
-    myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10), 3);
-    myNeighborhood.set_type("Corner");
-    
-    neighborhoods.push_back(myNeighborhood);
-    
-=======
 
     generateRowNeighborhoods();
     generateColumnNeighborhoods();
@@ -264,7 +188,7 @@ void GameManager::generateNeighborhoods(){
 
     neighborhoods.push_back(myNeighborhood);
 
->>>>>>> KhayyamBranch
+
 }
 
 void GameManager::generateRowNeighborhoods(){
@@ -295,16 +219,6 @@ void GameManager::generateBoxNeighborhoods(){
     for(int i=1; i < gameBoard->get_Board().size()-1; i++){
         for(int j=1; j < gameBoard->get_Board().size()-1; j++){
             Neighborhood  myNeighborhood;
-<<<<<<< HEAD
-            
-            
-            myNeighborhood.add_Tile(gameBoard->get_Tile((i*10+j)), 0);
-            myNeighborhood.add_Tile(gameBoard->get_Tile((i*10+(j+1))), 1);
-            myNeighborhood.add_Tile(gameBoard->get_Tile(((i+1)*10+j)), 2);
-            myNeighborhood.add_Tile(gameBoard->get_Tile(((i+1)*10+(j+1))), 3);
-            
-            
-=======
 
 
             myNeighborhood.add_Tile(gameBoard->get_Tile((i*10+j)), 1);
@@ -313,7 +227,6 @@ void GameManager::generateBoxNeighborhoods(){
             myNeighborhood.add_Tile(gameBoard->get_Tile(((i+1)*10+(j+1))), 4);
 
 
->>>>>>> KhayyamBranch
             myNeighborhood.set_type("Box");
             myNeighborhood.set_index(i*10 + j);
             neighborhoods.push_back(myNeighborhood);
@@ -329,11 +242,7 @@ void GameManager::scoreBoard(){
     int currentScore = 0;
     for(int i=0; i < neighborhoods.size(); i++){
         if(!neighborhoods[i].isLocked()){
-<<<<<<< HEAD
-            
-=======
 
->>>>>>> KhayyamBranch
             currentScore = score_neighborhood(neighborhoods[i]);
             if (currentScore >= 100){
                 neighborhoods[i].clear_Neighborhood_Tiles();
@@ -343,22 +252,6 @@ void GameManager::scoreBoard(){
             }
             else{
                 totalScore += currentScore;
-<<<<<<< HEAD
-                neighborhoods[i].lock();
-            }
-        }
-        
-    }
-    
-    playerOne->set_score(totalScore + playerOne->get_score());
-    
-}
-
-void GameManager::clearNeighborhood(Neighborhood myNeighborhood){
-    if(myNeighborhood.get_type() == "Corner"){
-        
-        
-=======
                 if(currentScore != 0)
                 neighborhoods[i].lock();
             }
@@ -374,22 +267,15 @@ void GameManager::clearNeighborhood(Neighborhood&  myNeighborhood){
     if(myNeighborhood.get_type() == "Corner"){
 
 
->>>>>>> KhayyamBranch
         gameBoard->get_Tile(11).set_color(0);
         gameBoard->get_Tile(11).set_number(0);
         gameBoard->get_Tile(gameBoard->get_Board().size()*10 + gameBoard->get_Board().size()).set_color(0);
         gameBoard->get_Tile(gameBoard->get_Board().size()*10 + gameBoard->get_Board().size()).set_number(0);
-<<<<<<< HEAD
-        
-        gameBoard->get_Tile(10 + gameBoard->get_Board().size()).set_color(0);
-        gameBoard->get_Tile(10 + gameBoard->get_Board().size()).set_number(0);
-        
-=======
+
 
         gameBoard->get_Tile(10 + gameBoard->get_Board().size()).set_color(0);
         gameBoard->get_Tile(10 + gameBoard->get_Board().size()).set_number(0);
 
->>>>>>> KhayyamBranch
         gameBoard->get_Tile(gameBoard->get_Board().size()*10).set_color(0);
         gameBoard->get_Tile(gameBoard->get_Board().size()*10).set_number(0);
     }
@@ -399,41 +285,6 @@ void GameManager::clearNeighborhood(Neighborhood&  myNeighborhood){
         clearColumn( myNeighborhood);
     else
         clearBox(myNeighborhood);
-<<<<<<< HEAD
-    
-    
-}
-void GameManager::clearColumn( Neighborhood myNeighborhood){
-    for(int i= 1; i<=gameBoard->get_Board().size(); i++ ){
-        gameBoard->get_Tile(((myNeighborhood.get_index()*10)+i)).set_color(0);
-        gameBoard->get_Tile(((myNeighborhood.get_index()*10)+i)).set_number(0);
-        
-    }
-    
-}
-void GameManager::clearRow(Neighborhood myNeighborhood){
-    for(int i= 1; i<=gameBoard->get_Board().size(); i++ ){
-        gameBoard->get_Tile((myNeighborhood.get_index()+(i*10))).set_color(0);
-        gameBoard->get_Tile((myNeighborhood.get_index()+(i*10))).set_number(0);
-        
-    }
-    
-}
-
-void GameManager::clearBox(Neighborhood myNeighborhood){
-    int i = myNeighborhood.get_index()/10;
-    int j = myNeighborhood.get_index()%10;
-    
-    gameBoard->get_Tile(((i*10)+j)).set_color(0);
-    gameBoard->get_Tile(((i*10)+j)).set_number(0);
-    
-    gameBoard->get_Tile(((i*10)+(j+1))).set_color(0);
-    gameBoard->get_Tile(((i*10)+(j+1))).set_number(0);
-    
-    gameBoard->get_Tile(((i+1)*10+j)).set_color(0);
-    gameBoard->get_Tile(((i+1)*10+j)).set_number(0);
-    
-=======
 
 
 }
@@ -467,22 +318,16 @@ void GameManager::clearBox(Neighborhood& myNeighborhood){
     gameBoard->get_Tile(((i+1)*10+j)).set_color(0);
     gameBoard->get_Tile(((i+1)*10+j)).set_number(0);
 
->>>>>>> KhayyamBranch
     gameBoard->get_Tile((((i+1)*10)+(j+1))).set_color(0);
     gameBoard->get_Tile((((i+1))*10)+(j+1)).set_number(0);
 }
 
 vector<Tile> GameManager::generateTileHand(){
     vector<Tile> randomTiles;
-<<<<<<< HEAD
-    
-    for(int i = 0; i < 4; i++){
-        
-=======
+
 
     for(int i = 0; i < 4; i++){
 
->>>>>>> KhayyamBranch
         randomTile.randomize();
         randomTiles.push_back(randomTile);
     }
@@ -526,15 +371,9 @@ void GameManager::deactivate(){
     active = false;
 }
 
-<<<<<<< HEAD
-//returns the score of the neighborhood myTiles
-int GameManager::score_neighborhood(const Neighborhood& myHood) {
-    
-=======
 
 int GameManager::score_neighborhood(const Neighborhood& myHood) {
 
->>>>>>> KhayyamBranch
     //***ORDER MATTERS FOR THESE IF STATEMENTS
 
     if (hasZeros(myHood)) {
@@ -606,13 +445,7 @@ bool GameManager::hasZeros(const Neighborhood& myHood) {
 //returns true if all tiles are the same number
 bool GameManager::hasSameNumber(const Neighborhood& myHood){
     vector<Tile> tempTiles = myHood.get_Neighborhood_Tiles();
-<<<<<<< HEAD
-    if (tempTiles[0].get_number() == tempTiles[1].get_number() ==
-        tempTiles[2].get_number() == tempTiles[3].get_number())
-        return true;
-    else
-        return false;
-=======
+
 
     for (int i = 0; i < 3; i++) {
         if (tempTiles[i].get_number() == 0)
@@ -628,7 +461,7 @@ bool GameManager::hasSameNumber(const Neighborhood& myHood){
      else
      return false;
      */
->>>>>>> KhayyamBranch
+
 }
 
 //returns true if all tiles are the same color
@@ -636,10 +469,7 @@ bool GameManager::hasSameColor(const Neighborhood& myHood){
     vector<Tile> tempTiles;
     tempTiles.resize(4);
     tempTiles = myHood.get_Neighborhood_Tiles();
-<<<<<<< HEAD
-    if (tempTiles[0].get_color() == tempTiles[1].get_number() ==
-        tempTiles[2].get_color() == tempTiles[3].get_number())
-=======
+
 
     for (int i = 0; i < 3; i++) {
         if (tempTiles[i].get_color() == 0)
@@ -661,12 +491,11 @@ bool GameManager::hasSameColor(const Neighborhood& myHood){
 
 //returns true if every tile has a different color
 bool GameManager::hasEveryColor(const Neighborhood& myHood){
-<<<<<<< HEAD
-=======
+
     vector<Tile> tempTiles;
     tempTiles.resize(4);
     tempTiles = myHood.get_Neighborhood_Tiles();
->>>>>>> KhayyamBranch
+
     bool hasRed = false;
     bool hasYellow = false;
     bool hasGreen = false;
@@ -711,12 +540,10 @@ bool GameManager::hasEveryColor(const Neighborhood& myHood){
 
 //returns true if every tile has a different number
 bool GameManager::hasEveryNumber(const Neighborhood& myHood){
-<<<<<<< HEAD
-=======
     vector<Tile> tempTiles;
     tempTiles.resize(4);
     tempTiles = myHood.get_Neighborhood_Tiles();
->>>>>>> KhayyamBranch
+
     bool has1 = false;
     bool has2 = false;
     bool has3 = false;
@@ -773,21 +600,6 @@ bool GameManager::hasTwoPair(const Neighborhood& myHood){
     vector<Tile> tempTiles;
     tempTiles.resize(4);
     tempTiles = myHood.get_Neighborhood_Tiles();
-<<<<<<< HEAD
-    
-    //counts how many of each tile are in the neighborhood
-    for (int i = 0; i < tempTiles.size(); i++) {
-        
-        int tempColor = tempTiles[i].get_color();
-        int tempNumber = tempTiles[i].get_number();
-        
-        //index of tile G3 = [ (color - 1) * 4 ] + number - 1
-        int index = (tempColor - 1) * 4 + tempNumber - 1;
-        hashTiles[index] += 1;
-        
-    }
-    
-=======
 
     if (tempTiles[0].get_color() != 0 && tempTiles[1].get_color() != 00 &&
         tempTiles[2].get_color() != 0  &&  tempTiles[3].get_color() != 0) {
@@ -806,7 +618,7 @@ bool GameManager::hasTwoPair(const Neighborhood& myHood){
 
     }
 
->>>>>>> KhayyamBranch
+
     //now, we know how many of each tile we have, look in hashTiles and see
     //if we have a two pair for color and number. This would be
     int numberOfPairs = 0;
@@ -892,11 +704,7 @@ bool GameManager::hasPairColor(const Neighborhood& myHood){
 
 //returns true if there exists a pair of numbers
 bool GameManager::hasPairNumber(const Neighborhood& myHood){
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> KhayyamBranch
     bool hasPair1 = false;
     bool hasPair2 = false;
     //numOfTiles1/2 is a variable to indicate how many of the tiles

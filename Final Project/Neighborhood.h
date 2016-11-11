@@ -23,15 +23,11 @@ public:
 
     // constructor for the board
     Neighborhood(); // complete
-<<<<<<< HEAD
+
     
     Neighborhood(const Neighborhood& other);
     
-=======
 
-    Neighborhood(const Neighborhood& other);
-
->>>>>>> KhayyamBranch
     // get and set for the neighborhood vector of tiles
     vector<Tile> get_Neighborhood_Tiles() const; // complete
     void set_Neighborhood_Tiles(const vector<Tile>& newNeighborhood); // complete
@@ -44,27 +40,13 @@ public:
 
     // is full returns true if the neighborhood is full
     bool isFull() const;
-<<<<<<< HEAD
-    
-    
-    
-=======
 
-
-
->>>>>>> KhayyamBranch
     // locks and unlucks the neighborhood. full neighborhoods become locked to deal with double counting.
     void lock(); // complete
     void unlock(); // complete
 
     // sets scored to true if scored
-<<<<<<< HEAD
-    
-    
-=======
 
-
->>>>>>> KhayyamBranch
     // get and set for the type of the neighborhood
     string get_type() const; // complete
     void set_type(const string& newType); // complete
@@ -99,11 +81,7 @@ Neighborhood::Neighborhood(const Neighborhood& other){
     locked = other.isLocked();
     set_type(other.get_type());
     set_index(other.get_index());
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> KhayyamBranch
 }
 
 vector<Tile> Neighborhood::get_Neighborhood_Tiles() const{
@@ -119,11 +97,7 @@ void Neighborhood::clear_Neighborhood_Tiles() {
         neighborhood[i].set_number(0);
         neighborhood[i].set_color(0);
     }
-<<<<<<< HEAD
-    
-=======
 
->>>>>>> KhayyamBranch
 }
 
 bool Neighborhood::isLocked() const {
@@ -161,15 +135,11 @@ void  Neighborhood::set_index(const int& newIndex) {
 }
 
 bool Neighborhood::add_Tile(const Tile& tile, const int& tileLocation){
-<<<<<<< HEAD
-    if(!neighborhood[tileLocation].isLocked()){
-        neighborhood[tileLocation].set_color(tile.get_color());
-        neighborhood[tileLocation].set_number(tile.get_number());
-=======
+
     if(!neighborhood[tileLocation-1].isLocked()){
         neighborhood[tileLocation-1].set_color(tile.get_color());
         neighborhood[tileLocation-1].set_number(tile.get_number());
->>>>>>> KhayyamBranch
+
         return true;
     }
     else return false;
