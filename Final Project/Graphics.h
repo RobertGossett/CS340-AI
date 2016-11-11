@@ -17,7 +17,7 @@
 
 /*
  ALL CONST INT
- 
+
  red    = 1
  yellow = 2
  green  = 3
@@ -31,13 +31,14 @@ using namespace std;
 //
 
 class Graphics {
-    
+
 public:
-    
+
     // function for starting the game
     virtual void start_Game() = 0;
-    
+
     // returns a tile created by the user
+
     virtual Tile get_tile(vector <Tile> h, const bool& error) = 0;
     
     // returns an int representing the move location given by the user
@@ -46,11 +47,12 @@ public:
     
     // prints the board
     virtual void print_Board(vector <vector <Tile> > board) = 0;
-    
+
     // prints the hand
     virtual void print_Hand(vector <Tile> h) = 0;
-    
+
     virtual void print_score(const int& score) = 0;
+    virtual void end_game()=0;
 };
 
 
