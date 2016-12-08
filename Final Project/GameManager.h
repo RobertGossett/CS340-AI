@@ -413,8 +413,8 @@ Graphics* GameManager::getDisplay() const{
 
 bool GameManager::isActive() const{
     
-     for(int i=1; i < gameBoard->get_Board().size()-1; i++){
-        for(int j=1; j < gameBoard->get_Board().size()-1; j++){
+     for(int i=1; i < gameBoard->get_Board().size()+1; i++){
+        for(int j=1; j < gameBoard->get_Board().size()+1; j++){
        if ( (gameBoard->get_Tile(i*10+ j).get_color() == 0) &&
              (gameBoard->get_Tile(i*10+ j).get_number() == 0))
            return true;
