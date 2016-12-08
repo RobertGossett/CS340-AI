@@ -210,11 +210,13 @@ int Text::get_location(const bool& error) {
     cin >> input;
 //    cout << "Please enter the column on row " << row << " you want to place your tile: " << endl;
 //    cin >> column;
-    if(input >= 11 || input <= 55)
+    while(input < 11 || input > 55){
+        cout << "Please enter the location at which to place your tile:" << endl;
+        cin >> input;
+    }
         return input;
 //    input = (row * 10) + column;
-    else
-    return 00;
+   
 }
 
 void Text::print_score(const int& score){

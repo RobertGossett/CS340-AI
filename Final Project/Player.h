@@ -31,6 +31,9 @@ public:
 
     // checks if the player is active
     void checkActive();
+    
+    // returns true if the player is active
+    bool is_Active() const;
 
     // gets and sets for the board
     // set board
@@ -84,13 +87,43 @@ void Player::dealTileHand(vector<Tile> myHand){
     }
 
     tileHand = myHand;
-
+    isActive = true;
 
 }
 
+//void Player::makeMove(Board* gameBoard){
+//    isActive = true;
+//    while (isActive){
+//        Tile choice;
+//        display->print_Board(gameBoard->get_Board());
+//        display->print_score(score);
+//        display->print_Hand(tileHand);
+//        choice = display->get_tile(tileHand, true);
+//        while(choice.get_color() == 0)
+//            choice = display->get_tile(tileHand, false);
+//        int location;
+//        location = display->get_location(true);
+//        while(gameBoard->get_Tile(location).get_color() != 0)
+//        location = display->get_location(false);
+//        gameBoard->add_Tile(choice, location);
+//        bool foundTile = false;
+//        for(int i = 0; (i<tileHand.size()) && !foundTile; i++) {
+//            if(tileHand[i].get_number() == choice.get_number() && tileHand[i].get_color() == choice.get_color()){
+//                tileHand[i].set_number(0);
+//                tileHand[i].set_color(0);
+//                foundTile= true;
+//            }
+//        }
+//        
+//
+//        checkActive();
+//
+//    }
+//}
+
 void Player::makeMove(Board* gameBoard){
     isActive = true;
-    while (isActive){
+    if (isActive){
         Tile choice;
         display->print_Board(gameBoard->get_Board());
         display->print_score(score);
@@ -101,7 +134,7 @@ void Player::makeMove(Board* gameBoard){
         int location;
         location = display->get_location(true);
         while(gameBoard->get_Tile(location).get_color() != 0)
-        location = display->get_location(false);
+            location = display->get_location(false);
         gameBoard->add_Tile(choice, location);
         bool foundTile = false;
         for(int i = 0; (i<tileHand.size()) && !foundTile; i++) {
@@ -111,11 +144,13 @@ void Player::makeMove(Board* gameBoard){
                 foundTile= true;
             }
         }
-
+        
+        
         checkActive();
-
+        
     }
 }
+
 
 void Player::roll(){
     isActive = false;
@@ -132,6 +167,10 @@ void Player::checkActive(){
        roll();
 
 }
+bool Player::is_Active() const{
+    return isActive;
+}
+
 
 void Player::set_board(Board* newBoard){
     gameBoard = newBoard;

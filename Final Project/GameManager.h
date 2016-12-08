@@ -159,16 +159,21 @@ void GameManager::set_up(){
 
 void GameManager::start_game(){
     while(active){
-
         Display->start_Game();
         vector<Tile> tileHand = generateTileHand();
 
+        
         playerOne->dealTileHand(tileHand);
 
+        // we want to call generate neighborhoods in make move after every move,
+        // score this, and  then reset neighborhoods. about to impliment
+        while(playerOne->is_Active()){
         playerOne->makeMove(gameBoard);
+            
        generateNeighborhoods();
         scoreBoard();
         resetNeighborhoods();
+        }
         if(!isActive())
            deactivate();
     }
@@ -177,6 +182,7 @@ void GameManager::start_game(){
 }
 void GameManager::resetNeighborhoods(){
     neighborhoods.clear();
+    neighborhoods.resize(0);
 }
 void GameManager::generateNeighborhoods(){
 
@@ -329,7 +335,7 @@ void GameManager::clearColumn( Neighborhood& myNeighborhood){
 }
 void GameManager::clearRow(Neighborhood& myNeighborhood){
     for(int i= 1; i<=gameBoard->get_Board().size(); i++ ){
-        gameBoard->set_Tile((myNeighborhood.get_index()+i), 0, 0);
+        gameBoard->set_Tile((10*myNeighborhood.get_index())+i, 0, 0);
 
     }
 
@@ -406,14 +412,14 @@ Graphics* GameManager::getDisplay() const{
 }
 
 bool GameManager::isActive() const{
+    
      for(int i=1; i < gameBoard->get_Board().size()-1; i++){
         for(int j=1; j < gameBoard->get_Board().size()-1; j++){
-       if ( (gameBoard->get_Tile(i*10+ j).get_color()==0) &&
-             (gameBoard->get_Tile(i*10+ j).get_number()==0))
-             return true;
-
-
-    }}
+       if ( (gameBoard->get_Tile(i*10+ j).get_color() == 0) &&
+             (gameBoard->get_Tile(i*10+ j).get_number() == 0))
+           return true;
+        }
+     }
     return false;
 }
 
