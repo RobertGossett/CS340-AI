@@ -16,7 +16,6 @@
 
 
 
-class Text : Graphics {
 class Text : public Graphics {
     
 public:
@@ -28,14 +27,12 @@ public:
     
     Tile get_tile(vector <Tile> h);
     
-    string get_location();
     int get_location();
     
     //displays the hand of available tiles to the screen
     //tiles are passed in through tile vector h
     void print_Hand(vector <Tile> h);
     
-    void print_Single_Tile(Tile t);
     void print_Board(vector <vector <Tile> > board);
     
 private:
@@ -59,7 +56,6 @@ Text::Text(){
 }
 
 void Text::start_Game(){
-   
     cout << "Hello welcome to the Tile Game (Name Pending)!" << endl;
     cout << endl;
     cout << "The goal of this game is to score as many points as possible." << endl;
@@ -166,7 +162,6 @@ Tile Text::get_tile(vector <Tile> h) {
     }
 }
 
-string Text::get_location() {
 int Text::get_location() {
     int row, column, input;
     cout << "Please enter the row you wish the place your tile:" << endl;
@@ -176,7 +171,6 @@ int Text::get_location() {
     
     input = (row * 10) + column;
     
-    return "";
     return input;
 }
 
@@ -184,7 +178,7 @@ int Text::get_location() {
 void Text::print_Single_Tile(Tile t){
     
     cout << "Tile: " << get_String_Value_Of_Color(t.get_color()) << t.get_number() << endl;
-}}
+}
 
 
 

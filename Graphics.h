@@ -32,8 +32,6 @@ public:
     
     virtual Tile get_tile(vector <Tile> h) = 0;
     
-    virtual string get_location() = 0;
-        
     virtual int get_location() = 0;
     
     virtual void print_Board(vector <vector <Tile> > board) = 0;
