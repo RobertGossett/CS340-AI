@@ -5,16 +5,18 @@ using namespace std;
 /*
 #include "Tile.h"
 #include "Board.h"
-#include "Player.h"
+#include "HumanPlayer.h"
 #include "Text.h"*/
 #include <vector>
 #include "Game.h"
 #include "Tile.h"
 #include "Board.h"
 #include "Player.h"
+#include "HumanPlayer.h"
 #include "Graphics.h"
 #include "Text.h"
 #include "Neighborhood.h"
+#include "ArtificialPlayer.h"
 
 
 
@@ -125,7 +127,8 @@ bool hasZeros(const Neighborhood& myHood) ;
 
 private:
 
-    Player* playerOne; // pointer to the playey -- will become the AI
+    Player* playerOne;// pointer to the playey -- will become the AI
+    Player* artificialPlayerOne;
     Board*  gameBoard; // pointer to the board on which the player plays
     Graphics* Display; // pointer to the display
     bool active; // bool representing the status of the game manager. Active or inactive?
@@ -148,7 +151,8 @@ GameManager::GameManager(){
 void GameManager::set_up(){
 
     Display = new Text;
-    playerOne = new Player(Display, gameBoard);
+    playerOne = new HumanPlayer(Display, gameBoard);
+    artificialPlayerOne = new ArtificialPlayer(Display, gameBoard);
 
     gameBoard = new Board;
     active = true;
@@ -193,9 +197,9 @@ void GameManager::generateNeighborhoods(){
 
     Neighborhood myNeighborhood;
     myNeighborhood.add_Tile(gameBoard->get_Tile(11), 1);
-    myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10 + gameBoard->get_Board().size()), 2);
+    myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10 + 1), 2);
     myNeighborhood.add_Tile(gameBoard->get_Tile(10 + gameBoard->get_Board().size()), 3);
-    myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10), 4);
+    myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10 + 4), 4);
     myNeighborhood.set_type("Corner");
 
     neighborhoods.push_back(myNeighborhood);
@@ -313,7 +317,7 @@ void GameManager::clearNeighborhood(Neighborhood&  myNeighborhood){
 
         gameBoard->set_Tile(10 + gameBoard->get_Board().size(), 0, 0);
 
-        gameBoard->set_Tile(gameBoard->get_Board().size()*10, 0, 0);
+        gameBoard->set_Tile(gameBoard->get_Board().size()*10 +1, 0, 0);
     }
     else if(myNeighborhood.get_type()=="Row")
         clearRow(myNeighborhood);
@@ -437,52 +441,52 @@ int GameManager::score_neighborhood(const Neighborhood& myHood) {
     //***ORDER MATTERS FOR THESE IF STATEMENTS
 
     if (hasZeros(myHood)) {
-        cout << "Had Zeros." << endl;
+      
         return false;
     }
     else if (hasSameColor(myHood) && hasSameNumber(myHood)){ //clears neighborhood
-        cout << "Returning 400" << endl;
+       
         return 400;
     }
     else if (hasSameColor(myHood) && hasEveryNumber(myHood)){ //clears neighborhood
-        cout << "Returning 200, sColor e_number" << endl;
+     
         return 200;
     }
     else if (hasEveryColor(myHood) && hasSameNumber(myHood)) { //clears neighborhood
-        cout << "Returning 200, eColor, sNumber" << endl;
+       
         return 200;
     }
     else if (hasEveryColor(myHood) && hasEveryNumber(myHood)) { //clears neighborhood
-        cout << "Returning 100, eColor, eNumber" << endl;
+  
         return 100;
     }
     //all the rest don't clear
     else if (hasTwoPair(myHood)) {
-        cout << "Returning 60, 2pair" << endl;
+  
         return 60;
     }
     else if (hasSameColor(myHood)) {
-        cout << "Returning 40, sColor" << endl;
+
         return 40;
     }
     else if (hasSameNumber(myHood)) {
-        cout << "Returning 40, sNumber" << endl;
+
         return 40;
     }
     else if (hasPairColorNumber(myHood)) {
-        cout << "Returning 20, pColorNumber" << endl;
+
         return 20;
     }
     else if (hasEveryColor(myHood)) {
-        cout << "Returning 10, eColor" << endl;
+
         return 10;
     }
     else if (hasPairColor(myHood)) {
-        cout << "Returning 5, pColor" << endl;
+
         return 5;
     }
     else if (hasPairNumber(myHood)) {
-        cout << "Returning 5, pNumber" << endl;
+
         return 5;
     }
 
