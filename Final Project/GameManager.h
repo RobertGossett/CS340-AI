@@ -164,6 +164,7 @@ private:
         int pairColors;
     } scoreGuide;
     vector<Neighborhood> neighborhoods;
+    vector<Neighborhood> previoushood;
     Tile randomTile;
     vector<WaitTile> waitList;
 
@@ -181,7 +182,7 @@ void GameManager::set_up(){
     Display = new Text;
     playerOne = new HumanPlayer(Display, gameBoard);
     artificialPlayerOne = new ArtificialPlayer(Display, gameBoard);
-
+    previoushood.resize(20);
     gameBoard = new Board;
     active = true;
 
@@ -213,8 +214,10 @@ void GameManager::start_game(){
 
 }
 void GameManager::resetNeighborhoods(){
+    previoushood = neighborhoods;
     neighborhoods.clear();
     neighborhoods.resize(0);
+    
 }
 void GameManager::generateNeighborhoods(){
 
@@ -229,7 +232,9 @@ void GameManager::generateNeighborhoods(){
     myNeighborhood.add_Tile(gameBoard->get_Tile(10 + gameBoard->get_Board().size()), 3);
     myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10 + 4), 4);
     myNeighborhood.set_type("Corner");
-
+    
+    if(previoushood[neighborhoods.size()].isLocked())
+        myNeighborhood.lock();
     neighborhoods.push_back(myNeighborhood);
 
 
@@ -244,7 +249,12 @@ void GameManager::generateRowNeighborhoods(){
         }
         myNeighborhood.set_type("Row");
         myNeighborhood.set_index(i+1);
+        if(previoushood[neighborhoods.size()].isLocked())
+            myNeighborhood.lock();
+        
         neighborhoods.push_back(myNeighborhood);
+        
+        
     }
 }
 void GameManager::generateColumnNeighborhoods(){
@@ -256,6 +266,8 @@ void GameManager::generateColumnNeighborhoods(){
         }
         myNeighborhood.set_type("Column");
         myNeighborhood.set_index(i);
+        if(previoushood[neighborhoods.size()].isLocked())
+            myNeighborhood.lock();
         neighborhoods.push_back(myNeighborhood);
     }
 }
@@ -273,6 +285,8 @@ void GameManager::generateBoxNeighborhoods(){
 
             myNeighborhood.set_type("Box");
             myNeighborhood.set_index(i*10 + j);
+            if(previoushood[neighborhoods.size()].isLocked())
+                myNeighborhood.lock();
             neighborhoods.push_back(myNeighborhood);
         }
     }
@@ -299,9 +313,12 @@ void GameManager::generateDiagonalNeighborhoods(){
         diagonalOne.set_index(1);
         diagonalTwo.set_type("Diagonal");
         diagonalTwo.set_index(2);
-
+        if(previoushood[neighborhoods.size()].isLocked())
+            diagonalOne.lock();
         neighborhoods.push_back(diagonalOne);
 
+        if(previoushood[neighborhoods.size()].isLocked())
+            diagonalTwo.lock();
         neighborhoods.push_back(diagonalTwo);
 
     }
@@ -313,8 +330,9 @@ void GameManager::scoreBoard(){
     int totalScore = 0;
     int currentScore = 0;
     for(int i=0; i < neighborhoods.size(); i++){
+        
         if(!neighborhoods[i].isLocked()){
-
+            
             currentScore = score_neighborhood(neighborhoods[i]);
             if (currentScore >= 100){
                 neighborhoods[i].clear_Neighborhood_Tiles();
@@ -328,6 +346,10 @@ void GameManager::scoreBoard(){
                 neighborhoods[i].lock();
             }
         }
+        else {
+            cout << endl << i << " is locked: " << neighborhoods[i].isLocked() << endl;
+        }
+        
 
     }
 
