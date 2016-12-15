@@ -14,7 +14,7 @@
 class GameManager;
 class Board;
 class Tile;
-class Player;
+class HumanPlayer;
 class Graphics;
 class Text;
 class Neighborhood;
