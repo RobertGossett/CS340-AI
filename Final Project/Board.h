@@ -129,6 +129,7 @@ bool Board::add_Tile(const Tile& tile, const int& tileLocation){
     if(!gameBoard[xPosition][yPosition].isLocked()){
         gameBoard[xPosition][yPosition].set_color(tile.get_color());
         gameBoard[xPosition][yPosition].set_number(tile.get_number());
+        gameBoard[xPosition][yPosition].set_location(tileLocation);
         return true;
     }
     else return false;

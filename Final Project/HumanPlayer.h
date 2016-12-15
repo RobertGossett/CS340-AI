@@ -17,11 +17,9 @@ public:
     HumanPlayer();
 
     // parameterized constructor
-<<<<<<< HEAD
-    HumanPlayer(Graphics* myDisplay, Board* myBoard ); // complete
-=======
+
     HumanPlayer(Graphics* myDisplay, Board* myBoard, GameManager* gameM ); // complete
->>>>>>> KhayyamBranch
+
 
     // prints the prompt, gets the move choice, and makes the move on the board
     // based off of that given input.
@@ -56,15 +54,14 @@ public:
 
     // increments the score by a certain number
     void increment_score(int const& addend);
-<<<<<<< HEAD
-=======
+
 
     bool has_joker();
 
     void set_joker();
 
     bool level_Up();
->>>>>>> KhayyamBranch
+
 private:
 
     Board* gameBoard;
@@ -72,14 +69,12 @@ private:
     int score;
     Graphics* display;
     bool isActive;
-<<<<<<< HEAD
-=======
+
     bool hasJoker;
     int jokerBar;
     GameManager* game;
 
 
->>>>>>> KhayyamBranch
 
 };
 
@@ -88,12 +83,7 @@ HumanPlayer::HumanPlayer(){
     display = NULL;
     score = 0;
     isActive = false;
-<<<<<<< HEAD
 
-}
-
-HumanPlayer::HumanPlayer(Graphics* myDisplay, Board* myBoard){
-=======
     jokerBar = 1;
     hasJoker=false;
 
@@ -120,17 +110,16 @@ bool HumanPlayer::level_Up(){
 }      
    
 HumanPlayer::HumanPlayer(Graphics* myDisplay, Board* myBoard, GameManager* gameM){
->>>>>>> KhayyamBranch
+
     gameBoard = myBoard;
     display = myDisplay;
     score = 0;
     isActive = false;
-<<<<<<< HEAD
-=======
+
     jokerBar = 1;
     hasJoker=false;
     game = gameM;
->>>>>>> KhayyamBranch
+
 
 }
 
@@ -184,26 +173,21 @@ void HumanPlayer::makeMove(Board* gameBoard){
         display->print_Board(gameBoard->get_Board());
         display->print_score(score);
         display->print_Hand(tileHand);
-<<<<<<< HEAD
-        choice = display->get_tile(tileHand, true);
-        while(choice.get_color() == 0)
-            choice = display->get_tile(tileHand, false);
-=======
+
         display->print_joker(hasJoker);
         choice = display->get_tile(tileHand, true);
         while(choice.get_color() == 0)
             choice = display->get_tile(tileHand, false);
         if(choice.get_color()==5)
             hasJoker=false;
->>>>>>> KhayyamBranch
+
         int location;
         location = display->get_location(true);
         while(gameBoard->get_Tile(location).get_color() != 0)
             location = display->get_location(false);
-<<<<<<< HEAD
+
         choice.set_location(location);
-=======
->>>>>>> KhayyamBranch
+
         gameBoard->add_Tile(choice, location);
         bool foundTile = false;
         for(int i = 0; (i<tileHand.size()) && !foundTile; i++) {
@@ -260,13 +244,12 @@ int HumanPlayer::get_score() const{
 void HumanPlayer::increment_score(const int& addend){
     score += addend;
 }
-<<<<<<< HEAD
-=======
+
 bool HumanPlayer::has_joker(){
     return hasJoker;
 }
 void HumanPlayer::set_joker(){
      hasJoker= true;
 }
->>>>>>> KhayyamBranch
+
 #endif

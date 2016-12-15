@@ -16,6 +16,8 @@ using namespace std;
 #include "Graphics.h"
 //#include "GameManager.h"
 #include "Game.h"
+#include "WaitTile.h"
+#include "Tile.h"
 
 class Player {
 
@@ -55,15 +57,14 @@ public:
     
     // increments the score by a certain number
     virtual void increment_score(int const& addend) = 0;
-<<<<<<< HEAD
-=======
+
 
     virtual bool has_joker()= 0;
 
     virtual void set_joker()= 0;
 
     virtual bool level_Up()= 0;
->>>>>>> KhayyamBranch
+
 };
 
 #endif /* Player_h */

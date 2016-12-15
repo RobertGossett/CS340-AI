@@ -141,7 +141,7 @@ void ArtificialPlayer::dealTileHand(vector<Tile> myHand){
 // make this function follow our alg
 void ArtificialPlayer::makeMove(Board* gameBoard){
     isActive = true;
-//<<<<<<< HEAD
+// <<<<<<< HEAD
 //    if (isActive){
 //        Tile choice;
 //        display->print_Board(gameBoard->get_Board()); // maybe we don't include this
@@ -174,14 +174,14 @@ void ArtificialPlayer::makeMove(Board* gameBoard){
 //
 //
 //=======
-  
+        vector<WaitTile> waitList = game->generate_waitList(gameBoard);
         Tile choice;
         display->print_Board(gameBoard->get_Board());
         display->print_score(score);
         display->print_Hand(tileHand);
         display->print_joker(hasJoker);
         vector<Tile> moveSequence = tileHand;
-        getBestMoves(gameBoard,waitList, tileHand,moveSequence);
+        getBestMoves(gameBoard, waitList, tileHand ,moveSequence);
         for(int i=0; i<moveSequence.size()i++){
         choice = moveSequence[0];
         location = moveSequence[0].get_location();
@@ -191,7 +191,7 @@ void ArtificialPlayer::makeMove(Board* gameBoard){
         
 }
 
-void getBestMoves(Board* myBoard, vector<waitTile> WaitList, vector<tile> TileHand,vector<tile>& bestSequence){
+void ArtificialPlayer::getBestMoves(Board* myBoard, vector<WaitTile> WaitList, vector<Tile>TileHand,vector<tile>& bestSequence){
     int BestScore = 0;
     for(int (first =0; first<TileHand.size(); first++){
         for(int second=0; second<TileHand.size(); second++){
