@@ -1,46 +1,52 @@
 //
-//  DieRandomizer.h
+//  Tile.h
 //  Final Project
 //
 //  Created by Robert Gossett on 9/28/16.
 //  Copyright © 2016 Robert Gossett. All rights reserved.
 //
 
-#ifndef Tile_h
-#define Tile_h
+#ifndef TILE_H_INCLUDED_
+#define TILE_H_INCLUDED_
+//#include "Game.h"
+#include <cstdlib>
+//#include "Player.h"
+//#include<cmath>
 
 class Tile {
 public:
-    
+
     // Tile constructor
     Tile(); // complete
-    
+
     // parameterize constructor
     Tile(int col, int num); //complete
-    
+
     // randomizer for the tile
     void randomize(); // complete
-    
+
     //get and set the tiles number
     int get_number() const; // complete
     void set_number(const int& newNumber); // complete
-    
+
     // get and set the tiles color
     int get_color() const; // complete
     void set_color(const int& newColor); // complete
-    
+
     // returns true if the tile is locked
     bool isLocked() const; // complete
-    
+
     // lock and unlock for the tile
     void lock(); // complete
     void unlock(); // complete
-    
-    
+
+    // equals operator for tiles
+    Tile & operator=(const Tile& other);
+
 private:
-    int number;
-    int color;
-    bool locked;
+    int number; // number on the face of the tile
+    int color; // integer representation of the colors of the tile
+    bool locked; // bool telling us if the tile is locked on the board
 };
 
 Tile::Tile(){
@@ -56,11 +62,9 @@ Tile::Tile(int col, int num){
 }
 
 void Tile::randomize(){
-    Tile randomTile;
-    set_number(rand() % 5); // gives a random number between 1 and 4
-    set_color(rand() % 5); // give a random number 1-4 to represent in order, red, yellow, green, blue
-    randomTile.set_number(rand() % 5); // gives a random number between 1 and 4
-    randomTile.set_color(rand() % 5); // give a random number 1-4 to represent in order, red, yellow,
+    set_number((rand() % 4) + 1); // gives a random number between 1 and 4
+    set_color((rand() % 4) + 1); // give a random number 1-4 to represent in order, red, yellow, green, blue
+
 }
 
 int Tile::get_number() const{
@@ -91,4 +95,10 @@ void Tile::unlock(){
     locked = false;
 }
 
-#endif /* DieRandomizer_h */
+Tile& Tile::operator=(const Tile& other){
+    number = other.get_number();
+    color = other.get_color();
+    locked = other.isLocked();
+    return *this;
+}
+#endif /* TILE_h */
