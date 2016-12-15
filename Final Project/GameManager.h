@@ -19,12 +19,15 @@ using namespace std;
 #include "ArtificialPlayer.h"
 #include "WaitTile.h"
 
+class ArtificialPlayer;
 
 class GameManager{
 public:
 
 
     GameManager();
+    
+    GameManager(const GameManager& gm);
 
     // set up the game
     void set_up(); // complete
@@ -39,15 +42,15 @@ public:
     vector<Neighborhood> generateNeighborhoods();
 
     // generates the row neighborhoods
-    void generateRowNeighborhoods();
+    void generateRowNeighborhoods(vector<Neighborhood>& myNeighborhoods);
 
     // generates the column neighborhoods
-    void generateColumnNeighborhoods();
+    void generateColumnNeighborhoods(vector<Neighborhood>& myNeighborhoods);
 
     // generates the 2 x 2 neighborhoods
-    void generateBoxNeighborhoods();
+    void generateBoxNeighborhoods(vector<Neighborhood>& myNeighborhoods);
 
-    void generateDiagonalNeighborhoods();
+    void generateDiagonalNeighborhoods(vector<Neighborhood>& myNeighborhoods);
 
 
 
@@ -94,7 +97,7 @@ public:
 
         // calculates the score of the gameBoard
 
-    int scoreBoard(gameBoard* thisBoard); // INCOMPLETE - will be changing dynamically
+    int scoreBoard(Board* thisBoard); // INCOMPLETE - will be changing dynamically
 
 
     void resetNeighborhoods();
@@ -161,8 +164,11 @@ public:
     
     int getPriorityScore(const vector<Neighborhood>& town);
 
+    vector<Tile> getBestMoves(Board* myBoard, vector<WaitTile> WaitList, vector<Tile> TileHand);
 
-
+    Tile getBestTileInWaitList(vector<WaitTile> wl, Tile myTile);
+    
+    WaitTile getBestWaitTileInWaitList(vector<WaitTile> wl, Tile myTile);
 private:
 
     Player* playerOne;// pointer to the playey -- will become the AI
@@ -182,7 +188,7 @@ private:
     vector<Neighborhood> previoushood;
     Tile randomTile;
 
-    vector<WaitTile> waitList;
+    vector<WaitTile> waitlist;
 
 
 };
@@ -193,14 +199,22 @@ GameManager::GameManager(){
     srand(time(NULL));
 }
 
+GameManager::GameManager(const GameManager& gm){
+    scoreGuide.pairNumbers = 5;
+    scoreGuide.pairColors = 5;
+    srand(time(NULL));
+}
+
 
 void GameManager::set_up(){
 
     Display = new Text;
 
-    playerOne = new HumanPlayer(Display, gameBoard, this);
-    artificialPlayerOne = new ArtificialPlayer(Display, gameBoard, this);
-
+    playerOne = new HumanPlayer(Display, gameBoard);
+    artificialPlayerOne = new ArtificialPlayer(Display, gameBoard);
+    
+    artificialPlayerOne->set_GM(this);
+    
     previoushood.resize(20);
     gameBoard = new Board;
     active = true;
@@ -220,7 +234,8 @@ void GameManager::start_game(){
     }
 if(playerType == 0)
     player = artificialPlayerOne;
-else
+    
+else{
     player = playerOne;
     while(active){
 
@@ -231,11 +246,12 @@ else
 
         // we want to call generate neighborhoods in make move after every move,
         // score this, and  then reset neighborhoods. about to impliment
-        while(playerOne->is_Active()){
-
-        player->makeMove(gameBoard);
+        while(playerOne->is_Active())
             
-        neighborhoods= generateNeighborhoods();
+        vector<Tile> aISequence = getBestMoves(gameBoard, generate_waitList(gameBoard), tileHand);
+        player->makeMove(gameBoard, getBestMoves(gameBoard, generate_waitList(gameBoard), tileHand));
+            
+        //neighborhoods= generateNeighborhoods();
         int currentScore = scoreBoard(gameBoard);
         player->set_score(currentScore + player->get_score());
        
@@ -246,7 +262,7 @@ else
             player->set_score(currentScore +500);
         }
 
-        resetNeighborhoods();
+        //resetNeighborhoods();
         
         if(!isActive())
            deactivate();
@@ -254,6 +270,8 @@ else
        Display->end_game();
 
 }
+}
+
 void GameManager::resetNeighborhoods(){
     previoushood = neighborhoods;
     neighborhoods.clear();
@@ -275,7 +293,7 @@ vector<Neighborhood> GameManager::generateNeighborhoods(){
 
     myNeighborhood.set_type("Corner");
     
-    if(previoushood[neighborhoods.size()].isLocked())
+    if(previoushood[myNeighborhoods.size()].isLocked())
         myNeighborhood.lock();
 
     myNeighborhoods.push_back(myNeighborhood);
@@ -309,7 +327,7 @@ void GameManager::generateColumnNeighborhoods(vector<Neighborhood>& myNeighborho
         }
         myNeighborhood.set_type("Column");
         myNeighborhood.set_index(i);
-        if(previoushood[neighborhoods.size()].isLocked())
+        if(previoushood[myNeighborhoods.size()].isLocked())
             myNeighborhood.lock();
         myNeighborhoods.push_back(myNeighborhood);
 
@@ -329,7 +347,7 @@ void GameManager::generateBoxNeighborhoods(vector<Neighborhood>& myNeighborhoods
 
             myNeighborhood.set_type("Box");
             myNeighborhood.set_index(i*10 + j);
-            if(previoushood[neighborhoods.size()].isLocked())
+            if(previoushood[myNeighborhoods.size()].isLocked())
                  myNeighborhood.lock();
             myNeighborhoods.push_back(myNeighborhood);
 
@@ -359,13 +377,13 @@ void GameManager::generateDiagonalNeighborhoods(vector<Neighborhood>& myNeighbor
         diagonalTwo.set_type("Diagonal");
         diagonalTwo.set_index(2);
 
-        if(previoushood[neighborhoods.size()].isLocked())
+        if(previoushood[myNeighborhoods.size()].isLocked())
             diagonalOne.lock();
-        neighborhoods.push_back(diagonalOne);
+        myNeighborhoods.push_back(diagonalOne);
 
-        if(previoushood[neighborhoods.size()].isLocked())
+        if(previoushood[myNeighborhoods.size()].isLocked())
             diagonalTwo.lock();
-        neighborhoods.push_back(diagonalTwo);
+        myNeighborhoods.push_back(diagonalTwo);
 
 
     }
@@ -374,27 +392,28 @@ void GameManager::generateDiagonalNeighborhoods(vector<Neighborhood>& myNeighbor
 
 
 int GameManager::scoreBoard(Board* thisBoard ){
+   vector<Neighborhood> localNeighborhood= generateNeighborhoods();
     int totalScore = 0;
     int currentScore = 0;
-    for(int i=0; i < neighborhoods.size(); i++){
+    for(int i=0; i < localNeighborhood.size(); i++){
         
-        if(!neighborhoods[i].isLocked()){
+        if(!localNeighborhood[i].isLocked()){
             
-            currentScore = score_neighborhood(neighborhoods[i]);
+            currentScore = score_neighborhood(localNeighborhood[i]);
             if (currentScore >= 100){
-                neighborhoods[i].clear_Neighborhood_Tiles();
-                neighborhoods[i].unlock();
+                localNeighborhood[i].clear_Neighborhood_Tiles();
+                localNeighborhood[i].unlock();
                 totalScore += currentScore;
-                clearNeighborhood(neighborhoods[i]);
+                clearNeighborhood(localNeighborhood[i]);
             }
             else{
                 totalScore += currentScore;
                 if(currentScore != 0)
-                neighborhoods[i].lock();
+                localNeighborhood[i].lock();
             }
         }
         else {
-            cout << endl << i << " is locked: " << neighborhoods[i].isLocked() << endl;
+            cout << endl << i << " is locked: " << localNeighborhood[i].isLocked() << endl;
         }
         
 
@@ -1254,6 +1273,7 @@ vector<Neighborhood> GameManager::get_local_Neighborhoods(const int& location){
     }
     return hoods;
     }
+
     
 
 
@@ -1347,6 +1367,119 @@ int GameManager::getPriorityScore(const vector <Neighborhood> & town){
     return 0;
 }
 
+vector<Tile> GameManager::getBestMoves(Board* myBoard, vector<WaitTile> WaitList, vector<Tile> TileHand){
+    int BestScore = 0;
+    vector<Tile> bestSequence;
+    for(int first =0; first<TileHand.size(); first++){
+        for(int second=0; second<TileHand.size(); second++){
+            for(int third=0; third<TileHand.size(); third++){
+                for(int fourth=0; fourth<TileHand.size(); fourth++){
+                    int currentScore;
+                    if(second==first)
+                        ++second;
+                    if(third==first)
+                        ++third;
+                    if(third==second)
+                        ++third;
+                    if(fourth==first)
+                        ++fourth;
+                    if(fourth==second)
+                        ++fourth;
+                    if(fourth==third)
+                        ++fourth;
+                    currentScore =0;
+                    vector<Tile> newTileHand;
+                    newTileHand.push_back(TileHand[first]);
+                    newTileHand.push_back(TileHand[second]);
+                    newTileHand.push_back(TileHand[third]);
+                    newTileHand.push_back(TileHand[fourth]);
+                    vector<WaitTile> newList = WaitList;
+                    Board* newBoard = new Board(myBoard);
+                    
+                    WaitTile firstTile = getBestWaitTileInWaitList(WaitList, TileHand[first]);
+                    Tile playTile = getBestTileInWaitList(newList, TileHand[first]);
+                    newBoard->add_Tile(playTile, playTile.get_location());
+                    currentScore= currentScore + scoreBoard(newBoard);
+                    newList = generate_waitList(newBoard);
+                    WaitTile secondTile = getBestWaitTileInWaitList(WaitList, TileHand[second]);
+                    playTile = getBestTileInWaitList(newList, TileHand[second]);
+                    newBoard->add_Tile(playTile, playTile.get_location());
+                    currentScore= currentScore +scoreBoard(newBoard);
+                    newList = generate_waitList(newBoard);
+                    WaitTile thirdTile = getBestWaitTileInWaitList(WaitList, TileHand[third]);
+                    playTile = getBestTileInWaitList(newList, TileHand[third]);
+                    newBoard->add_Tile(playTile, playTile.get_location());
+                    currentScore= currentScore +scoreBoard(newBoard);
+                    newList= generate_waitList(newBoard);
+                    WaitTile fourthTile = getBestWaitTileInWaitList(WaitList, TileHand[fourth]);
+                    playTile = getBestTileInWaitList(newList, TileHand[fourth]);
+                    newBoard->add_Tile(playTile, playTile.get_location());
+                    currentScore= currentScore +scoreBoard(newBoard);
+                    newList= generate_waitList(newBoard);
+                    
+                    if (currentScore > BestScore){
+                        BestScore= currentScore;
+                        bestSequence=newTileHand;
+                    }   
+                    
+                }
+            }}}
+              return bestSequence;
+ }
 
+WaitTile GameManager::getBestWaitTileInWaitList(vector<WaitTile> wl, Tile myTile){
+    WaitTile newTile;
+    int color = myTile.get_color();
+    int number = myTile.get_number();
+    int highestScore = 0;
+    
+    int indexOfHighestPriorityTile = -10000;
+    
+    for (int i = 0; i < wl.size(); i++) {
+        int tileColor = wl[i].get_color();
+        int tileNumber = wl[i].get_number();
+        int tileScore = wl[i].get_priorityScore();
+        
+        //if tile in waitList == myTile
+        if (tileColor == color && tileNumber == number) {
+            //see if the priorty score is higher than the current best priority score
+            if (tileScore > highestScore) {
+                highestScore = tileScore;
+                indexOfHighestPriorityTile = i;
+            }
+        }
+    }
+    
+    return wl[indexOfHighestPriorityTile];
+}
+
+Tile GameManager::getBestTileInWaitList(vector<WaitTile> wl, Tile myTile){
+    Tile newTile;
+    int color = myTile.get_color();
+    int number = myTile.get_number();
+    int highestScore = 0;
+    
+    int indexOfHighestPriorityTile = -10000;
+    
+    for (int i = 0; i < wl.size(); i++) {
+        int tileColor = wl[i].get_color();
+        int tileNumber = wl[i].get_number();
+        int tileScore = wl[i].get_priorityScore();
+        
+        //if tile in waitList == myTile
+        if (tileColor == color && tileNumber == number) {
+            //see if the priorty score is higher than the current best priority score
+            if (tileScore > highestScore) {
+                highestScore = tileScore;
+                indexOfHighestPriorityTile = i;
+            }
+        }
+    }
+    
+    newTile.set_color(wl[indexOfHighestPriorityTile].get_color());
+    newTile.set_number(wl[indexOfHighestPriorityTile].get_number());
+    
+    return newTile;
+}
 
 #endif

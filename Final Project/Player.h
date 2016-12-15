@@ -6,8 +6,8 @@
 //  Copyright © 2016 Robert Gossett. All rights reserved.
 //
 
-#ifndef Player_h
-#define Player_h
+#ifndef Player_h_INCLUDED_
+#define Player_h_INCLUDED_
 
 using namespace std;
 
@@ -17,8 +17,8 @@ using namespace std;
 //#include "GameManager.h"
 #include "Game.h"
 #include "WaitTile.h"
-#include "Tile.h"
 
+class GameManager;
 class Player {
 
 public:
@@ -26,7 +26,7 @@ public:
     
     // prints the prompt, gets the move choice, and makes the move on the board
     // based off of that given input.
-    virtual void makeMove(Board* gameBoard) = 0; // complete
+    virtual void makeMove(Board* gameBoard, vector<Tile> aISequence) = 0; // complete
     
     // deals the tile hand for the Player
     virtual void dealTileHand(vector<Tile> myHand) = 0;
@@ -36,6 +36,8 @@ public:
     
     // checks if the Player is active
     virtual void checkActive() = 0;
+    
+    virtual void set_GM(GameManager* gm) = 0;
     
     // returns true if the Player is active
     virtual bool is_Active() const = 0;

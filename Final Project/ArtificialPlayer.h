@@ -6,14 +6,21 @@
 //  Copyright © 2016 Robert Gossett. All rights reserved.
 //
 
-#ifndef ArtificialPlayer_h
-#define ArtificialPlayer_h
+#ifndef ArtificialPlayer_h_INCLUDED_
+#define ArtificialPlayer_h_INCLUDED_
 
 
 #include "Player.h"
+#include "Game.h"
+#include "GameManager.h"
+#include "WaitTile.h"
+
+
 
 
 using namespace std;
+
+class GameManager;
 
 class ArtificialPlayer : public Player {
 
@@ -23,10 +30,13 @@ public:
     
     // parameterized constructor
 
-    ArtificialPlayer(Graphics* myDisplay, Board* myBoard,  GameManager* gameM ); // complete
+    ArtificialPlayer(Graphics* myDisplay, Board* myBoard); // complete
     
+    void set_GM(GameManager* gm);
     //different than the Human players make move function. This will find the best move based off of our algorithm and execute that
-    void makeMove(Board* gameBoard); // complete
+    void makeMove(Board* gameBoard, vector<Tile> aISequence); // complete
+    
+    
     
     // deals the tile hand for the ArtificialPlayer
     void dealTileHand(vector<Tile> myHand);
@@ -57,6 +67,8 @@ public:
     
     // increments the score by a certain number
     void increment_score(int const& addend);
+    
+    void getBestMoves(Board* myBoard, vector<WaitTile> WaitList, vector<Tile> TileHand, vector<Tile>& bestSequence);
 
 
     bool has_joker();
@@ -64,6 +76,12 @@ public:
     void set_joker();
 
     bool level_Up();
+    
+    Tile getBestTileInWaitList(vector<WaitTile> wl, Tile myTile);
+    
+    WaitTile getBestWaitTileInWaitList(vector<WaitTile> wl, Tile myTile);
+    
+    
     
 private:
     
@@ -91,7 +109,7 @@ ArtificialPlayer::ArtificialPlayer(){
     
 }
 
-ArtificialPlayer::ArtificialPlayer(Graphics* myDisplay, Board* myBoard, GameManager* myGame){
+ArtificialPlayer::ArtificialPlayer(Graphics* myDisplay, Board* myBoard){
 
     gameBoard = myBoard;
     display = myDisplay;
@@ -100,7 +118,12 @@ ArtificialPlayer::ArtificialPlayer(Graphics* myDisplay, Board* myBoard, GameMana
 
     jokerBar = 1;
     hasJoker=false;
-    game= myGame;
+ 
+  
+}
+
+void ArtificialPlayer::set_GM(GameManager* gm){
+    game = gm;
 }
 
 bool ArtificialPlayer::level_Up(){
@@ -139,7 +162,7 @@ void ArtificialPlayer::dealTileHand(vector<Tile> myHand){
 
 
 // make this function follow our alg
-void ArtificialPlayer::makeMove(Board* gameBoard){
+void ArtificialPlayer::makeMove(Board* gameBoard, vector<Tile> aISequence){
     isActive = true;
 // <<<<<<< HEAD
 //    if (isActive){
@@ -170,83 +193,86 @@ void ArtificialPlayer::makeMove(Board* gameBoard){
 //        checkActive();
 //        
 //    }
-//}
+//    
 //
+//    
+//}
+
 //
 //=======
-        vector<WaitTile> waitList = game->generate_waitList(gameBoard);
+   
         Tile choice;
         display->print_Board(gameBoard->get_Board());
         display->print_score(score);
         display->print_Hand(tileHand);
         display->print_joker(hasJoker);
-        vector<Tile> moveSequence = tileHand;
-        getBestMoves(gameBoard, waitList, tileHand ,moveSequence);
-        for(int i=0; i<moveSequence.size()i++){
+        vector<Tile> moveSequence = aISequence;
+        //getBestMoves(gameBoard, waitList, tileHand, aISequence);
+    for(int i=0; i<moveSequence.size(); i++){
         choice = moveSequence[0];
-        location = moveSequence[0].get_location();
+        int location = moveSequence[0].get_location();
         gameBoard->add_Tile(choice, location);
         }
         
         
 }
 
-void ArtificialPlayer::getBestMoves(Board* myBoard, vector<WaitTile> WaitList, vector<Tile>TileHand,vector<tile>& bestSequence){
-    int BestScore = 0;
-    for(int (first =0; first<TileHand.size(); first++){
-        for(int second=0; second<TileHand.size(); second++){
-             for(int third=0; third<TileHand.size(); third++){
-                for(int fourth=0; fourth<TileHand.size(); fourth++){
-                   int currentScore;
-                   if(second==first)
-                      ++second;
-                   if(third==first)
-                      ++third;
-                   if(third==second)
-                      ++third;
-                   if(fourth==first)
-                      ++fourth;
-                   if(fourth==second)
-                      ++fourth;
-                   if(fourth==third)
-                      ++fourth;
-                  int currentScore =0;
-                  vector<tile> newTileHand;
-                  newTileHand.push_back(TileHand[first]);
-                  newTileHand.push_back(TileHand[second]);
-                  newTileHand.push_back(TileHand[third]);
-                  newTileHand.push_back(TileHand[fourth]);
-                  vector<waitTile> newList = waitList;
-                  Board* newBoard = new Board(myBoard);
-
-                  waitTile firstTile = getBestWaitTileInWaitList(waitList, TileHand[first]);
-                  Tile playTile = getBestTileInWaitList(newList, TileHand[first]);
-                  newBoard.add_Tile(playTile, playTile.get_location());
-                  currentScore= currentScore +game->scoreBoard(newBoard);
-                  newList=generateWaitList(newBoard);
-                  waitTile secondTile = getBestWaitTileInWaitList(waitList, TileHand[second]);
-                  playTile = getBestTileInWaitList(newList, TileHand[second]);
-                  newBoard.add_Tile(playTile, playTile.get_location());
-                  currentScore= currentScore +game->scoreBoard(newBoard);
-                  newList=generateWaitList(newBoard);
-                  waitTile thirdTile = getBestWaitTileInWaitList(waitList, TileHand[third]);
-                  playTile = getBestTileInWaitList(newList, TileHand[third]);
-                  newBoard.add_Tile(playTile, playTile.get_location());
-                  currentScore= currentScore +game->scoreBoard(newBoard);
-                  newList=generateWaitList(newBoard);
-                  waitTile fourthTile = getBestWaitTileInWaitList(waitList, TileHand[fourth]);
-                  playTile = getBestTileInWaitList(newList, TileHand[fourth]);
-                  newBoard.add_Tile(playTile, playTile.get_location());
-                  currentScore= currentScore +game->scoreBoard(newBoard);
-                  newList=generateWaitList(newBoard);
-
-                  if (currentScore > highestScore){
-                     highestScore= currentScore;
-                     bestSequence=newTileHand;
-                  }   
-                                    
- }
- }}}}
+//void ArtificialPlayer::getBestMoves(Board* myBoard, vector<WaitTile> WaitList, vector<Tile> TileHand, vector<Tile>& bestSequence){
+//    int BestScore = 0;
+//    for(int first =0; first<TileHand.size(); first++){
+//        for(int second=0; second<TileHand.size(); second++){
+//             for(int third=0; third<TileHand.size(); third++){
+//                for(int fourth=0; fourth<TileHand.size(); fourth++){
+//                   int currentScore;
+//                   if(second==first)
+//                      ++second;
+//                   if(third==first)
+//                      ++third;
+//                   if(third==second)
+//                      ++third;
+//                   if(fourth==first)
+//                      ++fourth;
+//                   if(fourth==second)
+//                      ++fourth;
+//                   if(fourth==third)
+//                      ++fourth;
+//                  currentScore =0;
+//                  vector<Tile> newTileHand;
+//                  newTileHand.push_back(TileHand[first]);
+//                  newTileHand.push_back(TileHand[second]);
+//                  newTileHand.push_back(TileHand[third]);
+//                  newTileHand.push_back(TileHand[fourth]);
+//                  vector<WaitTile> newList = WaitList;
+//                  Board* newBoard = new Board(myBoard);
+//
+//                  WaitTile firstTile = getBestWaitTileInWaitList(WaitList, TileHand[first]);
+//                  Tile playTile = getBestTileInWaitList(newList, TileHand[first]);
+//                  newBoard->add_Tile(playTile, playTile.get_location());
+//                  currentScore= currentScore + game->scoreBoard(newBoard);
+//                  newList = game->generate_waitList(newBoard);
+//                  WaitTile secondTile = getBestWaitTileInWaitList(WaitList, TileHand[second]);
+//                  playTile = getBestTileInWaitList(newList, TileHand[second]);
+//                  newBoard->add_Tile(playTile, playTile.get_location());
+//                  currentScore= currentScore +game->scoreBoard(newBoard);
+//                  newList = game->generate_waitList(newBoard);
+//                  WaitTile thirdTile = getBestWaitTileInWaitList(WaitList, TileHand[third]);
+//                  playTile = getBestTileInWaitList(newList, TileHand[third]);
+//                  newBoard->add_Tile(playTile, playTile.get_location());
+//                  currentScore= currentScore +game->scoreBoard(newBoard);
+//                  newList= game->generate_waitList(newBoard);
+//                  WaitTile fourthTile = getBestWaitTileInWaitList(WaitList, TileHand[fourth]);
+//                  playTile = getBestTileInWaitList(newList, TileHand[fourth]);
+//                  newBoard->add_Tile(playTile, playTile.get_location());
+//                  currentScore= currentScore +game->scoreBoard(newBoard);
+//                  newList= game->generate_waitList(newBoard);
+//
+//                  if (currentScore > BestScore){
+//                     BestScore= currentScore;
+//                     bestSequence=newTileHand;
+//                  }   
+//                                    
+// }
+// }}}}
 
 void ArtificialPlayer::roll(){
     isActive = false;
@@ -293,6 +319,62 @@ bool ArtificialPlayer::has_joker(){
 }
 void ArtificialPlayer::set_joker(){
      hasJoker= true;
-}    
+}
+
+//returns the tile in wl that matches myTile and has highest priority
+WaitTile ArtificialPlayer::getBestWaitTileInWaitList(vector<WaitTile> wl, Tile myTile){
+WaitTile newTile;
+int color = myTile.get_color();
+int number = myTile.get_number();
+int highestScore = 0;
+    
+    int indexOfHighestPriorityTile = -10000;
+    
+    for (int i = 0; i < wl.size(); i++) {
+        int tileColor = wl[i].get_color();
+        int tileNumber = wl[i].get_number();
+        int tileScore = wl[i].get_priorityScore();
+        
+        //if tile in waitList == myTile
+        if (tileColor == color && tileNumber == number) {
+            //see if the priorty score is higher than the current best priority score
+            if (tileScore > highestScore) {
+                highestScore = tileScore;
+                indexOfHighestPriorityTile = i;
+                }
+            }
+        }
+    
+    return wl[indexOfHighestPriorityTile];
+    }
+
+Tile ArtificialPlayer::getBestTileInWaitList(vector<WaitTile> wl, Tile myTile){
+    Tile newTile;
+    int color = myTile.get_color();
+    int number = myTile.get_number();
+    int highestScore = 0;
+    
+    int indexOfHighestPriorityTile = -10000;
+    
+    for (int i = 0; i < wl.size(); i++) {
+        int tileColor = wl[i].get_color();
+        int tileNumber = wl[i].get_number();
+        int tileScore = wl[i].get_priorityScore();
+        
+        //if tile in waitList == myTile
+        if (tileColor == color && tileNumber == number) {
+             //see if the priorty score is higher than the current best priority score
+            if (tileScore > highestScore) {
+                highestScore = tileScore;
+                indexOfHighestPriorityTile = i;
+                }
+            }
+        }
+    
+    newTile.set_color(wl[indexOfHighestPriorityTile].get_color());
+    newTile.set_number(wl[indexOfHighestPriorityTile].get_number());
+    
+    return newTile;
+    }
 
 #endif 

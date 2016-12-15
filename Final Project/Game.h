@@ -18,5 +18,8 @@ class HumanPlayer;
 class Graphics;
 class Text;
 class Neighborhood;
+class WaitTile;
+class ArtificialPlayer;
+class Player;
 
 #endif /* Game_h */

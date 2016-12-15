@@ -6,8 +6,8 @@
 //  Copyright © 2016 Robert Gossett. All rights reserved.
 //
 
-#ifndef WaitTile_h
-#define WaitTile_h
+#ifndef WaitTile_h_INCLUDED_
+#define WaitTile_h_INCLUDED_
 
 using namespace std;
 
@@ -18,6 +18,7 @@ class WaitTile : public Tile {
 public:
     WaitTile(); // constructor
     WaitTile(int col, int num); // parameterized constructor
+    WaitTile(const WaitTile& tile);
 
     int get_priorityScore() const;
     void set_priorityScore(const int& priorityValue);
@@ -47,6 +48,15 @@ WaitTile::WaitTile(int col, int num){
     locked = false;
 
     location = 0;
+}
+
+WaitTile::WaitTile(const WaitTile& tile){
+    priority = tile.get_priorityScore();
+    number = tile.get_number();
+    color = tile.get_color();
+    locked = tile.isLocked();
+    
+    location = tile.get_location();
 }
 
 int WaitTile::get_priorityScore() const{

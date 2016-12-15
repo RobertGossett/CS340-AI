@@ -18,12 +18,12 @@ public:
 
     // parameterized constructor
 
-    HumanPlayer(Graphics* myDisplay, Board* myBoard, GameManager* gameM ); // complete
+    HumanPlayer(Graphics* myDisplay, Board* myBoard); // complete
 
 
     // prints the prompt, gets the move choice, and makes the move on the board
     // based off of that given input.
-    void makeMove(Board* gameBoard); // complete
+    void makeMove(Board* gameBoard, vector<Tile> aISequence); // complete
 
     // deals the tile hand for the HumanPlayer
     void dealTileHand(vector<Tile> myHand);
@@ -41,6 +41,7 @@ public:
     // set board
     void set_board(Board* newBoard);
 
+    void set_GM(GameManager* game);
     //gets and sets for display
     // set display
     void set_display(Graphics* newDisplay);
@@ -72,7 +73,9 @@ private:
 
     bool hasJoker;
     int jokerBar;
+    
     GameManager* game;
+
 
 
 
@@ -87,6 +90,10 @@ HumanPlayer::HumanPlayer(){
     jokerBar = 1;
     hasJoker=false;
 
+}
+
+void HumanPlayer::set_GM(GameManager* gm){
+    game = gm;
 }
 
 bool HumanPlayer::level_Up(){
@@ -109,7 +116,7 @@ bool HumanPlayer::level_Up(){
       }
 }      
    
-HumanPlayer::HumanPlayer(Graphics* myDisplay, Board* myBoard, GameManager* gameM){
+HumanPlayer::HumanPlayer(Graphics* myDisplay, Board* myBoard){
 
     gameBoard = myBoard;
     display = myDisplay;
@@ -118,7 +125,7 @@ HumanPlayer::HumanPlayer(Graphics* myDisplay, Board* myBoard, GameManager* gameM
 
     jokerBar = 1;
     hasJoker=false;
-    game = gameM;
+  
 
 
 }
@@ -166,7 +173,7 @@ void HumanPlayer::dealTileHand(vector<Tile> myHand){
 //    }
 //}
 
-void HumanPlayer::makeMove(Board* gameBoard){
+void HumanPlayer::makeMove(Board* gameBoard, vector<Tile> aISequence){
     isActive = true;
     if (isActive){
         Tile choice;
