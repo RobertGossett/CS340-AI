@@ -164,43 +164,7 @@ void ArtificialPlayer::dealTileHand(vector<Tile> myHand){
 // make this function follow our alg
 void ArtificialPlayer::makeMove(Board* gameBoard, vector<Tile> aISequence){
     isActive = true;
-// <<<<<<< HEAD
-//    if (isActive){
-//        Tile choice;
-//        display->print_Board(gameBoard->get_Board()); // maybe we don't include this
-//        display->print_score(score);
-//        display->print_Hand(tileHand);
-//        //brain find move
-//        choice = display->get_tile(tileHand, true); /// AI will choose the tile to play get_move
-//        while(choice.get_color() == 0)
-//            choice = display->get_tile(tileHand, false);
-//        int location;
-//        location = display->get_location(true); // AI will choose the location of the tile
-//        while(gameBoard->get_Tile(location).get_color() != 0)
-//            location = display->get_location(false);
-//        choice.set_location(location);
-//        gameBoard->add_Tile(choice, location); // AI will add the tile to the board
-//        bool foundTile = false;
-//        for(int i = 0; (i<tileHand.size()) && !foundTile; i++) { // clears the tile just used in the tile hand
-//            if(tileHand[i].get_number() == choice.get_number() && tileHand[i].get_color() == choice.get_color()){
-//                tileHand[i].set_number(0);
-//                tileHand[i].set_color(0);
-//                foundTile = true;
-//            }
-//        }
-//        
-//        
-//        checkActive();
-//        
-//    }
-//    
-//
-//    
-//}
-
-//
-//=======
-   
+    if (isActive){
         Tile choice;
         display->print_Board(gameBoard->get_Board());
         display->print_score(score);
@@ -208,12 +172,20 @@ void ArtificialPlayer::makeMove(Board* gameBoard, vector<Tile> aISequence){
         display->print_joker(hasJoker);
         vector<Tile> moveSequence = aISequence;
         //getBestMoves(gameBoard, waitList, tileHand, aISequence);
-    for(int i=0; i<moveSequence.size(); i++){
-        choice = moveSequence[0];
-        int location = moveSequence[0].get_location();
-        gameBoard->add_Tile(choice, location);
+        for(int i=0; i<moveSequence.size(); i++){
+            choice = moveSequence[0];
+            int location = moveSequence[0].get_location();
+            gameBoard->add_Tile(choice, location);
+        }
         }
         
+        
+        checkActive();
+        
+    
+
+    
+    
         
 }
 

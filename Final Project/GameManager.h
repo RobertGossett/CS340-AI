@@ -235,7 +235,7 @@ void GameManager::start_game(){
 if(playerType == 0)
     player = artificialPlayerOne;
     
-else{
+else
     player = playerOne;
     while(active){
 
@@ -248,7 +248,7 @@ else{
         // score this, and  then reset neighborhoods. about to impliment
         while(playerOne->is_Active())
             
-        vector<Tile> aISequence = getBestMoves(gameBoard, generate_waitList(gameBoard), tileHand);
+       
         player->makeMove(gameBoard, getBestMoves(gameBoard, generate_waitList(gameBoard), tileHand));
             
         //neighborhoods= generateNeighborhoods();
@@ -269,7 +269,7 @@ else{
     }
        Display->end_game();
 
-}
+
 }
 
 void GameManager::resetNeighborhoods(){
