@@ -21,6 +21,9 @@ public:
     // constructor for the board
     Board();
     
+    // copy constructor
+    Board(Board& oldBoard);
+    
     // get set for the 2d vector holding the board
     void set_Board(const vector<vector<Tile> >& newBoard); // complete
     vector<vector<Tile> > get_Board() const; // complete
@@ -69,6 +72,15 @@ Board::Board() {
     set_Board(holder);
 }
 
+Board::Board(Board& oldBoard){
+    vector<vector<Tile> > holder(4, vector<Tile>(4));
+    for(int i = 0 ; i < 4; i++){
+        for(int j = 0; j < 4; j++){
+            holder[i][j] = oldBoard.get_Tile((i+1)*10+j+1);
+        };
+    };
+    set_Board(holder);
+}
 void Board::set_Board(const vector<vector<Tile> >& newBoard){
     gameBoard = newBoard;
 }
