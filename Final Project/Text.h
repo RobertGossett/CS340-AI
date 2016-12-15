@@ -45,6 +45,7 @@ public:
 
     // prints the board
     void print_Board(vector <vector <Tile> > board);
+    void print_joker(bool joker);
 
     void end_game();
     
@@ -154,6 +155,9 @@ string Text::get_String_Value_Of_Color(int val) {
         case 4:
             return "B";
             break;
+        case 5:
+            return "J";
+            break;    
         default:
             break;
     }
@@ -165,7 +169,7 @@ string Text::get_String_Value_Of_Color(int val) {
 //returns the tile that the user selected to be added to the board
 Tile Text::get_tile(vector <Tile> h, const bool& error) {
     Tile temp(5, 5); //used in input error from user
-
+    Tile joker(5,5);
     if(!error){
         cerr << "ERROR! COOSE VALID TILE" << endl;
     }
@@ -195,13 +199,14 @@ Tile Text::get_tile(vector <Tile> h, const bool& error) {
             break;
         case 4:
             return h[3];
+        case 5:
+            return joker;    
         default:
             cout << "ERROR AT GETTING TILE IN TEXT.H" << endl;
             return temp;
             break;
     }
 }
-
 int Text::get_location(const bool& error) {
     if(!error){
         cerr << "ERROR! ENTER VALID LOCATION" << endl;
@@ -249,6 +254,15 @@ void Text::print_Board(vector <vector <Tile> > board){
         cout << endl;
         cout << "---------------------" << endl;
     };
+
+}
+void Text::print_joker(bool joker){
+     cout<<"JOKER : "<<endl;
+     if(joker)
+        cout<<"[J] "<<endl;
+     else
+        cout<<"No Joker available"<<endl;
+
 
 }
 

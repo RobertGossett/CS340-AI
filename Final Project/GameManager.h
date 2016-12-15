@@ -36,7 +36,7 @@ public:
     vector<Tile> generateTileHand(); //complete
 
     // generates the neighborhoods
-    void generateNeighborhoods();
+    vector<Neighborhood> generateNeighborhoods();
 
     // generates the row neighborhoods
     void generateRowNeighborhoods();
@@ -93,7 +93,9 @@ public:
 
 
         // calculates the score of the gameBoard
-    void scoreBoard(); // INCOMPLETE - will be changing dynamically
+
+    int scoreBoard(gameBoard* thisBoard); // INCOMPLETE - will be changing dynamically
+
 
     void resetNeighborhoods();
 
@@ -150,6 +152,7 @@ public:
     
     //returns true if there exists a pair of numbers
     bool hasPairNumberWithJoker(const Neighborhood& myHood);
+
     
     // generates the local neighborhoods around a certain tile
     vector<Neighborhood> get_local_Neighborhoods(const int& location);
@@ -159,11 +162,15 @@ public:
     int getPriorityScore(const vector<Neighborhood>& town);
 
 
+
 private:
 
     Player* playerOne;// pointer to the playey -- will become the AI
     Player* artificialPlayerOne;
+
     Player* player;
+
+
     Board*  gameBoard; // pointer to the board on which the player plays
     Graphics* Display; // pointer to the display
     bool active; // bool representing the status of the game manager. Active or inactive?
@@ -174,7 +181,9 @@ private:
     vector<Neighborhood> neighborhoods;
     vector<Neighborhood> previoushood;
     Tile randomTile;
-    vector<WaitTile>* waitList;
+
+    vector<WaitTile> waitList;
+
 
 };
 
@@ -188,12 +197,14 @@ GameManager::GameManager(){
 void GameManager::set_up(){
 
     Display = new Text;
-    playerOne = new HumanPlayer(Display, gameBoard);
-    artificialPlayerOne = new ArtificialPlayer(Display, gameBoard);
+
+    playerOne = new HumanPlayer(Display, gameBoard, this);
+    artificialPlayerOne = new ArtificialPlayer(Display, gameBoard, this);
+
     previoushood.resize(20);
     gameBoard = new Board;
     active = true;
-
+    
     start_game();
     randomTile.randomize();
 }
@@ -221,10 +232,20 @@ else
         // we want to call generate neighborhoods in make move after every move,
         // score this, and  then reset neighborhoods. about to impliment
         while(playerOne->is_Active()){
+
         player->makeMove(gameBoard);
+            
+        neighborhoods= generateNeighborhoods();
+        int currentScore = scoreBoard(gameBoard);
+        player->set_score(currentScore + player->get_score());
+       
+        if(player->level_Up()){
+            if(!(player->has_joker()))
+               player->set_joker();
+        else
+            player->set_score(currentScore +500);
         }
-       generateNeighborhoods();
-        scoreBoard();
+
         resetNeighborhoods();
         
         if(!isActive())
@@ -239,28 +260,31 @@ void GameManager::resetNeighborhoods(){
     neighborhoods.resize(0);
     
 }
-void GameManager::generateNeighborhoods(){
-
-    generateRowNeighborhoods();
-    generateColumnNeighborhoods();
-    generateBoxNeighborhoods();
-    generateDiagonalNeighborhoods();
+vector<Neighborhood> GameManager::generateNeighborhoods(){
+    vector<Neighborhood> myNeighborhoods;
+    generateRowNeighborhoods(myNeighborhoods);
+    generateColumnNeighborhoods(myNeighborhoods);
+    generateBoxNeighborhoods(myNeighborhoods);
+    generateDiagonalNeighborhoods(myNeighborhoods);
 
     Neighborhood myNeighborhood;
     myNeighborhood.add_Tile(gameBoard->get_Tile(11), 1);
     myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10 + 1), 2);
     myNeighborhood.add_Tile(gameBoard->get_Tile(10 + gameBoard->get_Board().size()), 3);
     myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10 + 4), 4);
+
     myNeighborhood.set_type("Corner");
     
     if(previoushood[neighborhoods.size()].isLocked())
         myNeighborhood.lock();
-    neighborhoods.push_back(myNeighborhood);
 
+    myNeighborhoods.push_back(myNeighborhood);
+
+    return myNeighborhoods;
 
 }
 
-void GameManager::generateRowNeighborhoods(){
+void GameManager::generateRowNeighborhoods(vector<Neighborhood>& myNeighborhoods){
     for(int i=0; i < gameBoard->get_Board().size(); i++){
         Neighborhood  myNeighborhood;
         for(int j=1; j<=gameBoard->get_Board().size(); j++){
@@ -269,15 +293,14 @@ void GameManager::generateRowNeighborhoods(){
         }
         myNeighborhood.set_type("Row");
         myNeighborhood.set_index(i+1);
+
         if(previoushood[neighborhoods.size()].isLocked())
-            myNeighborhood.lock();
-        
-        neighborhoods.push_back(myNeighborhood);
-        
-        
+        myNeighborhood.lock();
+        myNeighborhoods.push_back(myNeighborhood);
+
     }
 }
-void GameManager::generateColumnNeighborhoods(){
+void GameManager::generateColumnNeighborhoods(vector<Neighborhood>& myNeighborhoods){
     for(int i=1; i<=gameBoard->get_Board().size(); i++){
         Neighborhood  myNeighborhood;
         for(int j=1; j <= gameBoard->get_Board().size(); j++){
@@ -288,10 +311,11 @@ void GameManager::generateColumnNeighborhoods(){
         myNeighborhood.set_index(i);
         if(previoushood[neighborhoods.size()].isLocked())
             myNeighborhood.lock();
-        neighborhoods.push_back(myNeighborhood);
+        myNeighborhoods.push_back(myNeighborhood);
+
     }
 }
-void GameManager::generateBoxNeighborhoods(){
+void GameManager::generateBoxNeighborhoods(vector<Neighborhood>& myNeighborhoods){
     for(int i=1; i < gameBoard->get_Board().size()-1; i++){
         for(int j=1; j < gameBoard->get_Board().size()-1; j++){
             Neighborhood  myNeighborhood;
@@ -306,13 +330,14 @@ void GameManager::generateBoxNeighborhoods(){
             myNeighborhood.set_type("Box");
             myNeighborhood.set_index(i*10 + j);
             if(previoushood[neighborhoods.size()].isLocked())
-                myNeighborhood.lock();
-            neighborhoods.push_back(myNeighborhood);
+                 myNeighborhood.lock();
+            myNeighborhoods.push_back(myNeighborhood);
+
         }
     }
 
 }
-void GameManager::generateDiagonalNeighborhoods(){
+void GameManager::generateDiagonalNeighborhoods(vector<Neighborhood>& myNeighborhoods){
     Neighborhood diagonalOne;
     Neighborhood diagonalTwo;
     for(int i=1; i<=gameBoard->get_Board().size(); i++){
@@ -333,6 +358,7 @@ void GameManager::generateDiagonalNeighborhoods(){
         diagonalOne.set_index(1);
         diagonalTwo.set_type("Diagonal");
         diagonalTwo.set_index(2);
+
         if(previoushood[neighborhoods.size()].isLocked())
             diagonalOne.lock();
         neighborhoods.push_back(diagonalOne);
@@ -341,12 +367,13 @@ void GameManager::generateDiagonalNeighborhoods(){
             diagonalTwo.lock();
         neighborhoods.push_back(diagonalTwo);
 
+
     }
 }
 
 
 
-void GameManager::scoreBoard(){
+int GameManager::scoreBoard(Board* thisBoard ){
     int totalScore = 0;
     int currentScore = 0;
     for(int i=0; i < neighborhoods.size(); i++){
@@ -373,7 +400,7 @@ void GameManager::scoreBoard(){
 
     }
 
-    playerOne->set_score(totalScore + playerOne->get_score());
+    return totalScore;
 
 }
 
@@ -1150,6 +1177,7 @@ bool GameManager::hasPairNumberWithJoker(const Neighborhood & myHood) {
     return hasPairNumber;
 }
 
+
 vector<Neighborhood> GameManager::get_local_Neighborhoods(const int& location){
     int rowPosition = location / 10;
     int colPosition = location % 10;
@@ -1318,9 +1346,6 @@ int GameManager::getPriorityScore(const vector <Neighborhood> & town){
         }
     return 0;
 }
-
-
-
 
 
 

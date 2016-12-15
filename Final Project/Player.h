@@ -55,6 +55,15 @@ public:
     
     // increments the score by a certain number
     virtual void increment_score(int const& addend) = 0;
+<<<<<<< HEAD
+=======
+
+    virtual bool has_joker()= 0;
+
+    virtual void set_joker()= 0;
+
+    virtual bool level_Up()= 0;
+>>>>>>> KhayyamBranch
 };
 
 #endif /* Player_h */
