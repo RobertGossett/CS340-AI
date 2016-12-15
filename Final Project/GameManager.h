@@ -1266,9 +1266,44 @@ void GameManager::generate_waitList(){
 
 
 
-int GameManager::getPriorityScore(const vector<Neighborhood>& town){
+
+int GameManager::getPriorityScore(const vector <Neighborhood> & town){
+    int numOfClears = 0;
+    int townTotalScore = 0;
+    int totalScore = 0;
+    //mulitiplier gives incentive to the computer to score clearing
+    //configurations higher than non clearing configurations
+    int multiplier = 5;
+    
+    //score every neighborhood
+    int tempScore = 0;
+    for (int i = 0; i < town.size(); i++) {
+        //score neighborhood i
+        tempScore = score_neighborhood(town[i]);
+        
+        //see if it cleared
+        if (tempScore >= 100) {
+            //if it does, increment numOfClears
+            numOfClears += 1;
+            }
+        
+        //Add on to current townTotalScore
+        townTotalScore += tempScore;
+        }
+    
+    //here, we simply set the totalScore = the total Town score
+    //no "bonus" or anything for not clearing
+    if (numOfClears == 0) {
+        totalScore = townTotalScore;
+        }
+    else{
+        //total score has a multiplierso that these scores are desired more
+        //**multiplier = 5
+        totalScore = townTotalScore * multiplier * numOfClears;
+        }
     return 0;
 }
+
 
 
 
