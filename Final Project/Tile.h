@@ -10,7 +10,7 @@
 #define TILE_H_INCLUDED_
 //#include "Game.h"
 #include <cstdlib>
-//#include "Player.h"
+//#include "HumanPlayer.h"
 //#include<cmath>
 
 class Tile {
@@ -47,6 +47,7 @@ private:
     int number; // number on the face of the tile
     int color; // integer representation of the colors of the tile
     bool locked; // bool telling us if the tile is locked on the board
+    
 };
 
 Tile::Tile(){

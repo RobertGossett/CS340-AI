@@ -5,17 +5,19 @@ using namespace std;
 /*
 #include "Tile.h"
 #include "Board.h"
-#include "Player.h"
+#include "HumanPlayer.h"
 #include "Text.h"*/
 #include <vector>
 #include "Game.h"
 #include "Tile.h"
 #include "Board.h"
 #include "Player.h"
+#include "HumanPlayer.h"
 #include "Graphics.h"
 #include "Text.h"
 #include "Neighborhood.h"
-
+#include "ArtificialPlayer.h"
+#include "WaitTile.h"
 
 
 class GameManager{
@@ -90,42 +92,70 @@ public:
     int score_neighborhood(const Neighborhood& myHood);
 
 
-    // calculates the score of the gameBoard
-void scoreBoard(); // INCOMPLETE - will be changing dynamically
+        // calculates the score of the gameBoard
+    void scoreBoard(); // INCOMPLETE - will be changing dynamically
 
-void resetNeighborhoods();
+    void resetNeighborhoods();
 
-//returns true if all tiles are the same number
-bool hasSameNumber(const Neighborhood& myHood);
+    //returns true if all tiles are the same number
+    bool hasSameNumber(const Neighborhood& myHood);
 
-//returns true if all tiles are the same color
-bool hasSameColor(const Neighborhood& myHood);
+    //returns true if all tiles are the same color
+    bool hasSameColor(const Neighborhood& myHood);
 
-//returns true if every tile has a different color
-bool hasEveryColor(const Neighborhood& myHood);
+    //returns true if every tile has a different color
+    bool hasEveryColor(const Neighborhood& myHood);
 
-//returns true if every tile has a different number
-bool hasEveryNumber(const Neighborhood& myHood);
+    //returns true if every tile has a different number
+    bool hasEveryNumber(const Neighborhood& myHood);
 
-//returns true if there is are two pairs, having the same numbers and colors
-bool hasTwoPair(const Neighborhood& myHood);
+    //returns true if there is are two pairs, having the same numbers and colors
+    bool hasTwoPair(const Neighborhood& myHood);
 
-//returns true if there exists a pair of colors and of numbers
-bool hasPairColorNumber(const Neighborhood& myHood);
+    //returns true if there exists a pair of colors and of numbers
+    bool hasPairColorNumber(const Neighborhood& myHood);
 
-//returns true if there exists a pair of colors
-bool hasPairColor(const Neighborhood& myHood);
+    //returns true if there exists a pair of colors
+    bool hasPairColor(const Neighborhood& myHood);
 
-//returns true if there exists a pair of numbers
-bool hasPairNumber(const Neighborhood& myHood);
+    //returns true if there exists a pair of numbers
+    bool hasPairNumber(const Neighborhood& myHood);
 
-//returns true if there are any zeros in the hood
-bool hasZeros(const Neighborhood& myHood) ;
+    //returns true if there are any zeros in the hood
+    bool hasZeros(const Neighborhood& myHood);
+    
+    //returns the score of the neighborhood myTiles
+    int score_neighborhood_with_joker(const Neighborhood& myHood);
+    
+    //returns true if all tiles are the same number
+    bool hasSameNumberWithJoker(const Neighborhood& myHood);
+    
+    //returns true if all tiles are the same color
+    bool hasSameColorWithJoker(const Neighborhood& myHood);
+    
+    //returns true if every tile has a different color
+    bool hasEveryColorWithJoker(const Neighborhood& myHood);
+    
+    //returns true if every tile has a different number
+    bool hasEveryNumberWithJoker(const Neighborhood& myHood);
+    
+    //returns true if there is are two pairs, having the same numbers and colors
+    bool hasTwoPairWithJoker(const Neighborhood& myHood);
+    
+    //returns true if there exists a pair of colors and of numbers
+    bool hasPairColorNumberWithJoker(const Neighborhood& myHood);
+    
+    //returns true if there exists a pair of colors
+    bool hasPairColorWithJoker(const Neighborhood& myHood);
+    
+    //returns true if there exists a pair of numbers
+    bool hasPairNumberWithJoker(const Neighborhood& myHood);
 
 
 private:
 
-    Player* playerOne; // pointer to the playey -- will become the AI
+    Player* playerOne;// pointer to the playey -- will become the AI
+    Player* artificialPlayerOne;
     Board*  gameBoard; // pointer to the board on which the player plays
     Graphics* Display; // pointer to the display
     bool active; // bool representing the status of the game manager. Active or inactive?
@@ -134,7 +164,9 @@ private:
         int pairColors;
     } scoreGuide;
     vector<Neighborhood> neighborhoods;
+    vector<Neighborhood> previoushood;
     Tile randomTile;
+    vector<WaitTile> waitList;
 
 };
 
@@ -148,8 +180,9 @@ GameManager::GameManager(){
 void GameManager::set_up(){
 
     Display = new Text;
-    playerOne = new Player(Display, gameBoard);
-
+    playerOne = new HumanPlayer(Display, gameBoard);
+    artificialPlayerOne = new ArtificialPlayer(Display, gameBoard);
+    previoushood.resize(20);
     gameBoard = new Board;
     active = true;
 
@@ -181,8 +214,10 @@ void GameManager::start_game(){
 
 }
 void GameManager::resetNeighborhoods(){
+    previoushood = neighborhoods;
     neighborhoods.clear();
     neighborhoods.resize(0);
+    
 }
 void GameManager::generateNeighborhoods(){
 
@@ -193,11 +228,13 @@ void GameManager::generateNeighborhoods(){
 
     Neighborhood myNeighborhood;
     myNeighborhood.add_Tile(gameBoard->get_Tile(11), 1);
-    myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10 + gameBoard->get_Board().size()), 2);
+    myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10 + 1), 2);
     myNeighborhood.add_Tile(gameBoard->get_Tile(10 + gameBoard->get_Board().size()), 3);
-    myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10), 4);
+    myNeighborhood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10 + 4), 4);
     myNeighborhood.set_type("Corner");
-
+    
+    if(previoushood[neighborhoods.size()].isLocked())
+        myNeighborhood.lock();
     neighborhoods.push_back(myNeighborhood);
 
 
@@ -212,7 +249,12 @@ void GameManager::generateRowNeighborhoods(){
         }
         myNeighborhood.set_type("Row");
         myNeighborhood.set_index(i+1);
+        if(previoushood[neighborhoods.size()].isLocked())
+            myNeighborhood.lock();
+        
         neighborhoods.push_back(myNeighborhood);
+        
+        
     }
 }
 void GameManager::generateColumnNeighborhoods(){
@@ -224,6 +266,8 @@ void GameManager::generateColumnNeighborhoods(){
         }
         myNeighborhood.set_type("Column");
         myNeighborhood.set_index(i);
+        if(previoushood[neighborhoods.size()].isLocked())
+            myNeighborhood.lock();
         neighborhoods.push_back(myNeighborhood);
     }
 }
@@ -241,6 +285,8 @@ void GameManager::generateBoxNeighborhoods(){
 
             myNeighborhood.set_type("Box");
             myNeighborhood.set_index(i*10 + j);
+            if(previoushood[neighborhoods.size()].isLocked())
+                myNeighborhood.lock();
             neighborhoods.push_back(myNeighborhood);
         }
     }
@@ -256,7 +302,7 @@ void GameManager::generateDiagonalNeighborhoods(){
             diagonalOne.add_Tile(myTile, j);
          }
 
-         if(i+j+1==gameBoard->get_Board().size()){
+         if(i+j==gameBoard->get_Board().size()+1){
             Tile  myTile= gameBoard->get_Tile((i*10+j));
             diagonalTwo.add_Tile(myTile, j);
          }
@@ -267,9 +313,12 @@ void GameManager::generateDiagonalNeighborhoods(){
         diagonalOne.set_index(1);
         diagonalTwo.set_type("Diagonal");
         diagonalTwo.set_index(2);
-
+        if(previoushood[neighborhoods.size()].isLocked())
+            diagonalOne.lock();
         neighborhoods.push_back(diagonalOne);
 
+        if(previoushood[neighborhoods.size()].isLocked())
+            diagonalTwo.lock();
         neighborhoods.push_back(diagonalTwo);
 
     }
@@ -281,8 +330,9 @@ void GameManager::scoreBoard(){
     int totalScore = 0;
     int currentScore = 0;
     for(int i=0; i < neighborhoods.size(); i++){
+        
         if(!neighborhoods[i].isLocked()){
-
+            
             currentScore = score_neighborhood(neighborhoods[i]);
             if (currentScore >= 100){
                 neighborhoods[i].clear_Neighborhood_Tiles();
@@ -296,6 +346,10 @@ void GameManager::scoreBoard(){
                 neighborhoods[i].lock();
             }
         }
+        else {
+            cout << endl << i << " is locked: " << neighborhoods[i].isLocked() << endl;
+        }
+        
 
     }
 
@@ -313,7 +367,7 @@ void GameManager::clearNeighborhood(Neighborhood&  myNeighborhood){
 
         gameBoard->set_Tile(10 + gameBoard->get_Board().size(), 0, 0);
 
-        gameBoard->set_Tile(gameBoard->get_Board().size()*10, 0, 0);
+        gameBoard->set_Tile(gameBoard->get_Board().size()*10 +1, 0, 0);
     }
     else if(myNeighborhood.get_type()=="Row")
         clearRow(myNeighborhood);
@@ -437,52 +491,52 @@ int GameManager::score_neighborhood(const Neighborhood& myHood) {
     //***ORDER MATTERS FOR THESE IF STATEMENTS
 
     if (hasZeros(myHood)) {
-        cout << "Had Zeros." << endl;
+      
         return false;
     }
     else if (hasSameColor(myHood) && hasSameNumber(myHood)){ //clears neighborhood
-        cout << "Returning 400" << endl;
+       
         return 400;
     }
     else if (hasSameColor(myHood) && hasEveryNumber(myHood)){ //clears neighborhood
-        cout << "Returning 200, sColor e_number" << endl;
+     
         return 200;
     }
     else if (hasEveryColor(myHood) && hasSameNumber(myHood)) { //clears neighborhood
-        cout << "Returning 200, eColor, sNumber" << endl;
+       
         return 200;
     }
     else if (hasEveryColor(myHood) && hasEveryNumber(myHood)) { //clears neighborhood
-        cout << "Returning 100, eColor, eNumber" << endl;
+  
         return 100;
     }
     //all the rest don't clear
     else if (hasTwoPair(myHood)) {
-        cout << "Returning 60, 2pair" << endl;
+  
         return 60;
     }
     else if (hasSameColor(myHood)) {
-        cout << "Returning 40, sColor" << endl;
+
         return 40;
     }
     else if (hasSameNumber(myHood)) {
-        cout << "Returning 40, sNumber" << endl;
+
         return 40;
     }
     else if (hasPairColorNumber(myHood)) {
-        cout << "Returning 20, pColorNumber" << endl;
+
         return 20;
     }
     else if (hasEveryColor(myHood)) {
-        cout << "Returning 10, eColor" << endl;
+
         return 10;
     }
     else if (hasPairColor(myHood)) {
-        cout << "Returning 5, pColor" << endl;
+
         return 5;
     }
     else if (hasPairNumber(myHood)) {
-        cout << "Returning 5, pNumber" << endl;
+
         return 5;
     }
 
@@ -817,5 +871,262 @@ bool GameManager::hasPairNumber(const Neighborhood& myHood){
     return (hasPair1 && hasPair2);
 
     return false;
+}
+
+
+//returns the score of the neighborhood myTiles
+int GameManager::score_neighborhood_with_joker(const Neighborhood& myHood) {
+    
+    //    //***ORDER MATTERS FOR THESE IF STATEMENTS
+    //    if (hasZeros(myHood)) {
+    //        cout << "Had Zeros." << endl;
+    //        return false;
+    //    }
+    //    else
+    if (hasSameColorWithJoker(myHood) && hasSameNumberWithJoker(myHood)){ //clears neighborhood
+        cout << "Returning 400" << endl;
+        return 400;
+    }
+    else if (hasSameColorWithJoker(myHood) && hasEveryNumberWithJoker(myHood)){ //clears neighborhood
+        cout << "Returning 200, sColor e_number" << endl;
+        return 200;
+    }
+    else if (hasEveryColorWithJoker(myHood) && hasSameNumberWithJoker(myHood)) { //clears neighborhood
+        cout << "Returning 200, eColor, sNumber" << endl;
+        return 200;
+    }
+    else if (hasEveryColorWithJoker(myHood) && hasEveryNumberWithJoker(myHood)) { //clears neighborhood
+        cout << "Returning 100, eColor, eNumber" << endl;
+        return 100;
+    }
+    //all the rest don't clear
+    else if (hasTwoPairWithJoker(myHood)) {
+        cout << "Returning 60, 2pair" << endl;
+        return 60;
+    }
+    else if (hasSameColorWithJoker(myHood)) {
+        cout << "Returning 40, sColor" << endl;
+        return 40;
+    }
+    else if (hasSameNumberWithJoker(myHood)) {
+        cout << "Returning 40, sNumber" << endl;
+        return 40;
+    }
+    else if (hasPairColorNumberWithJoker(myHood)) {
+        cout << "Returning 20, pColorNumber" << endl;
+        return 20;
+    }
+    else if (hasEveryColorWithJoker(myHood)) {
+        cout << "Returning 10, eColor" << endl;
+        return 10;
+    }
+    else if (hasPairColorWithJoker(myHood)) {
+        cout << "Returning 5, pColor" << endl;
+        return 5;
+    }
+    else if (hasPairNumberWithJoker(myHood)) {
+        cout << "Returning 5, pNumber" << endl;
+        return 5;
+    }
+    
+    return 0;
+}
+
+
+bool GameManager::hasPairColorNumberWithJoker(const Neighborhood& myHood) {
+    if (hasPairColorWithJoker(myHood) && hasPairNumberWithJoker(myHood))
+        return true;
+    else
+        return false;
+}
+
+//returns true if ever tile in myHood has the same Color
+bool GameManager::hasSameColorWithJoker(const Neighborhood & myHood) {
+    vector<Tile> t = myHood.get_Neighborhood_Tiles();
+    //loop through all the tiles
+    for (int i = 0; i < t.size() -1; i++){
+        
+        //loop through all the other tiles != i
+        for (int j = 1; j <= t.size()-1; j++){
+            
+            //see if they're not equal
+            if (t[i].get_color() != t[i+j].get_color() && (i+j) < t.size()){
+                
+                //if they aren't, check and see if it's because one of the two are jokers, J-tile = [5,5]
+                if (t[i].get_color() != 5 && t[i+j].get_color() != 5) {
+                    cout << "I = " << i << ", J = " << j << endl;
+                    return false;
+                }
+            }
+            
+        }
+    }
+    
+    //if we make it out of this for-loop alive, return true because everything(except the joker) is equal
+    return true;
+}
+
+
+//returns true if ever tile in myHood has the same number
+bool GameManager::hasSameNumberWithJoker(const Neighborhood & myHood) {
+    vector<Tile> t = myHood.get_Neighborhood_Tiles();
+    //loop through all the tiles
+    for (int i = 0; i < t.size() -1; i++){
+        
+        //loop through all the other tiles != i
+        for (int j = 1; j <= t.size()-1; j++){
+            
+            //see if they're not equal
+            if (t[i].get_number() != t[i+j].get_number() && (i+j) < t.size()){
+                
+                //if they aren't, check and see if it's because one of the two are jokers, J-tile = [5,5]
+                if (t[i].get_number() != 5 && t[i+j].get_number() != 5) {
+                    return false;
+                }
+            }
+            
+        }
+    }
+    
+    //if we make it out of this for-loop alive, return true because everything(except the joker) is equal
+    return true;
+}
+
+//returns true if ever tile in myHood has a different color
+bool GameManager::hasEveryColorWithJoker(const Neighborhood & myHood) {
+    vector<Tile> t = myHood.get_Neighborhood_Tiles();
+    //loop through all the tiles
+    for (int i = 0; i < t.size() -1; i++){
+        
+        //loop through all the other tiles != i
+        for (int j = 1; j <= t.size()-1; j++){
+            
+            //see if they're equal
+            if (t[i].get_color() == t[i+j].get_color() && (i+j) < t.size()){
+                
+                //we don't have to worry about the joker because we know
+                //there is only going to be one joker in the hood
+                return false;
+            }
+            
+        }
+    }
+    
+    //if we make it out of this for-loop alive, return true because everything(except the joker) is different
+    return true;
+}
+
+//returns true if ever tile in myHood has a different number
+bool GameManager::hasEveryNumberWithJoker(const Neighborhood & myHood) {
+    vector<Tile> t = myHood.get_Neighborhood_Tiles();
+    //loop through all the tiles
+    for (int i = 0; i < t.size() -1; i++){
+        
+        //loop through all the other tiles != i
+        for (int j = 1; j <= t.size()-1; j++){
+            
+            //see if they're equal
+            if (t[i].get_number() == t[i+j].get_number() && (i+j) < t.size()){
+                
+                //we don't have to worry about the joker because we know
+                //there is only going to be one joker in the hood
+                return false;
+            }
+            
+        }
+    }
+    
+    //if we make it out of this for-loop alive, return true because everything(except the joker) is different
+    return true;
+}
+
+//returns true if their is at least one pair of number and color within the neighborhood
+bool GameManager::hasTwoPairWithJoker(const Neighborhood & myHood) {
+    vector<Tile> t = myHood.get_Neighborhood_Tiles();
+    bool hasTwoPair = false;
+    
+    //loop through all the tiles
+    for (int i = 0; i < t.size() -1; i++){
+        
+        //loop through all the other tiles != i
+        for (int j = 1; j <= t.size()-1; j++){
+            
+            //see if their colors are equal
+            if (t[i].get_color() == t[i+j].get_color() && (i+j) < t.size()){
+                
+                //now see if their numbers are equal
+                if (t[i].get_number() == t[i+j].get_number()) {
+                    
+                    //if so we found at least one pair of color and number being equal. Set hasTwoPair to true;
+                    //**NOTE**, hasTwoPair could be already be set to true, but this function doesn't handle logic
+                    //it's not our fault if this is already true. The function says it returns true if their is at
+                    //least one pair
+                    hasTwoPair = true;
+                }
+            }
+            
+        }
+    }
+    
+    //if their was a pair, 'hasTwoPair' will be true, if not it will be false
+    //so just return the bool 'hasTwoPair'
+    return hasTwoPair;
+}
+
+//returns true if there is are at least two tiles in the neighborhood with the same color
+bool GameManager::hasPairColorWithJoker(const Neighborhood & myHood) {
+    vector<Tile> t = myHood.get_Neighborhood_Tiles();
+    bool hasPairColor = false;
+    //loop through all the tiles
+    for (int i = 0; i < t.size() -1; i++){
+        
+        //loop through all the other tiles != i
+        for (int j = 1; j <= t.size()-1; j++){
+            
+            //see if they're equal
+            if (t[i].get_color() == t[i+j].get_color() && (i+j) < t.size()){
+                
+                //if so we found at least two tiles equal colors. Set hasPairColor to true;
+                //**NOTE**, hasPairColor could be already be set to true, but this function doesn't handle logic
+                //it's not our fault if this is already true. The function says it returns true if their is at
+                //least one pair
+                hasPairColor = true;
+            }
+            
+        }
+    }
+    
+    //if their was a pair, 'hasPairColor' will be true, if not it will be false
+    //so just return the bool 'hasPairColor'
+    return hasPairColor;
+}
+
+
+//returns true if there is are at least two tiles in the neighborhood with the same number
+bool GameManager::hasPairNumberWithJoker(const Neighborhood & myHood) {
+    vector<Tile> t = myHood.get_Neighborhood_Tiles();
+    bool hasPairNumber = false;
+    //loop through all the tiles
+    for (int i = 0; i < t.size() -1; i++){
+        
+        //loop through all the other tiles != i
+        for (int j = 1; j <= t.size()-1; j++){
+            
+            //see if they're equal
+            if (t[i].get_color() == t[i+j].get_color() && (i+j) < t.size()){
+                
+                //if so we found at least two tiles with equal numbers. Set hasPairNumber to true;
+                //**NOTE**, hasPairNumber could be already be set to true, but this function doesn't handle logic
+                //it's not our fault if this is already true. The function says it returns true if their is at
+                //least one pair
+                hasPairNumber = true;
+            }
+            
+        }
+    }
+    
+    //if their was a pair, 'hasPairNumber' will be true, if not it will be false
+    //so just return the bool 'hasPairNumber'
+    return hasPairNumber;
 }
 #endif
