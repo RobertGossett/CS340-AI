@@ -110,6 +110,7 @@ void ArtificialPlayer::makeMove(Board* gameBoard){
         location = display->get_location(true); // AI will choose the location of the tile
         while(gameBoard->get_Tile(location).get_color() != 0)
             location = display->get_location(false);
+        choice.set_location(location);
         gameBoard->add_Tile(choice, location); // AI will add the tile to the board
         bool foundTile = false;
         for(int i = 0; (i<tileHand.size()) && !foundTile; i++) { // clears the tile just used in the tile hand

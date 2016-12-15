@@ -39,6 +39,9 @@ public:
     // lock and unlock for the tile
     void lock(); // complete
     void unlock(); // complete
+    
+    int get_location();
+    void set_location(const int& loc);
 
     // equals operator for tiles
     Tile & operator=(const Tile& other);
@@ -47,7 +50,7 @@ private:
     int number; // number on the face of the tile
     int color; // integer representation of the colors of the tile
     bool locked; // bool telling us if the tile is locked on the board
-    
+    int location; // holds the tiles location on the board
 };
 
 Tile::Tile(){
@@ -94,6 +97,14 @@ void Tile::lock(){
 
 void Tile::unlock(){
     locked = false;
+}
+
+int Tile::get_location() const{
+    return location;
+}
+
+void Tile::set_location(const int& loc){
+    location = loc;
 }
 
 Tile& Tile::operator=(const Tile& other){

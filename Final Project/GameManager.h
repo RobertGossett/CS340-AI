@@ -150,6 +150,13 @@ public:
     
     //returns true if there exists a pair of numbers
     bool hasPairNumberWithJoker(const Neighborhood& myHood);
+    
+    // generates the local neighborhoods around a certain tile
+    vector<Neighborhood> get_local_Neighborhoods(const int& location);
+    
+    void generate_waitList();
+    
+    int getPriorityScore(const vector<Neighborhood>& town);
 
 
 private:
@@ -166,7 +173,7 @@ private:
     vector<Neighborhood> neighborhoods;
     vector<Neighborhood> previoushood;
     Tile randomTile;
-    vector<WaitTile> waitList;
+    vector<WaitTile>* waitList;
 
 };
 
@@ -202,11 +209,11 @@ void GameManager::start_game(){
         // score this, and  then reset neighborhoods. about to impliment
         while(playerOne->is_Active()){
         playerOne->makeMove(gameBoard);
-            
+        }
        generateNeighborhoods();
         scoreBoard();
         resetNeighborhoods();
-        }
+        
         if(!isActive())
            deactivate();
     }
@@ -302,7 +309,7 @@ void GameManager::generateDiagonalNeighborhoods(){
             diagonalOne.add_Tile(myTile, j);
          }
 
-         if(i+j+1==gameBoard->get_Board().size()){
+         if(i+j==gameBoard->get_Board().size()+1){
             Tile  myTile= gameBoard->get_Tile((i*10+j));
             diagonalTwo.add_Tile(myTile, j);
          }
@@ -1129,4 +1136,142 @@ bool GameManager::hasPairNumberWithJoker(const Neighborhood & myHood) {
     //so just return the bool 'hasPairNumber'
     return hasPairNumber;
 }
+
+vector<Neighborhood> GameManager::get_local_Neighborhoods(const int& location){
+    int rowPosition = location / 10;
+    int colPosition = location % 10;
+    Tile myTile;
+    Neighborhood hood;
+    vector<Neighborhood> hoods;
+    
+    // generate the rows
+    for(int i = 0; i < 4; i++) {
+        myTile= gameBoard->get_Tile(rowPosition*10+i+1);
+        hood.add_Tile(myTile, i);
+
+    }
+    hoods.push_back(hood);
+    
+    //generate the columns
+    for(int i = 0; i < 4; i++) {
+        myTile= gameBoard->get_Tile((i+1)*10+colPosition);
+        hood.add_Tile(myTile, i);
+        
+    }
+    hoods.push_back(hood);
+    
+    // generate the boxes
+    int boxLimiti = rowPosition+1;
+    int boxLimitj = colPosition+1;
+    for (int i = rowPosition-1; i < boxLimiti;i++){
+        if(i == 0)
+            i++;
+        if(i == 3)
+            boxLimiti--;
+            
+        for(int j = colPosition-1; j < boxLimitj; j++){
+            if(j == 0)
+                j++;
+            if(j == 3)
+                boxLimitj--;
+            
+            hood.add_Tile(gameBoard->get_Tile((i*10+j)), 1);
+            hood.add_Tile(gameBoard->get_Tile((i*10+(j+1))), 2);
+            hood.add_Tile(gameBoard->get_Tile(((i+1)*10+j)), 3);
+            hood.add_Tile(gameBoard->get_Tile(((i+1)*10+(j+1))), 4);
+        }
+        hoods.push_back(hood);
+        }
+    
+    // generate diagonals
+
+    if(rowPosition == colPosition){
+        hood.add_Tile(gameBoard->get_Tile(11), 1);
+        hood.add_Tile(gameBoard->get_Tile(22), 2);
+        hood.add_Tile(gameBoard->get_Tile(33), 3);
+        hood.add_Tile(gameBoard->get_Tile(44), 4);
+        hoods.push_back(hood);
+    }
+    
+    if(rowPosition+colPosition==gameBoard->get_Board().size()+1){
+        hood.add_Tile(gameBoard->get_Tile(14), 1);
+        hood.add_Tile(gameBoard->get_Tile(23), 2);
+        hood.add_Tile(gameBoard->get_Tile(32), 3);
+        hood.add_Tile(gameBoard->get_Tile(41), 4);
+        hoods.push_back(hood);
+    }
+    
+    // generate corners
+    if(location == 11 || location == 14 || location == 41 || location == 44){
+        
+        hood.add_Tile(gameBoard->get_Tile(11), 1);
+        hood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10 + 1), 2);
+        hood.add_Tile(gameBoard->get_Tile(10 + gameBoard->get_Board().size()), 3);
+        hood.add_Tile(gameBoard->get_Tile(gameBoard->get_Board().size()*10 + 4), 4);
+        
+        hoods.push_back(hood);
+    }
+    return hoods;
+    }
+    
+
+
+void GameManager::generate_waitList(){
+    Tile currentTile;
+    WaitTile currentWaitTile;
+    int priorityScore = 0;
+    for(int i = 0; i < gameBoard->get_Board().size(); i++){
+        for (int j = 0; j < gameBoard->get_Board().size(); j++){
+            //for every place on the board
+            //if the tile space is empty
+            if(gameBoard->get_Tile((i+1)*10+j+1).get_color() == 0){
+                currentTile.set_location((i+1)*10+j+1);
+                // for every tile we could place
+                for(int k = 1; k <= 4; k++){
+                    for(int l = 1; l <= 4; l++){
+                        
+                        // create that tile
+                        currentTile.set_color(k);
+                        currentTile.set_number(l);
+                        
+                        
+                        // add that tile temporarily to the board
+                        gameBoard->add_Tile(currentTile, currentTile.get_location());
+                        
+                        // set a vector equal to the local neighborhoods
+                        vector<Neighborhood> locals = get_local_Neighborhoods(currentTile.get_location());
+                        
+                        priorityScore = getPriorityScore(locals);
+                        
+                        // if the placement generated a score, create this tile as a wait tile and push it onto the waitlist.
+                        if(priorityScore > 0){
+                            currentWaitTile.set_location(currentTile.get_location());
+                            currentWaitTile.set_color(currentTile.get_color());
+                            currentWaitTile.set_number(currentTile.get_number());
+                            waitList->push_back(currentWaitTile);
+                        }
+                  
+                    }
+                } // end of all tiles test
+                
+                // re empty the location
+                Tile emptyTile;
+                gameBoard->add_Tile(emptyTile, currentTile.get_location());
+            
+            
+            } // end of the if empty space part
+        } // end of for every column
+    } // end of for every row.
+}
+
+
+
+int GameManager::getPriorityScore(const vector<Neighborhood>& town){
+    return 0;
+}
+
+
+
+
+
 #endif

@@ -135,6 +135,7 @@ void HumanPlayer::makeMove(Board* gameBoard){
         location = display->get_location(true);
         while(gameBoard->get_Tile(location).get_color() != 0)
             location = display->get_location(false);
+        choice.set_location(location);
         gameBoard->add_Tile(choice, location);
         bool foundTile = false;
         for(int i = 0; (i<tileHand.size()) && !foundTile; i++) {
