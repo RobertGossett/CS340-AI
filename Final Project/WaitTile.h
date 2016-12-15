@@ -18,6 +18,8 @@ class WaitTile : public Tile {
 public:
     WaitTile(); // constructor
     WaitTile(int col, int num); // parameterized constructor
+    int get_priorityScore() const;
+    void set_priorityScore(const int& priorityValue);
     
 private:
     int number; // number on the face of the tile
@@ -39,4 +41,13 @@ WaitTile::WaitTile(int col, int num){
     color = col;
     locked = false;
 }
+
+int WaitTile::get_priorityScore() const{
+    return priority;
+}
+
+void WaitTile::set_priorityScore(const int& priorityValue){
+    priority = priorityValue;
+}
+
 #endif /* WaitTile_h */
