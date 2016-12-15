@@ -154,7 +154,7 @@ public:
     // generates the local neighborhoods around a certain tile
     vector<Neighborhood> get_local_Neighborhoods(const int& location);
     
-    void generate_waitList();
+    vector<WaitTile> generate_waitList(Board* boardToBuild);
     
     int getPriorityScore(const vector<Neighborhood>& town);
 
@@ -163,6 +163,7 @@ private:
 
     Player* playerOne;// pointer to the playey -- will become the AI
     Player* artificialPlayerOne;
+    Player* player;
     Board*  gameBoard; // pointer to the board on which the player plays
     Graphics* Display; // pointer to the display
     bool active; // bool representing the status of the game manager. Active or inactive?
@@ -198,17 +199,29 @@ void GameManager::set_up(){
 }
 
 void GameManager::start_game(){
+    Display->start_Game();
+    
+    int playerType = -1;
+    while(playerType != 0 && playerType !=1){
+        cout << endl << "Which player type should we play the game with? AI (0) or Human(1): ";
+        cin >> playerType;
+        cout << endl;
+    }
+if(playerType == 0)
+    player = artificialPlayerOne;
+else
+    player = playerOne;
     while(active){
-        Display->start_Game();
+
         vector<Tile> tileHand = generateTileHand();
 
         
-        playerOne->dealTileHand(tileHand);
+        player->dealTileHand(tileHand);
 
         // we want to call generate neighborhoods in make move after every move,
         // score this, and  then reset neighborhoods. about to impliment
         while(playerOne->is_Active()){
-        playerOne->makeMove(gameBoard);
+        player->makeMove(gameBoard);
         }
        generateNeighborhoods();
         scoreBoard();
@@ -1216,9 +1229,10 @@ vector<Neighborhood> GameManager::get_local_Neighborhoods(const int& location){
     
 
 
-void GameManager::generate_waitList(){
+vector<WaitTile> GameManager::generate_waitList(Board* boardToBuild){
     Tile currentTile;
     WaitTile currentWaitTile;
+    vector<WaitTile> newList;
     int priorityScore = 0;
     for(int i = 0; i < gameBoard->get_Board().size(); i++){
         for (int j = 0; j < gameBoard->get_Board().size(); j++){
@@ -1248,7 +1262,7 @@ void GameManager::generate_waitList(){
                             currentWaitTile.set_location(currentTile.get_location());
                             currentWaitTile.set_color(currentTile.get_color());
                             currentWaitTile.set_number(currentTile.get_number());
-                            waitList->push_back(currentWaitTile);
+                            newList.push_back(currentWaitTile);
                         }
                   
                     }
@@ -1262,6 +1276,7 @@ void GameManager::generate_waitList(){
             } // end of the if empty space part
         } // end of for every column
     } // end of for every row.
+    return newList;
 }
 
 

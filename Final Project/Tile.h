@@ -40,7 +40,7 @@ public:
     void lock(); // complete
     void unlock(); // complete
     
-    int get_location();
+    int get_location() const;
     void set_location(const int& loc);
 
     // equals operator for tiles
@@ -57,6 +57,7 @@ Tile::Tile(){
     number = 0;
     color = 0;
     locked = false;
+    location = 0;
 }
 
 Tile::Tile(int col, int num){

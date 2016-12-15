@@ -26,6 +26,7 @@ private:
     int color; // integer representation of the colors of the tile
     bool locked; // bool telling us if the tile is locked on the board
     int priority; // priority score of the tile. Indicating the usefulness of a peace on the board
+    int location;
 };
 
 WaitTile::WaitTile(){
@@ -40,6 +41,7 @@ WaitTile::WaitTile(int col, int num){
     number = num;
     color = col;
     locked = false;
+    location = 0;
 }
 
 int WaitTile::get_priorityScore() const{

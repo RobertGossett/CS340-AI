@@ -34,6 +34,7 @@ public:
     // returns an int representing the move location given by the user
     int get_location(const bool& error);
     
+
     
     //displays the hand of available tiles to the screen
     //tiles are passed in through tile vector h
@@ -46,6 +47,7 @@ public:
     void print_Board(vector <vector <Tile> > board);
 
     void end_game();
+    
 
 private:
 
@@ -117,8 +119,6 @@ void Text::start_Game(){
     cout << endl;
     cout << "During the game, you will be asked to select a tile from the hand. In order to do this, simply enter the number value adjacent to the Tile. For example, you should see that on the first row of your 'Hand', it says,\" '1': R2 \". Entering a '1' will tell the game that this is the tile you would like to play. After you select your tile, you will be asked to enter in the location to play your tile. This follows the format given above where rows and columns range from 1-4. " << endl;
 
-
-
 }
 
 //displays the hand of available tiles to the screen
@@ -134,6 +134,8 @@ void Text::print_Hand(vector <Tile> h){
         cout << "'" << i+1 << "': " << get_String_Value_Of_Color(h[i].get_color()) << h[i].get_number() << endl;
     }
 }
+
+
 
 string Text::get_String_Value_Of_Color(int val) {
     switch (val) {
