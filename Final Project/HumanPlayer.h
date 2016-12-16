@@ -56,11 +56,13 @@ public:
     // increments the score by a certain number
     void increment_score(int const& addend);
 
-
+    // returns true if the player has a joker
     bool has_joker();
-
+    
+    // set's the joker
     void set_joker();
-
+    
+    // if the player is eligable for a joker, it levels up. 
     bool level_Up();
 
 private:

@@ -66,6 +66,7 @@ Board::Board() {
     vector<vector<Tile> > holder(4, vector<Tile>(4));
     for(int i = 0 ; i < 4; i++){
         for(int j = 0; j < 4; j++){
+            baseTile.set_location((i+1)*10+j+1);
             holder[i][j] = baseTile;
         };
     };

@@ -68,6 +68,10 @@ public:
     // increments the score by a certain number
     void increment_score(int const& addend);
     
+    
+    //// we decided to impliment these in the gameManager to make the project work.
+    
+    // gets the best move for the board.
     void getBestMoves(Board* myBoard, vector<WaitTile> WaitList, vector<Tile> TileHand, vector<Tile>& bestSequence);
 
 
@@ -172,6 +176,20 @@ void ArtificialPlayer::makeMove(Board* gameBoard, vector<Tile> aISequence){
         display->print_joker(hasJoker);
         vector<Tile> moveSequence = aISequence;
         //getBestMoves(gameBoard, waitList, tileHand, aISequence);
+        if(aISequence.size() == 0){
+            moveSequence = tileHand;
+            for(int i=0; i<moveSequence.size(); i++){
+                choice = moveSequence[0];
+                for(int j = 0; j < 4; j++){
+                    for(int k = 0; k < 4; k++){
+                        if(gameBoard->get_Board()[i][j].get_color() == 0){
+                        int location = ((i+1)*10)+i+1;
+                        gameBoard->add_Tile(choice, location);
+                        }
+                    }
+                }
+            }
+        }
         for(int i=0; i<moveSequence.size(); i++){
             choice = moveSequence[0];
             int location = moveSequence[0].get_location();

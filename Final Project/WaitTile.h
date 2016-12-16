@@ -16,10 +16,13 @@ using namespace std;
 class WaitTile : public Tile {
 
 public:
+    
+    
     WaitTile(); // constructor
     WaitTile(int col, int num); // parameterized constructor
-    WaitTile(const WaitTile& tile);
+    WaitTile(const WaitTile& tile); // copy constructor
 
+    // get and set for the priority scores.
     int get_priorityScore() const;
     void set_priorityScore(const int& priorityValue);
 

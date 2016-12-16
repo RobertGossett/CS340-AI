@@ -51,8 +51,11 @@ public:
     // prints the hand
     virtual void print_Hand(vector <Tile> h) = 0;
     virtual void print_joker(bool joker) = 0;
-
+    
+    // print's the score
     virtual void print_score(const int& score) = 0;
+    
+    // outpust the end game message
     virtual void end_game()=0;
 };
 

@@ -176,7 +176,7 @@ Tile Text::get_tile(vector <Tile> h, const bool& error) {
     
 
     int input;
-    cout << "Please select which tile you would like to add to the board: " << endl;
+    cout << "Please select which tile you would like to add to the board (J = 5): " << endl;
     cin >> input;
     while(input < 1 || input > 4){
         cout << "Please select which tile you would like to add to the board: " << endl;

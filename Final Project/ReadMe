@@ -1,0 +1,18 @@
+This file explains the funcitonalities of the final project are described here below. 
+
+This project was created by Robert Gossett, Richard Poutier and Khayyam Zubair for the final project of the AI class. 
+
+What is working:
+In the GameManager.h file, there is a function called start_game() which runs the entire game. It asks which player type to play the game with. 
+
+When the player chooses one, the GameManager plays out the game in the sequence suitable for a human player. 
+
+When the player chooses 0, the AI plays the game. 
+
+On line 279 of the GameManager.h file, the AI functions are contained. 
+
+The AI doesn't actually work, but if it did, it would 
+1. build the waitlist
+2. get the bestmove 
+3. make the move, and repeat until the board is filled. 
+
